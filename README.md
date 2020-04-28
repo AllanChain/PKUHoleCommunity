@@ -1,3 +1,15 @@
+# PKUHoleCommunity
+
+这是一个永远也目测也不会合并的分支。（对，因为我会大改，如果有时间）
+
+原版的网页版树洞仅有一人维护，代码也不美观，还有一堆 Warning，实用的新功能更新堪忧。
+
+目前实现简单的屏蔽词功能。往后再做其他实现。
+
+以下为原 README
+
+---
+
 PKU Helper 网页版 P大树洞：[pkuhelper.pku.edu.cn/hole](https://pkuhelper.pku.edu.cn/hole/)
 
 ## 浏览器兼容
