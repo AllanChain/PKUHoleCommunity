@@ -18,7 +18,7 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "homepage": ".",
+  "homepage": "https://allanchain.github.io/PKUHoleCommunity/",
   "browserslist": {
     "production": [
       ">0.2%",

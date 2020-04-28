@@ -1,0 +1,38 @@
+on:
+  push:
+    branches:
+      - master
+
+env:
+  NODE_VERSION: '10.x'
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Use Node.js ${{ env.NODE_VERSION }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+    - uses: actions/cache@v1
+      with:
+        path: node_modules
+        id: cache
+        key: node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          node-
+    - name: Install Packages
+      run: npm install
+    - name: Build App
+      run: npm run build
+    - name: Deploy
+      env:
+        ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+        PUBLISH_BRANCH: gh-pages
+        PUBLISH_DIR: ./build
+        SCRIPT_MODE: true
+      run: |
+        wget https://raw.githubusercontent.com/peaceiris/actions-gh-pages/v2/entrypoint.sh
+        bash ./entrypoint.sh
