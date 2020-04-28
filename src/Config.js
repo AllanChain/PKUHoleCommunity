@@ -16,6 +16,7 @@ const DEFAULT_CONFIG={
     pressure: false,
     easter_egg: true,
     color_scheme: 'default',
+    block_words: ['xz', 'ao3', 'ghs', '信科']
 };
 
 export function load_config() {
@@ -157,6 +158,45 @@ class ConfigColorScheme extends PureComponent {
     }
 }
 
+class ConfigBlockWords extends PureComponent {
+    constructor(props) {
+        super(props);
+        this.state={
+            block_words: window.config.block_words,
+        };
+    }
+
+    save_changes() {
+        this.props.callback({
+            block_words: this.state.block_words,
+        });
+    }
+
+    on_change(e) {
+        let value=e.target.value.split('\n');
+        this.setState({
+            block_words: value,
+        },this.save_changes.bind(this));
+    }
+
+    render() {
+        return (
+            <div>
+                <p> <b>设置屏蔽词 </b></p>
+                <p>
+                    <textarea 
+                    className='block-words'
+                    value={this.state.block_words.join('\n')} 
+                    onChange={this.on_change.bind(this)}>
+
+                    </textarea>
+                </p>
+
+            </div>
+        )
+    }
+}
+
 class ConfigSwitch extends PureComponent {
     constructor(props) {
         super(props);
@@ -227,6 +267,8 @@ export class ConfigUI extends PureComponent {
                     <ConfigBackground callback={this.save_changes_bound} />
                     <hr />
                     <ConfigColorScheme callback={this.save_changes_bound} />
+                    <hr />
+                    <ConfigBlockWords callback={this.save_changes_bound} />
                     <hr />
                     <ConfigSwitch callback={this.save_changes_bound} id="pressure" name="快速返回"
                                   description="短暂按住 Esc 键或重压屏幕（3D Touch）可以快速返回或者刷新树洞"

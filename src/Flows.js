@@ -453,6 +453,7 @@ class FlowItemRow extends PureComponent {
             reply_status: 'done',
             reply_error: null,
             info: Object.assign({},props.info,{variant: {}}),
+            hidden: window.config.block_words.some(word => props.info.text.includes(word)),
             attention: props.attention_override===null ? false : props.attention_override,
         };
         this.color_picker=new ColorPicker();
@@ -462,6 +463,10 @@ class FlowItemRow extends PureComponent {
         if(parseInt(this.state.info.reply,10)) {
             this.load_replies(null,/*update_count=*/false);
         }
+    }
+
+    reveal() {
+        this.setState({ hidden: false })
     }
 
     load_replies(callback,update_count=true) {
@@ -554,6 +559,14 @@ class FlowItemRow extends PureComponent {
                 </div>
             </div>
         );
+
+        if (this.state.hidden) {
+            return (<div
+                className="flow-item-row flow-item-row-with-prompt box box-tip"
+                onClick={() => this.reveal()}>
+                隐藏了 #{this.props.info.pid} 点击加载
+            </div>)
+        }
 
         return quote_id ? (
             <div>
