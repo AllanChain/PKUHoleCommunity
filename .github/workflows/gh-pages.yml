@@ -29,6 +29,8 @@ jobs:
       run: npm install
     - name: Build App
       run: npm run build
+      env:
+        CI: false
     - name: Deploy
       env:
         ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
