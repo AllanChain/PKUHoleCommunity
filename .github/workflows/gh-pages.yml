@@ -32,11 +32,8 @@ jobs:
       env:
         CI: false
     - name: Deploy
-      env:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        PUBLISH_BRANCH: gh-pages
-        PUBLISH_DIR: ./build
-        SCRIPT_MODE: true
-      run: |
-        wget https://raw.githubusercontent.com/peaceiris/actions-gh-pages/v2/entrypoint.sh
-        bash ./entrypoint.sh
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+        publish_dir: ./build
+        publish_branch: gh-pages
