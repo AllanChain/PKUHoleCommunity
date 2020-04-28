@@ -16,7 +16,7 @@ const DEFAULT_CONFIG={
     pressure: false,
     easter_egg: true,
     color_scheme: 'default',
-    block_words: ['xz', 'ao3', 'ghs', '信科']
+    block_words: ['xz', 'ao3', 'ghs']
 };
 
 export function load_config() {
