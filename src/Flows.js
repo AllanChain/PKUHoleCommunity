@@ -1,4 +1,4 @@
-import React, {Component, PureComponent} from 'react';
+import React, {PureComponent} from 'react';
 import copy from 'copy-to-clipboard';
 import {ColorPicker} from './color_picker';
 import {split_text, NICKNAME_RE, PID_RE, URL_RE, URL_PID_RE} from './text_splitter';

@@ -1,4 +1,4 @@
-import React, {Component, PureComponent} from 'react';
+import React, {Component} from 'react';
 import {API_BASE, SafeTextarea, PromotionBar} from './Common';
 import {MessageViewer} from './Message';
 import {LoginPopup} from './infrastructure/widgets';
@@ -6,7 +6,7 @@ import {ConfigUI} from './Config';
 import fixOrientation from 'fix-orientation';
 import copy from 'copy-to-clipboard';
 import {cache} from './cache';
-import {API_VERSION_PARAM, PKUHELPER_ROOT, API, get_json, token_param} from './flows_api';
+import {API_VERSION_PARAM, PKUHELPER_ROOT, get_json, token_param} from './flows_api';
 
 import './UserAction.css';
 
@@ -550,7 +550,7 @@ export class PostForm extends Component {
           let width = image.width;
           let height = image.height;
           let compressed = false;
-                    
+
           if(width > MAX_IMG_DIAM) {
             height = height * MAX_IMG_DIAM / width;
             width = MAX_IMG_DIAM;

@@ -1,4 +1,4 @@
-import React, {Component, PureComponent} from 'react';
+import React, {PureComponent} from 'react';
 
 import './Config.css';
 
@@ -184,9 +184,9 @@ class ConfigBlockWords extends PureComponent {
       <div>
         <p> <b>设置屏蔽词 </b></p>
         <p>
-          <textarea 
+          <textarea
             className='block-words'
-            value={this.state.block_words.join('\n')} 
+            value={this.state.block_words.join('\n')}
             onChange={this.on_change.bind(this)}>
 
           </textarea>

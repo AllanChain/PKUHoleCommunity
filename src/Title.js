@@ -1,4 +1,4 @@
-import React, {Component, PureComponent} from 'react';
+import React, {PureComponent} from 'react';
 import {AppSwitcher} from './infrastructure/widgets';
 import {InfoSidebar, PostForm} from './UserAction';
 import {TokenCtx} from './UserAction';

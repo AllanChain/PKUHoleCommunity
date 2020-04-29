@@ -1,4 +1,4 @@
-import React, {Component, PureComponent} from 'react';
+import React, {PureComponent} from 'react';
 import {PKUHELPER_ROOT, get_json, API_VERSION_PARAM} from './flows_api';
 import {Time} from './Common';
 
@@ -49,7 +49,7 @@ export class MessageViewer extends PureComponent {
       return (<div className="box box-tip"><a onClick={() => {this.load();}}>重新加载</a></div>);
     else if(this.state.loading_status === 'done')
       return this.state.msg.map((msg) => (
-        <div className="box">
+        <div className="box" key={msg.timestamp}>
           <div className="box-header">
             <Time stamp={msg.timestamp} />
             <b>{msg.title}</b>

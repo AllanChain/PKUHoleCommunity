@@ -86,9 +86,9 @@ export const API = {
       .then((json) => {
         cache().delete(pid);
         if(json.code !== 0) {
-          if(json.msg && json.msg === '已经关注过了') {}
-          else {
-            if(json.msg) alert(json.msg);
+          if(json.msg) {
+            if (json.msg !== '已经关注过了') alert(json.msg);
+          } else {
             throw new Error(JSON.stringify(json));
           }
         }
