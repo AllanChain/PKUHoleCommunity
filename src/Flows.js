@@ -37,7 +37,7 @@ function load_single_meta(show_sidebar,token) {
         single.data.variant = {};
         return new Promise((resolve,reject) => {
           API.load_replies_with_cache(pid,token,color_picker,parseInt(single.data.reply))
-            .then((replies) => {resolve([single,replies]);})
+            .then(({data: replies}) => {resolve([single,replies]);})
             .catch(reject);
         });
       })
@@ -146,6 +146,7 @@ class FlowItem extends PureComponent {
           {!!window.LATEST_POST_ID && parseInt(props.info.pid,10) > window.LATEST_POST_ID &&
             <div className="flow-item-dot" />
           }
+          {this.props.attention && !this.props.cached && <div className="flow-item-dot" />}
           <div className="box-header">
             {!!this.props.do_filter_name &&
               <span className="reply-header-badge clickable" onClick={() => {this.props.do_filter_name(DZ_NAME);}}>
@@ -455,6 +456,7 @@ class FlowItemRow extends PureComponent {
       info: Object.assign({},props.info,{variant: {}}),
       hidden: window.config.block_words.some(word => props.info.text.includes(word)),
       attention: props.attention_override === null ? false : props.attention_override,
+      cached: true, // default no display anything
     };
     this.color_picker = new ColorPicker();
   }
@@ -476,7 +478,7 @@ class FlowItemRow extends PureComponent {
       reply_error: null,
     });
     API.load_replies_with_cache(this.state.info.pid,this.props.token,this.color_picker,parseInt(this.state.info.reply))
-      .then((json) => {
+      .then(({data: json, cached}) => {
         this.setState((prev,props) => ({
           replies: json.data,
           info: Object.assign({}, prev.info, {
@@ -488,6 +490,7 @@ class FlowItemRow extends PureComponent {
           attention: !!json.attention,
           reply_status: 'done',
           reply_error: null,
+          cached
         }),callback);
       })
       .catch((e) => {
@@ -541,7 +544,7 @@ class FlowItemRow extends PureComponent {
           this.show_sidebar();
       }}>
         <FlowItem parts={parts} info={this.state.info} attention={this.state.attention} img_clickable={false} is_quote={this.props.is_quote}
-          color_picker={this.color_picker} show_pid={show_pid} replies={this.state.replies} />
+          color_picker={this.color_picker} show_pid={show_pid} replies={this.state.replies} cached={this.state.cached} />
         <div className="flow-reply-row">
           {this.state.reply_status === 'loading' && <div className="box box-tip">加载中</div>}
           {this.state.reply_status === 'failed' &&

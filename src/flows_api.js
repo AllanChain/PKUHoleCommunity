@@ -63,10 +63,22 @@ export const API = {
               return info;
             });
 
-          return json;
+          return new Promise(resolve => resolve({
+            data: json,
+            cached: true
+          }));
         }
         else
-          return API.load_replies(pid,token,color_picker,cache_version);
+          return new Promise(resolve => {
+            API.load_replies(pid,token,color_picker,cache_version)
+            .then(json => {
+              console.log(json);
+              resolve({
+              data: json,
+              cached: !json
+            })
+          }
+          )});
       });
   },
 
