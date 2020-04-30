@@ -146,7 +146,7 @@ class FlowItem extends PureComponent {
           {!!window.LATEST_POST_ID && parseInt(props.info.pid, 10) > window.LATEST_POST_ID &&
             <div className="flow-item-dot" />
           }
-          {this.props.attention && !this.props.cached && <div className="flow-item-dot" />}
+          {!!this.props.attention && !this.props.cached && <div className="flow-item-dot" />}
           <div className="box-header">
             {!!this.props.do_filter_name &&
               <span className="reply-header-badge clickable" onClick={() => {this.props.do_filter_name(DZ_NAME);}}>
@@ -564,36 +564,38 @@ class FlowItemRow extends PureComponent {
     );
 
     if (this.state.hidden) {
-      return (<div
-        className="flow-item-row flow-item-row-with-prompt"
-        onClick={() => this.reveal()}>
-        <div className={'flow-item' + (this.props.is_quote ? ' flow-item-quote' : '')}>
-          {!!this.props.is_quote &&
-            <div className="quote-tip black-outline">
-              <div><span className="icon icon-quote" /></div>
-              <div><small>提到</small></div>
-            </div>
-          }
-          <div className="box">
-            <div className="box-header">
-              {!!this.props.do_filter_name &&
-                <span className="reply-header-badge clickable" onClick={() => {this.props.do_filter_name(DZ_NAME);}}>
-                  <span className="icon icon-locate" />
-                </span>
-              }
-              <code className="box-id">#{this.props.info.pid}</code>
-                          &nbsp;
-              {this.props.info.tag !== null &&
-                <span className="box-header-tag">
-                  {this.props.info.tag}
-                </span>
-              }
-              <Time stamp={this.props.info.timestamp} />
-              <span className="box-header-badge">已隐藏</span>
+      return (
+        <div
+          className="flow-item-row flow-item-row-with-prompt"
+          onClick={() => this.reveal()}>
+          <div className={'flow-item' + (this.props.is_quote ? ' flow-item-quote' : '')}>
+            {!!this.props.is_quote &&
+              <div className="quote-tip black-outline">
+                <div><span className="icon icon-quote" /></div>
+                <div><small>提到</small></div>
+              </div>
+            }
+            <div className="box">
+              <div className="box-header">
+                {!!this.props.do_filter_name &&
+                  <span className="reply-header-badge clickable" onClick={() => {this.props.do_filter_name(DZ_NAME);}}>
+                    <span className="icon icon-locate" />
+                  </span>
+                }
+                <code className="box-id">#{this.props.info.pid}</code>
+                &nbsp;
+                {this.props.info.tag !== null &&
+                  <span className="box-header-tag">
+                    {this.props.info.tag}
+                  </span>
+                }
+                <Time stamp={this.props.info.timestamp} />
+                <span className="box-header-badge">已隐藏</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>);
+      );
     }
 
     return quote_id ? (
