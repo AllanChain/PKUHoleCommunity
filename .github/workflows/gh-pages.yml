@@ -1,12 +1,10 @@
 on:
   push:
-    branches:
-      - master
-    paths-ignore:
-      - '*.md'
+    tags: 
+      - 'v*'
 
 env:
-  NODE_VERSION: '10.x'
+  NODE_VERSION: '12.x'
 
 jobs:
   build-and-deploy:
@@ -36,7 +34,6 @@ jobs:
         CI: false
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
-      if: ${{ startsWith(github.ref, 'refs/tags/v') }}
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./build
