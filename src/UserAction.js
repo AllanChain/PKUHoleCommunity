@@ -212,7 +212,7 @@ export function InfoSidebar(props) {
           <span className="icon icon-textfile" /><label>树洞规范</label>
         </a>
                 &nbsp;&nbsp;
-        <a href="https://github.com/pkuhelper-web/webhole/issues" target="_blank">
+        <a href="https://github.com/AllanChain/PKUHoleCommunity/issues" target="_blank">
           <span className="icon icon-github" /><label>意见反馈</label>
         </a>
       </div>
@@ -221,7 +221,7 @@ export function InfoSidebar(props) {
           PKUHelper 网页版树洞 by @xmcp，
           基于&nbsp;
           <a href="https://www.gnu.org/licenses/gpl-3.0.zh-cn.html" target="_blank">GPLv3</a>
-                    &nbsp;协议在 <a href="https://github.com/pkuhelper-web/webhole" target="_blank">GitHub</a> 开源
+                    &nbsp;协议在 <a href="https://github.com/AllanChain/PKUHoleCommunity" target="_blank">GitHub</a> 开源
         </p>
         <p>
           PKUHelper 网页版的诞生离不开&nbsp;
@@ -246,7 +246,7 @@ export function InfoSidebar(props) {
               window.location.reload(true);
             }, 200);
           }}>强制检查更新</a>
-          （{process.env.REACT_APP_BUILD_INFO || '---'} {process.env.NODE_ENV} 会自动在后台检查更新并在下次访问时更新）
+          （Community v{process.env.REACT_APP_VERSION || '---'} {process.env.NODE_ENV} 会自动在后台检查更新并在下次访问时更新）
         </p>
         <p>
           This program is free software: you can redistribute it and/or modify
