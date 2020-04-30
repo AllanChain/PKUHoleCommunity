@@ -14,7 +14,7 @@ export {get_json};
 const SEARCH_PAGESIZE = 50;
 
 export const API = {
-  load_replies: (pid,token,color_picker,cache_version) => {
+  load_replies: (pid, token, color_picker, cache_version) => {
     pid = parseInt(pid);
     return fetch(
       API_BASE + '/api.php?action=getcomment' +
@@ -29,13 +29,13 @@ export const API = {
         }
 
         cache().delete(pid).then(() => {
-          cache().put(pid,cache_version,json);
+          cache().put(pid, cache_version, json);
         });
 
         // also change load_replies_with_cache!
         json.data = json.data
-          .sort((a,b) => {
-            return parseInt(a.cid,10) - parseInt(b.cid,10);
+          .sort((a, b) => {
+            return parseInt(a.cid, 10) - parseInt(b.cid, 10);
           })
           .map((info) => {
             info._display_color = color_picker.get(info.name);
@@ -47,15 +47,15 @@ export const API = {
       });
   },
 
-  load_replies_with_cache: (pid,token,color_picker,cache_version) => {
+  load_replies_with_cache: (pid, token, color_picker, cache_version) => {
     pid = parseInt(pid);
-    return cache().get(pid,cache_version)
+    return cache().get(pid, cache_version)
       .then((json) => {
         if(json) {
           // also change load_replies!
           json.data = json.data
-            .sort((a,b) => {
-              return parseInt(a.cid,10) - parseInt(b.cid,10);
+            .sort((a, b) => {
+              return parseInt(a.cid, 10) - parseInt(b.cid, 10);
             })
             .map((info) => {
               info._display_color = color_picker.get(info.name);
@@ -70,7 +70,7 @@ export const API = {
         }
         else
           return new Promise(resolve => {
-            API.load_replies(pid,token,color_picker,cache_version)
+            API.load_replies(pid, token, color_picker, cache_version)
             .then(json => {
               console.log(json);
               resolve({
@@ -82,11 +82,11 @@ export const API = {
       });
   },
 
-  set_attention: (pid,attention,token) => {
+  set_attention: (pid, attention, token) => {
     let data = new URLSearchParams();
-    data.append('user_token',token);
-    data.append('pid',pid);
-    data.append('switch',attention ? '1' : '0');
+    data.append('user_token', token);
+    data.append('pid', pid);
+    data.append('switch', attention ? '1' : '0');
     return fetch(API_BASE + '/api.php?action=attention' + token_param(token), {
       method: 'POST',
       headers: {
@@ -108,11 +108,11 @@ export const API = {
       });
   },
 
-  report: (pid,reason,token) => {
+  report: (pid, reason, token) => {
     let data = new URLSearchParams();
-    data.append('user_token',token);
-    data.append('pid',pid);
-    data.append('reason',reason);
+    data.append('user_token', token);
+    data.append('pid', pid);
+    data.append('reason', reason);
     return fetch(API_BASE + '/api.php?action=report' + token_param(token), {
       method: 'POST',
       headers: {
@@ -130,7 +130,7 @@ export const API = {
       });
   },
 
-  get_list: (page,token) => {
+  get_list: (page, token) => {
     return fetch(
       API_BASE + '/api.php?action=getlist' +
             '&p=' + page +
@@ -144,7 +144,7 @@ export const API = {
       });
   },
 
-  get_search: (page,keyword,token) => {
+  get_search: (page, keyword, token) => {
     return fetch(
       API_BASE + '/api.php?action=search' +
             '&pagesize=' + SEARCH_PAGESIZE +
@@ -162,7 +162,7 @@ export const API = {
       });
   },
 
-  get_single: (pid,token) => {
+  get_single: (pid, token) => {
     return fetch(
       API_BASE + '/api.php?action=getone' +
             '&pid=' + pid +

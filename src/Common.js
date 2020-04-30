@@ -1,10 +1,10 @@
 import React, {Component, PureComponent} from 'react';
-import {format_time,Time,TitleLine} from './infrastructure/widgets';
+import {format_time, Time, TitleLine} from './infrastructure/widgets';
 import {PKUHELPER_ROOT} from './flows_api';
 
 import './Common.css';
 
-export {format_time,Time,TitleLine};
+export {format_time, Time, TitleLine};
 
 export const API_BASE = PKUHELPER_ROOT + 'services/pkuhole';
 
@@ -13,8 +13,8 @@ function escape_regex(string) {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 }
 
-export function build_highlight_re(txt,split,option = 'g') {
-  return txt ? new RegExp(`(${txt.split(split).filter((x) => !!x).map(escape_regex).join('|')})`,option) : /^$/g;
+export function build_highlight_re(txt, split, option = 'g') {
+  return txt ? new RegExp(`(${txt.split(split).filter((x) => !!x).map(escape_regex).join('|')})`, option) : /^$/g;
 }
 
 export function ColoredSpan(props) {
@@ -33,8 +33,8 @@ export class HighlightedText extends PureComponent {
     }
     return (
       <pre>
-        {this.props.parts.map((part,idx) => {
-          let [rule,p] = part;
+        {this.props.parts.map((part, idx) => {
+          let [rule, p] = part;
           return (
             <span key={idx}>{
               rule === 'url_pid' ? <span className="url-pid-link" title={p}>/hole/##</span> :
@@ -70,7 +70,7 @@ export class SafeTextarea extends Component {
   componentDidMount() {
     this.setState({
       text: window.TEXTAREA_BACKUP[this.props.id] || ''
-    },() => {
+    }, () => {
       this.change_callback(this.state.text);
     });
   }

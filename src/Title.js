@@ -25,7 +25,7 @@ class ControlBar extends PureComponent {
     if(window.location.hash) {
       let text = decodeURIComponent(window.location.hash).substr(1);
       if(text.lastIndexOf('?') !== -1)
-        text = text.substr(0,text.lastIndexOf('?')); // fuck wechat '#param?nsukey=...'
+        text = text.substr(0, text.lastIndexOf('?')); // fuck wechat '#param?nsukey=...'
       this.setState({
         search_text: text,
       }, () => {
@@ -55,24 +55,24 @@ class ControlBar extends PureComponent {
       }
 
       const mode = this.state.search_text.startsWith('#') ? 'single' : 'search';
-      this.set_mode(mode,this.state.search_text || '');
+      this.set_mode(mode, this.state.search_text || '');
     }
   }
 
   do_refresh() {
-    window.scrollTo(0,0);
+    window.scrollTo(0, 0);
     this.setState({
       search_text: '',
     });
-    this.set_mode('list',null);
+    this.set_mode('list', null);
   }
 
   do_attention() {
-    window.scrollTo(0,0);
+    window.scrollTo(0, 0);
     this.setState({
       search_text: '',
     });
-    this.set_mode('attention',null);
+    this.set_mode('attention', null);
   }
 
   render() {
@@ -106,7 +106,7 @@ class ControlBar extends PureComponent {
                           this.props.show_sidebar(
                             '发表树洞',
                             <PostForm token={token} on_complete={() => {
-                              this.props.show_sidebar(null,null);
+                              this.props.show_sidebar(null, null);
                               this.do_refresh();
                             }} />
                           );

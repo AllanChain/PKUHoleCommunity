@@ -19,7 +19,7 @@ export class MessageViewer extends PureComponent {
     if(this.state.loading_status === 'loading') return;
     this.setState({
       loading_status: 'loading',
-    },() => {
+    }, () => {
       fetch(PKUHELPER_ROOT + 'api_xmcp/hole/system_msg?user_token=' + encodeURIComponent(this.props.token) + API_VERSION_PARAM())
         .then(get_json)
         .then((json) => {

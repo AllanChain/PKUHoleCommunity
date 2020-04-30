@@ -28,6 +28,7 @@
     "react/jsx-no-target-blank": "off",
     "space-infix-ops": "error",
     "no-trailing-spaces": "error",
+    "comma-spacing": ["error", { "before": false, "after": true }],
     "arrow-spacing": ["error", { "before": true, "after": true }],
     "no-unused-vars": ["warn", { "args": "none" }]
   }

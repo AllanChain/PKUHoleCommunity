@@ -18,14 +18,14 @@ export class Sidebar extends PureComponent {
   }
 
   do_close() {
-    this.props.show_sidebar(null,null,'clear');
+    this.props.show_sidebar(null, null, 'clear');
   }
   do_back() {
-    this.props.show_sidebar(null,null,'pop');
+    this.props.show_sidebar(null, null, 'pop');
   }
 
   render() {
-    let [cur_title,cur_content] = this.props.stack[this.props.stack.length - 1];
+    let [cur_title, cur_content] = this.props.stack[this.props.stack.length - 1];
     return (
       <div className={'sidebar-container ' + (cur_title !== null ? 'sidebar-on' : 'sidebar-off')}>
         <div className="sidebar-shadow" onClick={this.do_back_bound} onTouchEnd={(e) => {e.preventDefault();e.target.click();}} />

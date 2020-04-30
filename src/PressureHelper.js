@@ -33,7 +33,7 @@ export class PressureHelper extends  Component {
         level: 0,
         fired: false,
       });
-    },300);
+    }, 300);
   }
 
   componentDidMount() {
@@ -62,13 +62,13 @@ export class PressureHelper extends  Component {
         preventSelect: false,
       });
 
-      document.addEventListener('keydown',(e) => {
+      document.addEventListener('keydown', (e) => {
         if(!e.repeat && e.key === 'Escape') {
           if(this.esc_interval)
             clearInterval(this.esc_interval);
           this.setState({
             level: THRESHOLD / 2,
-          },() => {
+          }, () => {
             this.esc_interval = setInterval(() => {
               let new_level = this.state.level + .1;
               if(new_level >= .999)
@@ -77,11 +77,11 @@ export class PressureHelper extends  Component {
                 this.setState({
                   level: new_level,
                 });
-            },30);
+            }, 30);
           });
         }
       });
-      document.addEventListener('keyup',(e) => {
+      document.addEventListener('keyup', (e) => {
         if(e.key === 'Escape') {
           if(this.esc_interval) {
             clearInterval(this.esc_interval);

@@ -4,7 +4,7 @@ import load from 'load-script';
 window.audio_cache = {};
 
 function load_amrnb() {
-  return new Promise((resolve,reject) => {
+  return new Promise((resolve, reject) => {
     if(window.AMR)
       resolve();
     else
@@ -36,7 +36,7 @@ export class AudioWidget extends Component {
       return;
     }
 
-    console.log('fetching audio',this.state.url);
+    console.log('fetching audio', this.state.url);
     this.setState({
       state: 'loading',
     });

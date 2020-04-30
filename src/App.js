@@ -4,7 +4,7 @@ import {Title} from './Title';
 import {Sidebar} from './Sidebar';
 import {PressureHelper} from './PressureHelper';
 import {TokenCtx} from './UserAction';
-import {load_config,bgimg_style} from './Config';
+import {load_config, bgimg_style} from './Config';
 import {listen_darkmode} from './infrastructure/functions';
 import {LoginPopup, TitleLine} from './infrastructure/widgets';
 
@@ -22,7 +22,7 @@ class App extends Component {
     load_config();
     listen_darkmode({default: undefined, light: false, dark: true}[window.config.color_scheme]);
     this.state = {
-      sidebar_stack: [[null,null]], // list of [status, content]
+      sidebar_stack: [[null, null]], // list of [status, content]
       mode: 'list', // list, single, search, attention
       search_text: null,
       flow_render_key: +new Date(),
@@ -46,26 +46,26 @@ class App extends Component {
 
   on_pressure() {
     if(this.state.sidebar_stack.length > 1)
-      this.show_sidebar(null,null,'clear');
+      this.show_sidebar(null, null, 'clear');
     else
-      this.set_mode('list',null);
+      this.set_mode('list', null);
   }
 
-  show_sidebar(title,content,mode = 'push') {
+  show_sidebar(title, content, mode = 'push') {
     this.setState((prevState) => {
       let ns = prevState.sidebar_stack.slice();
       if(mode === 'push') {
         if(ns.length > MAX_SIDEBAR_STACK_SIZE)
-          ns.splice(1,1);
-        ns = ns.concat([[title,content]]);
+          ns.splice(1, 1);
+        ns = ns.concat([[title, content]]);
       } else if(mode === 'pop') {
         if(ns.length === 1) return;
         ns.pop();
       } else if(mode === 'replace') {
         ns.pop();
-        ns = ns.concat([[title,content]]);
+        ns = ns.concat([[title, content]]);
       } else if(mode === 'clear') {
-        ns = [[null,null]];
+        ns = [[null, null]];
       } else
         throw new Error('bad show_sidebar mode');
       return {
@@ -74,7 +74,7 @@ class App extends Component {
     });
   }
 
-  set_mode(mode,search_text) {
+  set_mode(mode, search_text) {
     this.setState({
       mode: mode,
       search_text: search_text,

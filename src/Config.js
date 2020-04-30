@@ -20,7 +20,7 @@ const DEFAULT_CONFIG = {
 };
 
 export function load_config() {
-  let config = Object.assign({},DEFAULT_CONFIG);
+  let config = Object.assign({}, DEFAULT_CONFIG);
   let loaded_config;
   try {
     loaded_config = JSON.parse(localStorage['hole_config'] || '{}');
@@ -36,7 +36,7 @@ export function load_config() {
       config[key] = loaded_config[key];
   });
 
-  console.log('config loaded',config);
+  console.log('config loaded', config);
   window.config = config;
 }
 export function save_config() {
@@ -44,7 +44,7 @@ export function save_config() {
   load_config();
 }
 
-export function bgimg_style(img,color) {
+export function bgimg_style(img, color) {
   if(img === undefined) img = window.config.background_img;
   if(color === undefined) color = window.config.background_color;
   return {
@@ -76,17 +76,17 @@ class ConfigBackground extends PureComponent {
     this.setState({
       img: value === '##other' ? '' :
         value === '##color' ? null : value,
-    },this.save_changes.bind(this));
+    }, this.save_changes.bind(this));
   }
   on_change_img(e) {
     this.setState({
       img: e.target.value,
-    },this.save_changes.bind(this));
+    }, this.save_changes.bind(this));
   }
   on_change_color(e) {
     this.setState({
       color: e.target.value,
-    },this.save_changes.bind(this));
+    }, this.save_changes.bind(this));
   }
 
   render() {
@@ -111,7 +111,7 @@ class ConfigBackground extends PureComponent {
             <input type="color" value={this.state.color} onChange={this.on_change_color.bind(this)} />
           }
         </p>
-        <div className="bg-preview" style={bgimg_style(this.state.img,this.state.color)} />
+        <div className="bg-preview" style={bgimg_style(this.state.img, this.state.color)} />
       </div>
     );
   }
@@ -135,7 +135,7 @@ class ConfigColorScheme extends PureComponent {
     let value = e.target.value;
     this.setState({
       color_scheme: value,
-    },this.save_changes.bind(this));
+    }, this.save_changes.bind(this));
   }
 
   render() {
@@ -176,7 +176,7 @@ class ConfigBlockWords extends PureComponent {
     let value = e.target.value.split('\n');
     this.setState({
       block_words: value,
-    },this.save_changes.bind(this));
+    }, this.save_changes.bind(this));
   }
 
   render() {
@@ -209,7 +209,7 @@ class ConfigSwitch extends PureComponent {
     let val = e.target.checked;
     this.setState({
       switch: val,
-    },() => {
+    }, () => {
       this.props.callback({
         [this.props.id]: val,
       });

@@ -48,15 +48,15 @@ class LifeInfoBox extends Component {
     else
       return cache_item[1];
   }
-  cache_set(key,value) {
+  cache_set(key, value) {
     if(!window._life_info_cache[key] || window._life_info_cache[key][1] !== value)
-      window._life_info_cache[key] = [+new Date(),value];
+      window._life_info_cache[key] = [+new Date(), value];
   }
 
   load(state_key) {
     this.setState({
       [state_key]: null,
-    },() => {
+    }, () => {
       fetch(
         PKUHELPER_ROOT + 'api_xmcp/' + this.API_NAME[state_key]
                 + '?user_token=' + encodeURIComponent(this.props.token)
@@ -82,19 +82,19 @@ class LifeInfoBox extends Component {
   }
 
   componentDidMount() {
-    ['today_info','card_balance','net_balance','mail_count'].forEach((k) => {
+    ['today_info', 'card_balance', 'net_balance', 'mail_count'].forEach((k) => {
       if(!this.state[k])
         this.load(k);
     });
   }
 
   reload_all() {
-    ['today_info','card_balance','net_balance','mail_count'].forEach((k) => {
+    ['today_info', 'card_balance', 'net_balance', 'mail_count'].forEach((k) => {
       this.load(k);
     });
   }
 
-  render_line(state_key,title,value_fn,action,url_fn,do_login) {
+  render_line(state_key, title, value_fn, action, url_fn, do_login) {
     let s = this.state[state_key];
     if(!s)
       return (
@@ -108,7 +108,7 @@ class LifeInfoBox extends Component {
       let type = '加载失败';
       if(s.errCode === this.INTERNAL_NETWORK_FAILURE)
         type = '网络错误';
-      else if(['E01','E02','E03'].indexOf(s.errCode) !== -1)
+      else if(['E01', 'E02', 'E03'].indexOf(s.errCode) !== -1)
         type = '授权失效';
 
       let details = JSON.stringify(s);
@@ -137,7 +137,7 @@ class LifeInfoBox extends Component {
       );
     }
     else {
-      this.cache_set(state_key,s);
+      this.cache_set(state_key, s);
 
       return (
         <tr>
@@ -164,26 +164,26 @@ class LifeInfoBox extends Component {
             <tbody>
               {this.render_line(
                   'today_info',
-                  '今日',(s) => s.info,
-                  '校历',(s) => s.schedule_url,
+                  '今日', (s) => s.info,
+                  '校历', (s) => s.schedule_url,
                   do_login,
                 )}
               {this.render_line(
                   'card_balance',
-                  '校园卡',(s) => `余额￥${s.balance.toFixed(2)}`,
-                  '充值',() => 'https://virtualprod.alipay.com/educate/educatePcRecharge.htm?schoolCode=PKU&schoolName=',
+                  '校园卡', (s) => `余额￥${s.balance.toFixed(2)}`,
+                  '充值', () => 'https://virtualprod.alipay.com/educate/educatePcRecharge.htm?schoolCode=PKU&schoolName=',
                   do_login,
                 )}
               {this.render_line(
                   'net_balance',
-                  '网费',(s) => `余额￥${s.balance.toFixed(2)}`,
-                  '充值',() => 'https://its.pku.edu.cn/epay.jsp',
+                  '网费', (s) => `余额￥${s.balance.toFixed(2)}`,
+                  '充值', () => 'https://its.pku.edu.cn/epay.jsp',
                   do_login,
                 )}
               {this.render_line(
                   'mail_count',
-                  '邮件',(s) => `未读 ${s.count} 封`,
-                  '查看',() => 'https://mail.pku.edu.cn/',
+                  '邮件', (s) => `未读 ${s.count} 封`,
+                  '查看', () => 'https://mail.pku.edu.cn/',
                   do_login,
                 )}
             </tbody>
@@ -235,7 +235,7 @@ export function InfoSidebar(props) {
               navigator.serviceWorker.getRegistrations()
                 .then((registrations) => {
                   for(let registration of registrations) {
-                    console.log('unregister',registration);
+                    console.log('unregister', registration);
                     registration.unregister();
                   }
                 });
@@ -243,7 +243,7 @@ export function InfoSidebar(props) {
             cache().clear();
             setTimeout(() => {
               window.location.reload(true);
-            },200);
+            }, 200);
           }}>强制检查更新</a>
           （{process.env.REACT_APP_BUILD_INFO || '---'} {process.env.NODE_ENV} 会自动在后台检查更新并在下次访问时更新）
         </p>
@@ -279,7 +279,7 @@ class ResetUsertokenWidget extends Component {
       if(uid)
         this.setState({
           loading_status: 'loading',
-        },() => {
+        }, () => {
           fetch(PKUHELPER_ROOT + 'api_xmcp/hole/reset_usertoken', {
             method: 'post',
             headers: {
@@ -353,7 +353,7 @@ export class LoginForm extends Component {
                   当您发送的内容违规时，我们将用系统消息提示您
                 </p>
                 <p>
-                  <a onClick={this.copy_token.bind(this,token.value)}>复制 User Token</a><br />
+                  <a onClick={this.copy_token.bind(this, token.value)}>复制 User Token</a><br />
                   User Token 用于迁移登录状态，切勿告知他人，若怀疑被盗号请尽快 <ResetUsertokenWidget token={token.value} />
                 </p>
               </div> :
@@ -391,7 +391,7 @@ export class ReplyForm extends Component {
   }
 
   global_keypress_handler(e) {
-    if(e.code === 'Enter' && !e.ctrlKey && !e.altKey && ['input','textarea'].indexOf(e.target.tagName.toLowerCase()) === -1) {
+    if(e.code === 'Enter' && !e.ctrlKey && !e.altKey && ['input', 'textarea'].indexOf(e.target.tagName.toLowerCase()) === -1) {
       if(this.area_ref.current) {
         e.preventDefault();
         this.area_ref.current.focus();
@@ -399,10 +399,10 @@ export class ReplyForm extends Component {
     }
   }
   componentDidMount() {
-    document.addEventListener('keypress',this.global_keypress_handler_bound);
+    document.addEventListener('keypress', this.global_keypress_handler_bound);
   }
   componentWillUnmount() {
-    document.removeEventListener('keypress',this.global_keypress_handler_bound);
+    document.removeEventListener('keypress', this.global_keypress_handler_bound);
   }
 
   on_change(value) {
@@ -420,9 +420,9 @@ export class ReplyForm extends Component {
     });
 
     let data = new URLSearchParams();
-    data.append('pid',this.props.pid);
-    data.append('text',this.state.text);
-    data.append('user_token',this.props.token);
+    data.append('pid', this.props.pid);
+    data.append('text', this.state.text);
+    data.append('user_token', this.props.token);
     fetch(API_BASE + '/api.php?action=docomment' + token_param(this.props.token), {
       method: 'POST',
       headers: {
@@ -495,13 +495,13 @@ export class PostForm extends Component {
     });
   }
 
-  do_post(text,img) {
+  do_post(text, img) {
     let data = new URLSearchParams();
-    data.append('text',this.state.text);
-    data.append('type',img ? 'image' : 'text');
-    data.append('user_token',this.props.token);
+    data.append('text', this.state.text);
+    data.append('type', img ? 'image' : 'text');
+    data.append('user_token', this.props.token);
     if(img)
-      data.append('data',img);
+      data.append('data', img);
 
     fetch(API_BASE + '/api.php?action=dopost' + token_param(this.props.token), {
       method: 'POST',
@@ -534,7 +534,7 @@ export class PostForm extends Component {
   }
 
   proc_img(file) {
-    return new Promise((resolve,reject) => {
+    return new Promise((resolve, reject) => {
       function return_url(url) {
         const idx = url.indexOf(';base64,');
         if(idx === -1)
@@ -567,26 +567,26 @@ export class PostForm extends Component {
             width /= rate;
             compressed = true;
           }
-          console.log('chosen img size',width,height);
+          console.log('chosen img size', width, height);
 
           let canvas = document.createElement('canvas');
           let ctx = canvas.getContext('2d');
           canvas.width = width;
           canvas.height = height;
-          ctx.drawImage(image,0,0,width,height);
+          ctx.drawImage(image, 0, 0, width, height);
 
-          let quality_l = .1,quality_r = .9,quality,new_url;
+          let quality_l = .1, quality_r = .9, quality, new_url;
           while(quality_r - quality_l >= .03) {
             quality = (quality_r + quality_l) / 2;
-            new_url = canvas.toDataURL('image/jpeg',quality);
-            console.log(quality_l,quality_r,'trying quality',quality,'size',new_url.length);
+            new_url = canvas.toDataURL('image/jpeg', quality);
+            console.log(quality_l, quality_r, 'trying quality', quality, 'size', new_url.length);
             if(new_url.length <= MAX_IMG_FILESIZE)
               quality_l = quality;
             else
               quality_r = quality;
           }
           if(quality_l >= .101) {
-            console.log('chosen img quality',quality);
+            console.log('chosen img quality', quality);
             resolve({
               img: return_url(new_url),
               quality: quality,
@@ -601,7 +601,7 @@ export class PostForm extends Component {
         image.src = url;
       }
       reader.onload = (event) => {
-        fixOrientation(event.target.result,{},(fixed_dataurl) => {
+        fixOrientation(event.target.result, {}, (fixed_dataurl) => {
           on_got_img(fixed_dataurl);
         });
       };
@@ -613,7 +613,7 @@ export class PostForm extends Component {
     if(this.img_ref.current && this.img_ref.current.files.length)
       this.setState({
         img_tip: '（正在处理图片……）'
-      },() => {
+      }, () => {
         this.proc_img(this.img_ref.current.files[0])
           .then((d) => {
             this.setState({
@@ -646,7 +646,7 @@ export class PostForm extends Component {
           this.setState({
             loading_status: 'loading',
           });
-          this.do_post(this.state.text,d.img);
+          this.do_post(this.state.text, d.img);
         })
         .catch((e) => {
           alert(e);
@@ -655,7 +655,7 @@ export class PostForm extends Component {
       this.setState({
         loading_status: 'loading',
       });
-      this.do_post(this.state.text,null);
+      this.do_post(this.state.text, null);
     }
   }
 

@@ -15,14 +15,14 @@ const AUDIO_BASE = PKUHELPER_ROOT + 'services/pkuhole/audios/';
 
 const CLICKABLE_TAGS = {a: true, audio: true};
 const PREVIEW_REPLY_COUNT = 10;
-const QUOTE_BLACKLIST = ['23333','233333','66666','666666','10086','10000','100000','99999','999999','55555','555555'];
+const QUOTE_BLACKLIST = ['23333', '233333', '66666', '666666', '10086', '10000', '100000', '99999', '999999', '55555', '555555'];
 
-window.LATEST_POST_ID = parseInt(localStorage['_LATEST_POST_ID'],10) || 0;
+window.LATEST_POST_ID = parseInt(localStorage['_LATEST_POST_ID'], 10) || 0;
 
 const DZ_NAME = '洞主';
 
-function load_single_meta(show_sidebar,token) {
-  return (pid,replace = false) => {
+function load_single_meta(show_sidebar, token) {
+  return (pid, replace = false) => {
     let color_picker = new ColorPicker();
     let title_elem = '树洞 #' + pid;
     show_sidebar(
@@ -32,17 +32,17 @@ function load_single_meta(show_sidebar,token) {
       </div>,
       replace ? 'replace' : 'push'
     );
-    API.get_single(pid,token)
+    API.get_single(pid, token)
       .then((single) => {
         single.data.variant = {};
-        return new Promise((resolve,reject) => {
-          API.load_replies_with_cache(pid,token,color_picker,parseInt(single.data.reply))
-            .then(({data: replies}) => {resolve([single,replies]);})
+        return new Promise((resolve, reject) => {
+          API.load_replies_with_cache(pid, token, color_picker, parseInt(single.data.reply))
+            .then(({data: replies}) => {resolve([single, replies]);})
             .catch(reject);
         });
       })
       .then((res) => {
-        let [single,replies] = res;
+        let [single, replies] = res;
         show_sidebar(
           title_elem,
           <FlowSidebar key={+new Date()}
@@ -58,7 +58,7 @@ function load_single_meta(show_sidebar,token) {
         show_sidebar(
           title_elem,
           <div className="box box-tip">
-            <p><a onClick={() => load_single_meta(show_sidebar,token)(pid,true)}>重新加载</a></p>
+            <p><a onClick={() => load_single_meta(show_sidebar, token)(pid, true)}>重新加载</a></p>
             <p>{'' + e}</p>
           </div>,
           'replace'
@@ -73,11 +73,11 @@ class Reply extends PureComponent {
   }
 
   render() {
-    let parts = split_text(this.props.info.text,[
-      ['url_pid',URL_PID_RE],
-      ['url',URL_RE],
-      ['pid',PID_RE],
-      ['nickname',NICKNAME_RE],
+    let parts = split_text(this.props.info.text, [
+      ['url_pid', URL_PID_RE],
+      ['url', URL_RE],
+      ['pid', PID_RE],
+      ['nickname', NICKNAME_RE],
     ]);
 
     return (
@@ -128,11 +128,11 @@ class FlowItem extends PureComponent {
 
   render() {
     let props = this.props;
-    let parts = props.parts || split_text(props.info.text,[
-      ['url_pid',URL_PID_RE],
-      ['url',URL_RE],
-      ['pid',PID_RE],
-      ['nickname',NICKNAME_RE],
+    let parts = props.parts || split_text(props.info.text, [
+      ['url_pid', URL_PID_RE],
+      ['url', URL_RE],
+      ['pid', PID_RE],
+      ['nickname', NICKNAME_RE],
     ]);
     return (
       <div className={'flow-item' + (props.is_quote ? ' flow-item-quote' : '')}>
@@ -143,7 +143,7 @@ class FlowItem extends PureComponent {
           </div>
         }
         <div className="box">
-          {!!window.LATEST_POST_ID && parseInt(props.info.pid,10) > window.LATEST_POST_ID &&
+          {!!window.LATEST_POST_ID && parseInt(props.info.pid, 10) > window.LATEST_POST_ID &&
             <div className="flow-item-dot" />
           }
           {this.props.attention && !this.props.cached && <div className="flow-item-dot" />}
@@ -153,13 +153,13 @@ class FlowItem extends PureComponent {
                 <span className="icon icon-locate" />
               </span>
             }
-            {!!parseInt(props.info.likenum,10) &&
+            {!!parseInt(props.info.likenum, 10) &&
               <span className="box-header-badge">
                 {props.info.likenum}&nbsp;
                 <span className={'icon icon-' + (props.attention ? 'star-ok' : 'star')} />
               </span>
             }
-            {!!parseInt(props.info.reply,10) &&
+            {!!parseInt(props.info.reply, 10) &&
               <span className="box-header-badge">
                 {props.info.reply}&nbsp;
                 <span className="icon icon-reply" />
@@ -212,22 +212,22 @@ class FlowSidebar extends PureComponent {
     this.reply_ref = React.createRef();
   }
 
-  set_variant(cid,variant) {
+  set_variant(cid, variant) {
     this.setState((prev) => {
       if(cid)
         return {
           replies: prev.replies.map((reply) => {
             if(reply.cid === cid)
-              return Object.assign({},reply,{variant: Object.assign({},reply.variant,variant)});
+              return Object.assign({}, reply, {variant: Object.assign({}, reply.variant, variant)});
             else
               return reply;
           }),
         };
       else
         return {
-          info: Object.assign({},prev.info,{variant: Object.assign({},prev.info.variant,variant)}),
+          info: Object.assign({}, prev.info, {variant: Object.assign({}, prev.info.variant, variant)}),
         };
-    },function() {
+    }, function() {
       this.syncState({
         info: this.state.info,
         replies: this.state.replies,
@@ -240,9 +240,9 @@ class FlowSidebar extends PureComponent {
       loading_status: 'loading',
       error_msg: null,
     });
-    API.load_replies(this.state.info.pid,this.props.token,this.color_picker,null)
+    API.load_replies(this.state.info.pid, this.props.token, this.color_picker, null)
       .then((json) => {
-        this.setState((prev,props) => ({
+        this.setState((prev, props) => ({
           replies: json.data,
           info: update_count ? Object.assign({}, prev.info, {
             reply: '' + json.data.length,
@@ -257,7 +257,7 @@ class FlowSidebar extends PureComponent {
             info: this.state.info,
           });
           if(this.state.replies.length)
-            this.set_variant(null,{latest_reply: Math.max.apply(null,this.state.replies.map((r) => parseInt(r.timestamp)))});
+            this.set_variant(null, {latest_reply: Math.max.apply(null, this.state.replies.map((r) => parseInt(r.timestamp)))});
         });
       })
       .catch((e) => {
@@ -275,7 +275,7 @@ class FlowSidebar extends PureComponent {
       loading_status: 'loading',
     });
     const next_attention = !this.state.attention;
-    API.set_attention(this.state.info.pid,next_attention,this.props.token)
+    API.set_attention(this.state.info.pid, next_attention, this.props.token)
       .then((json) => {
         this.setState({
           loading_status: 'done',
@@ -297,7 +297,7 @@ class FlowSidebar extends PureComponent {
   report() {
     let reason = prompt(`举报 #${this.state.info.pid} 的理由：`);
     if(reason !== null) {
-      API.report(this.state.info.pid,reason,this.props.token)
+      API.report(this.state.info.pid, reason, this.props.token)
         .then((json) => {
           alert('举报成功');
         })
@@ -320,7 +320,7 @@ class FlowSidebar extends PureComponent {
     }));
   }
 
-  show_reply_bar(name,event) {
+  show_reply_bar(name, event) {
     if(this.reply_ref.current && !event.target.closest('a, .clickable')) {
       let text = this.reply_ref.current.get();
       if(/^\s*(?:Re (?:|洞主|(?:[A-Z][a-z]+ )?(?:[A-Z][a-z]+)|You Win(?: \d+)?):)?\s*$/.test(text)) {// text is nearly empty so we can replace it
@@ -337,7 +337,7 @@ class FlowSidebar extends PureComponent {
     if(this.state.loading_status === 'loading')
       return (<p className="box box-tip">加载中……</p>);
 
-    let show_pid = load_single_meta(this.props.show_sidebar,this.props.token);
+    let show_pid = load_single_meta(this.props.show_sidebar, this.props.token);
 
     let replies_to_show = this.state.filter_name ? this.state.replies.filter((r) => r.name === this.state.filter_name) : this.state.replies.slice();
     if(this.state.rev) replies_to_show.reverse();
@@ -354,10 +354,10 @@ class FlowSidebar extends PureComponent {
 
     // hide main thread when filtered
     let main_thread_elem = (this.state.filter_name && this.state.filter_name !== DZ_NAME) ? null : (
-      <ClickHandler callback={(e) => {this.show_reply_bar('',e);}}>
+      <ClickHandler callback={(e) => {this.show_reply_bar('', e);}}>
         <FlowItem info={this.state.info} attention={this.state.attention} img_clickable={true}
           color_picker={this.color_picker} show_pid={show_pid} replies={this.state.replies}
-          set_variant={(variant) => {this.set_variant(null,variant);}}
+          set_variant={(variant) => {this.set_variant(null, variant);}}
           do_filter_name={replies_cnt[DZ_NAME] > 1 ? this.set_filter_name.bind(this) : null}
         />
       </ClickHandler>
@@ -424,10 +424,10 @@ class FlowSidebar extends PureComponent {
         }
         {replies_to_show.map((reply) => (
           <LazyLoad key={reply.cid + view_mode_key} offset={1500} height="5em" overflow={true} once={true}>
-            <ClickHandler callback={(e) => {this.show_reply_bar(reply.name,e);}}>
+            <ClickHandler callback={(e) => {this.show_reply_bar(reply.name, e);}}>
               <Reply
                 info={reply} color_picker={this.color_picker} show_pid={show_pid}
-                set_variant={(variant) => {this.set_variant(reply.cid,variant);}}
+                set_variant={(variant) => {this.set_variant(reply.cid, variant);}}
                 do_filter_name={replies_cnt[reply.name] > 1 ? this.set_filter_name.bind(this) : null}
               />
             </ClickHandler>
@@ -453,7 +453,7 @@ class FlowItemRow extends PureComponent {
       replies: [],
       reply_status: 'done',
       reply_error: null,
-      info: Object.assign({},props.info,{variant: {}}),
+      info: Object.assign({}, props.info, {variant: {}}),
       hidden: window.config.block_words.some(word => props.info.text.includes(word)),
       attention: props.attention_override === null ? false : props.attention_override,
       cached: true, // default no display anything
@@ -462,8 +462,8 @@ class FlowItemRow extends PureComponent {
   }
 
   componentDidMount() {
-    if(parseInt(this.state.info.reply,10)) {
-      this.load_replies(null,/*update_count=*/false);
+    if(parseInt(this.state.info.reply, 10)) {
+      this.load_replies(null, /*update_count=*/false);
     }
   }
 
@@ -471,27 +471,27 @@ class FlowItemRow extends PureComponent {
     this.setState({ hidden: false });
   }
 
-  load_replies(callback,update_count = true) {
-    console.log('fetching reply',this.state.info.pid);
+  load_replies(callback, update_count = true) {
+    console.log('fetching reply', this.state.info.pid);
     this.setState({
       reply_status: 'loading',
       reply_error: null,
     });
-    API.load_replies_with_cache(this.state.info.pid,this.props.token,this.color_picker,parseInt(this.state.info.reply))
+    API.load_replies_with_cache(this.state.info.pid, this.props.token, this.color_picker, parseInt(this.state.info.reply))
       .then(({data: json, cached}) => {
-        this.setState((prev,props) => ({
+        this.setState((prev, props) => ({
           replies: json.data,
           info: Object.assign({}, prev.info, {
             reply: update_count ? '' + json.data.length : prev.info.reply,
             variant: json.data.length ? {
-              latest_reply: Math.max.apply(null,json.data.map((r) => parseInt(r.timestamp))),
+              latest_reply: Math.max.apply(null, json.data.map((r) => parseInt(r.timestamp))),
             } : {},
           }),
           attention: !!json.attention,
           reply_status: 'done',
           reply_error: null,
           cached
-        }),callback);
+        }), callback);
       })
       .catch((e) => {
         console.error(e);
@@ -499,7 +499,7 @@ class FlowItemRow extends PureComponent {
           replies: [],
           reply_status: 'failed',
           reply_error: '' + e,
-        },callback);
+        }, callback);
       });
   }
 
@@ -515,21 +515,21 @@ class FlowItemRow extends PureComponent {
   }
 
   render() {
-    let show_pid = load_single_meta(this.props.show_sidebar,this.props.token,[this.state.info.pid]);
+    let show_pid = load_single_meta(this.props.show_sidebar, this.props.token, [this.state.info.pid]);
 
     let hl_rules = [
-      ['url_pid',URL_PID_RE],
-      ['url',URL_RE],
-      ['pid',PID_RE],
-      ['nickname',NICKNAME_RE],
+      ['url_pid', URL_PID_RE],
+      ['url', URL_RE],
+      ['pid', PID_RE],
+      ['nickname', NICKNAME_RE],
     ];
     if(this.props.search_param)
-      hl_rules.push(['search',build_highlight_re(this.props.search_param,' ','gi')]);
-    let parts = split_text(this.state.info.text,hl_rules);
+      hl_rules.push(['search', build_highlight_re(this.props.search_param, ' ', 'gi')]);
+    let parts = split_text(this.state.info.text, hl_rules);
 
     let quote_id = null;
     if(!this.props.is_quote)
-      for(let [mode,content] of parts)
+      for(let [mode, content] of parts)
         if(mode === 'pid' && QUOTE_BLACKLIST.indexOf(content) === -1 && parseInt(content) < parseInt(this.state.info.pid))
           if(quote_id === null)
             quote_id = parseInt(content);
@@ -553,7 +553,7 @@ class FlowItemRow extends PureComponent {
               <p>{this.state.reply_error}</p>
             </div>
           }
-          {this.state.replies.slice(0,PREVIEW_REPLY_COUNT).map((reply) => (
+          {this.state.replies.slice(0, PREVIEW_REPLY_COUNT).map((reply) => (
             <Reply key={reply.cid} info={reply} color_picker={this.color_picker} show_pid={show_pid} />
           ))}
           {this.state.replies.length > PREVIEW_REPLY_COUNT &&
@@ -623,8 +623,8 @@ class FlowItemQuote extends PureComponent {
   load() {
     this.setState({
       loading_status: 'loading',
-    },() => {
-      API.get_single(this.props.pid,this.props.token)
+    }, () => {
+      API.get_single(this.props.pid, this.props.token)
         .then((json) => {
           this.setState({
             loading_status: 'done',
@@ -679,7 +679,7 @@ function FlowChunk(props) {
     <TokenCtx.Consumer>{({value: token}) => (
       <div className="flow-chunk">
         {!!props.title && <TitleLine text={props.title} />}
-        {props.list.map((info,ind) => (
+        {props.list.map((info, ind) => (
           <LazyLoad key={info.pid} offset={1500} height="15em" hiddenIfInvisible={true}>
             <div>
               {!!(props.deletion_detect && props.mode === 'list' && ind && props.list[ind - 1].pid - info.pid > 1) &&
@@ -715,13 +715,13 @@ export class Flow extends PureComponent {
       error_msg: null,
     };
     this.on_scroll_bound = this.on_scroll.bind(this);
-    window.LATEST_POST_ID = parseInt(localStorage['_LATEST_POST_ID'],10) || 0;
+    window.LATEST_POST_ID = parseInt(localStorage['_LATEST_POST_ID'], 10) || 0;
   }
 
   load_page(page) {
     const failed = (err) => {
       console.error(err);
-      this.setState((prev,props) => ({
+      this.setState((prev, props) => ({
         loaded_pages: prev.loaded_pages - 1,
         loading_status: 'failed',
         error_msg: '' + err,
@@ -731,19 +731,19 @@ export class Flow extends PureComponent {
     if(page > this.state.loaded_pages + 1)
       throw new Error('bad page');
     if(page === this.state.loaded_pages + 1) {
-      console.log('fetching page',page);
+      console.log('fetching page', page);
       if(this.state.mode === 'list') {
-        API.get_list(page,this.props.token)
+        API.get_list(page, this.props.token)
           .then((json) => {
             if(page === 1 && json.data.length) { // update latest_post_id
               let max_id = -1;
               json.data.forEach((x) => {
-                if(parseInt(x.pid,10) > max_id)
-                  max_id = parseInt(x.pid,10);
+                if(parseInt(x.pid, 10) > max_id)
+                  max_id = parseInt(x.pid, 10);
               });
               localStorage['_LATEST_POST_ID'] = '' + max_id;
             }
-            this.setState((prev,props) => ({
+            this.setState((prev, props) => ({
               chunks: {
                 title: 'News Feed',
                 data: prev.chunks.data.concat(json.data.filter((x) => (
@@ -756,10 +756,10 @@ export class Flow extends PureComponent {
           })
           .catch(failed);
       } else if(this.state.mode === 'search') {
-        API.get_search(page,this.state.search_param,this.props.token)
+        API.get_search(page, this.state.search_param, this.props.token)
           .then((json) => {
             const finished = json.data.length === 0;
-            this.setState((prev,props) => ({
+            this.setState((prev, props) => ({
               chunks: {
                 title: 'Result for "' + this.state.search_param + '"',
                 data: prev.chunks.data.concat(json.data.filter((x) => (
@@ -773,8 +773,8 @@ export class Flow extends PureComponent {
           })
           .catch(failed);
       } else if(this.state.mode === 'single') {
-        const pid = parseInt(this.state.search_param.substr(1),10);
-        API.get_single(pid,this.props.token)
+        const pid = parseInt(this.state.search_param.substr(1), 10);
+        API.get_single(pid, this.props.token)
           .then((json) => {
             this.setState({
               chunks: {
@@ -804,7 +804,7 @@ export class Flow extends PureComponent {
         return;
       }
 
-      this.setState((prev,props) => ({
+      this.setState((prev, props) => ({
         loaded_pages: prev.loaded_pages + 1,
         loading_status: 'loading',
         error_msg: null,
@@ -822,12 +822,12 @@ export class Flow extends PureComponent {
 
   componentDidMount() {
     this.load_page(1);
-    window.addEventListener('scroll',this.on_scroll_bound);
-    window.addEventListener('resize',this.on_scroll_bound);
+    window.addEventListener('scroll', this.on_scroll_bound);
+    window.addEventListener('resize', this.on_scroll_bound);
   }
   componentWillUnmount() {
-    window.removeEventListener('scroll',this.on_scroll_bound);
-    window.removeEventListener('resize',this.on_scroll_bound);
+    window.removeEventListener('scroll', this.on_scroll_bound);
+    window.removeEventListener('resize', this.on_scroll_bound);
   }
 
   render() {
