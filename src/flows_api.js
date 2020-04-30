@@ -63,22 +63,14 @@ export const API = {
               return info;
             });
 
-          return new Promise(resolve => resolve({
-            data: json,
-            cached: true
-          }));
+          return new Promise(resolve =>
+            resolve({ data: json, cached: true }));
         }
         else
           return new Promise(resolve => {
             API.load_replies(pid, token, color_picker, cache_version)
-            .then(json => {
-              console.log(json);
-              resolve({
-              data: json,
-              cached: !json
-            })
-          }
-          )});
+              .then(json => resolve({ data: json, cached: !json }));
+          });
       });
   },
 

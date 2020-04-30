@@ -108,7 +108,7 @@ class App extends Component {
                         <span className="icon icon-login" />
                                                 &nbsp;登录到 PKU Helper
                       </a>
-                                  )}</LoginPopup>
+                    )}</LoginPopup>
                   </p>
                 </div>
               </div>

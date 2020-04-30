@@ -103,14 +103,14 @@ class ControlBar extends PureComponent {
           </a>
           {!!token &&
             <a className="no-underline control-btn" onClick={() => {
-                          this.props.show_sidebar(
-                            '发表树洞',
-                            <PostForm token={token} on_complete={() => {
-                              this.props.show_sidebar(null, null);
-                              this.do_refresh();
-                            }} />
-                          );
-                        }}>
+              this.props.show_sidebar(
+                '发表树洞',
+                <PostForm token={token} on_complete={() => {
+                  this.props.show_sidebar(null, null);
+                  this.do_refresh();
+                }} />
+              );
+            }}>
               <span className="icon icon-plus" />
               <span className="control-btn-label">发表</span>
             </a>

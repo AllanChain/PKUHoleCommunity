@@ -181,7 +181,7 @@ class FlowItem extends PureComponent {
                 {props.img_clickable ?
                   <a className="no-underline" href={IMAGE_BASE + props.info.url} target="_blank"><img src={IMAGE_BASE + props.info.url} /></a> :
                   <img src={IMAGE_BASE + props.info.url} />
-                              }
+                }
               </p>
             }
             {props.info.type === 'audio' && <AudioWidget src={AUDIO_BASE + props.info.url} />}
@@ -389,12 +389,12 @@ class FlowSidebar extends PureComponent {
             <span>
                             &nbsp;&nbsp;
               <a onClick={() => {
-                            this.toggle_attention();
-                          }}>
+                this.toggle_attention();
+              }}>
                 {this.state.attention ?
                   <span><span className="icon icon-star-ok" /><label>已关注</label></span> :
                   <span><span className="icon icon-star" /><label>未关注</label></span>
-                            }
+                }
               </a>
             </span>
           }

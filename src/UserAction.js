@@ -158,38 +158,39 @@ class LifeInfoBox extends Component {
       <LoginPopup token_callback={(t) => {
         this.props.set_token(t);
         this.reload_all();
-      }}>{(do_login) => (
-        <div className="box">
-          <table className="life-info-table">
-            <tbody>
-              {this.render_line(
-                  'today_info',
-                  '今日', (s) => s.info,
-                  '校历', (s) => s.schedule_url,
-                  do_login,
-                )}
-              {this.render_line(
-                  'card_balance',
-                  '校园卡', (s) => `余额￥${s.balance.toFixed(2)}`,
-                  '充值', () => 'https://virtualprod.alipay.com/educate/educatePcRecharge.htm?schoolCode=PKU&schoolName=',
-                  do_login,
-                )}
-              {this.render_line(
-                  'net_balance',
-                  '网费', (s) => `余额￥${s.balance.toFixed(2)}`,
-                  '充值', () => 'https://its.pku.edu.cn/epay.jsp',
-                  do_login,
-                )}
-              {this.render_line(
-                  'mail_count',
-                  '邮件', (s) => `未读 ${s.count} 封`,
-                  '查看', () => 'https://mail.pku.edu.cn/',
-                  do_login,
-                )}
-            </tbody>
-          </table>
-        </div>
-        )}</LoginPopup>
+      }}>{
+          (do_login) => (
+            <div className="box">
+              <table className="life-info-table">
+                <tbody>
+                  {this.render_line(
+                    'today_info',
+                    '今日', (s) => s.info,
+                    '校历', (s) => s.schedule_url,
+                    do_login,
+                  )}
+                  {this.render_line(
+                    'card_balance',
+                    '校园卡', (s) => `余额￥${s.balance.toFixed(2)}`,
+                    '充值', () => 'https://virtualprod.alipay.com/educate/educatePcRecharge.htm?schoolCode=PKU&schoolName=',
+                    do_login,
+                  )}
+                  {this.render_line(
+                    'net_balance',
+                    '网费', (s) => `余额￥${s.balance.toFixed(2)}`,
+                    '充值', () => 'https://its.pku.edu.cn/epay.jsp',
+                    do_login,
+                  )}
+                  {this.render_line(
+                    'mail_count',
+                    '邮件', (s) => `未读 ${s.count} 封`,
+                    '查看', () => 'https://mail.pku.edu.cn/',
+                    do_login,
+                  )}
+                </tbody>
+              </table>
+            </div>
+          )}</LoginPopup>
     );
   }
 }
