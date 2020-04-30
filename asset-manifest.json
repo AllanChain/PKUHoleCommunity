@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/PKUHoleCommunity/static/css/main.d38a9530.chunk.css",
-    "main.js": "/PKUHoleCommunity/static/js/main.9ca68ba2.chunk.js",
-    "main.js.map": "/PKUHoleCommunity/static/js/main.9ca68ba2.chunk.js.map",
+    "main.js": "/PKUHoleCommunity/static/js/main.c4dee8b7.chunk.js",
+    "main.js.map": "/PKUHoleCommunity/static/js/main.c4dee8b7.chunk.js.map",
     "runtime~main.js": "/PKUHoleCommunity/static/js/runtime~main.6299b00b.js",
     "runtime~main.js.map": "/PKUHoleCommunity/static/js/runtime~main.6299b00b.js.map",
     "static/js/2.00494b3c.chunk.js": "/PKUHoleCommunity/static/js/2.00494b3c.chunk.js",
     "static/js/2.00494b3c.chunk.js.map": "/PKUHoleCommunity/static/js/2.00494b3c.chunk.js.map",
     "index.html": "/PKUHoleCommunity/index.html",
-    "precache-manifest.e562d26860d4f99a54f10d2c05202d9c.js": "/PKUHoleCommunity/precache-manifest.e562d26860d4f99a54f10d2c05202d9c.js",
+    "precache-manifest.78465915df0a756af25afe47217eb232.js": "/PKUHoleCommunity/precache-manifest.78465915df0a756af25afe47217eb232.js",
     "service-worker.js": "/PKUHoleCommunity/service-worker.js",
     "static/css/main.d38a9530.chunk.css.map": "/PKUHoleCommunity/static/css/main.d38a9530.chunk.css.map"
   }
