@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/PKUHoleCommunity/static/css/main.a76e7000.chunk.css",
-    "main.js": "/PKUHoleCommunity/static/js/main.b28c8426.chunk.js",
-    "main.js.map": "/PKUHoleCommunity/static/js/main.b28c8426.chunk.js.map",
+    "main.css": "/PKUHoleCommunity/static/css/main.2ed480ff.chunk.css",
+    "main.js": "/PKUHoleCommunity/static/js/main.e75c7962.chunk.js",
+    "main.js.map": "/PKUHoleCommunity/static/js/main.e75c7962.chunk.js.map",
     "runtime~main.js": "/PKUHoleCommunity/static/js/runtime~main.6299b00b.js",
     "runtime~main.js.map": "/PKUHoleCommunity/static/js/runtime~main.6299b00b.js.map",
     "static/js/2.7d9102a1.chunk.js": "/PKUHoleCommunity/static/js/2.7d9102a1.chunk.js",
     "static/js/2.7d9102a1.chunk.js.map": "/PKUHoleCommunity/static/js/2.7d9102a1.chunk.js.map",
     "index.html": "/PKUHoleCommunity/index.html",
-    "precache-manifest.7851fb6d1b74ebcd9fa1369595c9353d.js": "/PKUHoleCommunity/precache-manifest.7851fb6d1b74ebcd9fa1369595c9353d.js",
+    "precache-manifest.e060262844da1c5462b1524edc1bae2e.js": "/PKUHoleCommunity/precache-manifest.e060262844da1c5462b1524edc1bae2e.js",
     "service-worker.js": "/PKUHoleCommunity/service-worker.js",
-    "static/css/main.a76e7000.chunk.css.map": "/PKUHoleCommunity/static/css/main.a76e7000.chunk.css.map"
+    "static/css/main.2ed480ff.chunk.css.map": "/PKUHoleCommunity/static/css/main.2ed480ff.chunk.css.map"
   }
 }
