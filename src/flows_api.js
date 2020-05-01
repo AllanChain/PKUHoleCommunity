@@ -41,11 +41,8 @@ export const API = {
       '&pid=' + pid + token_param(token)
     );
     let json = await handle_response(response);
-
-    cache().delete(pid).then(() => {
-      cache().put(pid, cache_version, json);
-    });
-
+    // Why delete then put ??
+    cache().put(pid, cache_version, json);
     json.data = parse_replies(json.data, color_picker);
     return json;
   },
@@ -75,7 +72,7 @@ export const API = {
         },
         body: data,
       });
-    cache().delete(pid); // Magic operation...
+    // cache().delete(pid); // Magic operation...
     return handle_response(response, true);
   },
 

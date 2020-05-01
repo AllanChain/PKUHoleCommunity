@@ -108,6 +108,7 @@ class Cache {
         data_str: this.encrypt(pid, data),
         last_access: +new Date(),
       });
+      console.log('comment cache put', pid);
       if(++this.added_items_since_maintenance === MAINTENANCE_STEP)
         setTimeout(this.maintenance.bind(this), 1);
     });
@@ -121,7 +122,7 @@ class Cache {
       const tx = this.db.transaction(['comment'], 'readwrite');
       const store = tx.objectStore('comment');
       let req = store.delete(pid);
-      //console.log('comment cache delete',pid);
+      console.log('comment cache delete', pid);
       req.onerror = () => {
         console.warn('comment cache delete failed ', pid);
         return resolve();
