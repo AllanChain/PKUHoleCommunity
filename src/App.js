@@ -106,7 +106,7 @@ class App extends Component {
                     <LoginPopup token_callback={token.set_value}>{(do_popup) => (
                       <a onClick={do_popup}>
                         <span className="icon icon-login" />
-                                                &nbsp;登录到 PKU Helper
+                        &nbsp;登录到 PKU Helper
                       </a>
                     )}</LoginPopup>
                   </p>

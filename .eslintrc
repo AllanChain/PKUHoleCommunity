@@ -28,6 +28,7 @@
     "react/jsx-no-target-blank": "off",
     "space-infix-ops": "error",
     "no-trailing-spaces": "error",
+    "no-multi-spaces": "error",
     "semi": "error",
     "indent": ["warn", 2],
     "comma-spacing": ["error", { "before": false, "after": true }],

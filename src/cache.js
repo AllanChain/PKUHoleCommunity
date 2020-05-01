@@ -72,7 +72,7 @@ class Cache {
       const get_req = store.get(pid);
       get_req.onsuccess = () => {
         let res = get_req.result;
-        if(!res || !res.data_str)  {
+        if(!res || !res.data_str) {
           //console.log('comment cache miss '+pid);
           resolve(null);
         } else if(target_version === res.version) { // hit

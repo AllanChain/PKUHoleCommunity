@@ -7,7 +7,7 @@ const THRESHOLD = .4;
 const MULTIPLIER = 25;
 const BORDER_WIDTH = 500; // also change css!
 
-export class PressureHelper extends  Component {
+export class PressureHelper extends Component {
   constructor(props) {
     super(props);
     this.state = {
