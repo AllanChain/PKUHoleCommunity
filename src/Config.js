@@ -168,11 +168,12 @@ class ConfigBlockWords extends PureComponent {
 
   save_changes() {
     this.props.callback({
-      block_words: this.state.block_words,
+      block_words: this.state.block_words.filter(v => v),
     });
   }
 
   on_change(e) {
+    // Filter out those blank lines
     let value = e.target.value.split('\n');
     this.setState({
       block_words: value,
@@ -187,9 +188,8 @@ class ConfigBlockWords extends PureComponent {
           <textarea
             className='block-words'
             value={this.state.block_words.join('\n')}
-            onChange={this.on_change.bind(this)}>
-
-          </textarea>
+            onChange={this.on_change.bind(this)}
+          />
         </p>
 
       </div>
