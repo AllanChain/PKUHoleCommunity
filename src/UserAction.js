@@ -218,7 +218,7 @@ export function InfoSidebar(props) {
       </div>
       <div className="box help-desc-box">
         <p>
-          PKUHelper 网页版树洞 by @xmcp，
+          PKUHelper 网页版树洞社区版 by @xmcp, and awesome community.
           基于&nbsp;
           <a href="https://www.gnu.org/licenses/gpl-3.0.zh-cn.html" target="_blank">GPLv3</a>
                     &nbsp;协议在 <a href="https://github.com/AllanChain/PKUHoleCommunity" target="_blank">GitHub</a> 开源
@@ -229,6 +229,23 @@ export function InfoSidebar(props) {
           、
           <a href="https://icomoon.io/#icons" target="_blank" rel="noopener">IcoMoon</a>
                     &nbsp;等开源项目
+        </p>
+        <p>
+          PKU Helper 的“同意”
+        </p>
+        <blockquote>
+          <p>
+            根据 GPL，你有权 fork【网页版树洞前端】的代码并进行相应的修改。
+            请注意，你的修改版本必须依然基于 GPL 授权，并依据此公开源码。
+          </p>
+          <p>
+            根据树洞规范 5.3 规定，非官方客户端在 PKU Helper 团队认定造成不利影响，
+            例如非法攻击服务器、盗取用户个人信息时，我们有权对其进行封禁。
+          </p>
+        </blockquote>
+        <p>
+          用户需对不恰当使用此版本或利用此版本的漏洞对 PKU Helper 造成的不利影响承担风险。
+          作为社区版本，社区（no warranty）维护版本的安全，同时也欢迎同学实现你的想法。
         </p>
         <p>
           <a onClick={() => {
@@ -247,19 +264,6 @@ export function InfoSidebar(props) {
             }, 200);
           }}>强制检查更新</a>
           （Community v{process.env.REACT_APP_VERSION || '---'} {process.env.NODE_ENV} 会自动在后台检查更新并在下次访问时更新）
-        </p>
-        <p>
-          This program is free software: you can redistribute it and/or modify
-          it under the terms of the GNU General Public License as published by
-          the Free Software Foundation, either version 3 of the License, or
-          (at your option) any later version.
-        </p>
-        <p>
-          This program is distributed in the hope that it will be useful,
-          but WITHOUT ANY WARRANTY; without even the implied warranty of
-          MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&nbsp;
-          <a href="https://www.gnu.org/licenses/gpl-3.0.zh-cn.html" target="_blank">GNU General Public License</a>
-                    &nbsp;for more details.
         </p>
       </div>
     </div>
