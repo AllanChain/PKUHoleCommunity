@@ -22,7 +22,7 @@ window.LATEST_POST_ID = parseInt(localStorage['_LATEST_POST_ID'], 10) || 0;
 const DZ_NAME = '洞主';
 
 function load_single_meta(show_sidebar, token) {
-  return (pid, replace = false) => {
+  return async (pid, replace = false) => {
     let color_picker = new ColorPicker();
     let title_elem = '树洞 #' + pid;
     show_sidebar(
@@ -32,38 +32,32 @@ function load_single_meta(show_sidebar, token) {
       </div>,
       replace ? 'replace' : 'push'
     );
-    API.get_single(pid, token)
-      .then((single) => {
-        single.data.variant = {};
-        return new Promise((resolve, reject) => {
-          API.load_replies_with_cache(pid, token, color_picker, parseInt(single.data.reply))
-            .then(({data: replies}) => {resolve([single, replies]);})
-            .catch(reject);
-        });
-      })
-      .then((res) => {
-        let [single, replies] = res;
-        show_sidebar(
-          title_elem,
-          <FlowSidebar key={+new Date()}
-            info={single.data} replies={replies.data} attention={replies.attention}
-            token={token} show_sidebar={show_sidebar} color_picker={color_picker}
-            deletion_detect={localStorage['DELETION_DETECT'] === 'on'}
-          />,
-          'replace'
-        );
-      })
-      .catch((e) => {
-        console.error(e);
-        show_sidebar(
-          title_elem,
-          <div className="box box-tip">
-            <p><a onClick={() => load_single_meta(show_sidebar, token)(pid, true)}>重新加载</a></p>
-            <p>{'' + e}</p>
-          </div>,
-          'replace'
-        );
-      });
+    try {
+      let single = await API.get_single(pid, token);
+      single.data.variant = {};
+      let {data: replies} = await API.load_replies_with_cache(
+        pid, token, color_picker, parseInt(single.data.reply)
+      );
+      show_sidebar(
+        title_elem,
+        <FlowSidebar key={+new Date()}
+          info={single.data} replies={replies.data} attention={replies.attention}
+          token={token} show_sidebar={show_sidebar} color_picker={color_picker}
+          deletion_detect={localStorage['DELETION_DETECT'] === 'on'}
+        />,
+        'replace'
+      );
+    } catch(e) {
+      console.error(e);
+      show_sidebar(
+        title_elem,
+        <div className="box box-tip">
+          <p><a onClick={() => load_single_meta(show_sidebar, token)(pid, true)}>重新加载</a></p>
+          <p>{'' + e}</p>
+        </div>,
+        'replace'
+      );
+    }
   };
 }
 
