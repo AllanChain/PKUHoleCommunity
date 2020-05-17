@@ -448,7 +448,7 @@ class FlowItemRow extends PureComponent {
       reply_status: 'done',
       reply_error: null,
       info: Object.assign({}, props.info, {variant: {}}),
-      hidden: window.config.block_words.some(word => props.info.text.includes(word)),
+      hidden: window.config.block_words.some(word => props.info.text.includes(word) && word != ''),
       attention: props.attention_override === null ? false : props.attention_override,
       cached: true, // default no display anything
     };
