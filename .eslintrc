@@ -4,10 +4,11 @@
     "es6": true,
     "node": true
   },
-  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "extends": ["plugin:react/recommended", "plugin:prettier/recommended", "prettier/react"],
   "globals": {
     "Atomics": "readonly",
-    "SharedArrayBuffer": "readonly"
+    "SharedArrayBuffer": "readonly",
+    "React": true
   },
   "parserOptions": {
     "ecmaFeatures": {
@@ -16,23 +17,17 @@
     "ecmaVersion": 2018,
     "sourceType": "module"
   },
-  "plugins": ["react"],
+  "plugins": ["prettier", "react"],
   "settings": {
     "react": {
       "version": "detect"
     }
   },
   "rules": {
+    "prettier/prettier": "warn",
     "react/jsx-indent": ["error", 2, { "indentLogicalExpressions": true }],
     "react/prop-types": "off",
     "react/jsx-no-target-blank": "off",
-    "space-infix-ops": "error",
-    "no-trailing-spaces": "error",
-    "no-multi-spaces": "error",
-    "semi": "error",
-    "indent": ["warn", 2],
-    "comma-spacing": ["error", { "before": false, "after": true }],
-    "arrow-spacing": ["error", { "before": true, "after": true }],
     "no-unused-vars": ["warn", { "args": "none" }]
   }
 }
