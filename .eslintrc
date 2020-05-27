@@ -4,7 +4,11 @@
     "es6": true,
     "node": true
   },
-  "extends": ["plugin:react/recommended", "plugin:prettier/recommended", "prettier/react"],
+  "extends": [
+    "plugin:react/recommended",
+    "plugin:prettier/recommended",
+    "prettier/react"
+  ],
   "globals": {
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly",
@@ -23,6 +27,7 @@
       "version": "detect"
     }
   },
+  "ignorePatterns": ["src/infrastructure/", "src/react-lazyload/"],
   "rules": {
     "prettier/prettier": "warn",
     "react/jsx-indent": ["error", 2, { "indentLogicalExpressions": true }],

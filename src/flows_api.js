@@ -37,11 +37,7 @@ export const API = {
   load_replies: async (pid, token, color_picker, cache_version) => {
     pid = parseInt(pid);
     let response = await fetch(
-      API_BASE +
-        '/api.php?action=getcomment' +
-        '&pid=' +
-        pid +
-        token_param(token),
+      API_BASE + '/api.php?action=getcomment&pid=' + pid + token_param(token),
     );
     let json = await handle_response(response);
     // Why delete then put ??
@@ -77,7 +73,8 @@ export const API = {
         body: data,
       },
     );
-    // cache().delete(pid); // Magic operation...
+    // Delete cache to update `attention` on next reload
+    cache().delete(pid);
     return handle_response(response, true);
   },
 
