@@ -24,9 +24,10 @@ export class Sidebar extends PureComponent {
           <div
             key={content.key}
             className={
-              i === this.props.stack.length - 1
+              'sidebar-content ' +
+              (i === this.props.stack.length - 1
                 ? 'sidebar-content-show'
-                : 'sidebar-content-hide'
+                : 'sidebar-content-hide')
             }
           >
             {content}
