@@ -11,13 +11,6 @@ jobs:
     name: Build and Release
     runs-on: ubuntu-latest
     steps:
-    - name: debug
-      env:
-        CONTAIN: ${{ contains(github.ref, '-') }}
-      run: |
-        echo "::debug::pwd $(pwd)"
-        echo "::debug::contains $CONTAIN"
-        echo "::debug::workspace $GITHUB_WORKSPACE"
     - uses: actions/checkout@v2
       with:
         submodules: true
