@@ -51,7 +51,9 @@ jobs:
         ref: 'gh-pages'
     - name: Merge Stable and Beta Version
       if: ${{ contains(github.ref, '-') }}
-      run: cp -r build/* dist
+      run: |
+        mv build/index.html build/beta.html
+        cp -r build/* dist
     - name: Copy as Beta
       if: ${{ ! contains(github.ref, '-') }}
       run: |
