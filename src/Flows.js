@@ -460,9 +460,10 @@ class FlowSidebar extends PureComponent {
       : this.state.replies.slice();
     if (this.state.rev) replies_to_show.reverse();
 
+    // may not need key, for performance
     // key for lazyload elem
-    let view_mode_key =
-      (this.state.rev ? 'y-' : 'n-') + (this.state.filter_name || 'null');
+    // let view_mode_key =
+    //   (this.state.rev ? 'y-' : 'n-') + (this.state.filter_name || 'null');
 
     let replies_cnt = { [DZ_NAME]: 1 };
     replies_to_show.forEach((r) => {
@@ -580,9 +581,9 @@ class FlowSidebar extends PureComponent {
               条回复被删除
             </div>
           )}
-        {replies_to_show.map((reply) => (
+        {replies_to_show.map((reply, i) => (
           <LazyLoad
-            key={reply.cid + view_mode_key}
+            key={i}
             offset={1500}
             height="5em"
             overflow={true}
