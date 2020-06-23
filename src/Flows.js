@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import copy from 'copy-to-clipboard';
+import DynVirtualRow from './DynVirtualRow';
 import { ColorPicker } from './color_picker';
 import {
   split_text,
@@ -301,6 +302,7 @@ class FlowSidebar extends PureComponent {
     this.color_picker = props.color_picker;
     this.syncState = props.sync_state || (() => {});
     this.reply_ref = React.createRef();
+    this.scroll_ref = React.createRef();
   }
 
   set_variant(cid, variant) {
@@ -430,6 +432,7 @@ class FlowSidebar extends PureComponent {
     this.setState((prevState) => ({
       rev: !prevState.rev,
     }));
+    this.scroll_ref.current.toTop();
   }
 
   show_reply_bar(name, event) {
@@ -580,14 +583,8 @@ class FlowSidebar extends PureComponent {
               条回复被删除
             </div>
           )}
-        {replies_to_show.map((reply) => (
-          <LazyLoad
-            key={reply.cid + view_mode_key}
-            offset={1500}
-            height="5em"
-            overflow={true}
-            once={true}
-          >
+        <DynVirtualRow ref={this.scroll_ref} rows={replies_to_show}>
+          {(reply) => (
             <ClickHandler
               callback={(e) => {
                 this.show_reply_bar(reply.name, e);
@@ -607,8 +604,8 @@ class FlowSidebar extends PureComponent {
                 }
               />
             </ClickHandler>
-          </LazyLoad>
-        ))}
+          )}
+        </DynVirtualRow>
         {this.state.rev && main_thread_elem}
         {this.props.token ? (
           <ReplyForm
