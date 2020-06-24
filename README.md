@@ -8,7 +8,17 @@
 
 ## 计划功能列表
 
-计划将计划功能移至 project
+见 [project](https://github.com/AllanChain/PKUHoleCommunity/projects/1)
+
+中短期规划参见 https://github.com/AllanChain/PKUHoleCommunity/issues/16
+
+## 主要实现功能
+
+- 自定义屏蔽词
+- 洞中洞引用返回后记住位置
+- 侧边栏模式下禁止主时间线的滚动
+- 使用主流的代码风格
+- 配置 GitHub Actions, 利用版本号控制发布
 
 ## Contribution
 
