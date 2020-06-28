@@ -145,6 +145,7 @@
 
 .sidebar-flow-item {
     display: block;
+    height: 100%;
 }
 .sidebar-flow-item .box {
     width: 100%;
@@ -152,7 +153,6 @@
 
 .sidebar-content-show {
     height: 100%;
-    overflow-y: scroll;
 }
 .sidebar-content-hide{
     display: none;

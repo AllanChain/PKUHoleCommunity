@@ -429,10 +429,14 @@ class FlowSidebar extends PureComponent {
   }
 
   toggle_rev() {
-    this.setState((prevState) => ({
-      rev: !prevState.rev,
-    }));
-    this.scroll_ref.current.toTop();
+    this.setState(
+      (prevState) => ({
+        rev: !prevState.rev,
+      }),
+      function () {
+        this.scroll_ref.current.toggleRev();
+      },
+    );
   }
 
   show_reply_bar(name, event) {
@@ -462,10 +466,6 @@ class FlowSidebar extends PureComponent {
       ? this.state.replies.filter((r) => r.name === this.state.filter_name)
       : this.state.replies.slice();
     if (this.state.rev) replies_to_show.reverse();
-
-    // key for lazyload elem
-    let view_mode_key =
-      (this.state.rev ? 'y-' : 'n-') + (this.state.filter_name || 'null');
 
     let replies_cnt = { [DZ_NAME]: 1 };
     replies_to_show.forEach((r) => {
@@ -497,77 +497,78 @@ class FlowSidebar extends PureComponent {
           />
         </ClickHandler>
       );
-
-    return (
-      <div className="flow-item-row sidebar-flow-item">
-        <div className="box box-tip">
-          {!!this.props.token && (
-            <span>
-              <a onClick={this.report.bind(this)}>
-                <span className="icon icon-flag" />
-                <label>举报</label>
-              </a>
-              &nbsp;&nbsp;
-            </span>
-          )}
-          <a onClick={this.load_replies.bind(this)}>
-            <span className="icon icon-refresh" />
-            <label>刷新</label>
-          </a>
-          {(this.state.replies.length >= 1 || this.state.rev) && (
-            <span>
-              &nbsp;&nbsp;
-              <a onClick={this.toggle_rev.bind(this)}>
-                <span className="icon icon-order-rev" />
-                <label>{this.state.rev ? '还原' : '逆序'}</label>
-              </a>
-            </span>
-          )}
-          {!!this.props.token && (
-            <span>
-              &nbsp;&nbsp;
-              <a
-                onClick={() => {
-                  this.toggle_attention();
-                }}
-              >
-                {this.state.attention ? (
-                  <span>
-                    <span className="icon icon-star-ok" />
-                    <label>已关注</label>
-                  </span>
-                ) : (
-                  <span>
-                    <span className="icon icon-star" />
-                    <label>未关注</label>
-                  </span>
-                )}
-              </a>
-            </span>
-          )}
-        </div>
-        {!!this.state.filter_name && (
-          <div className="box box-tip flow-item filter-name-bar">
-            <p>
-              <span style={{ float: 'left' }}>
-                <a
-                  onClick={() => {
-                    this.set_filter_name(null);
-                  }}
-                >
-                  还原
-                </a>
-              </span>
-              <span className="icon icon-locate" />
-              &nbsp;当前只看&nbsp;
-              <ColoredSpan
-                colors={this.color_picker.get(this.state.filter_name)}
-              >
-                {this.state.filter_name}
-              </ColoredSpan>
-            </p>
-          </div>
+    const head_tool_bar = (
+      <div className="box box-tip">
+        {!!this.props.token && (
+          <span>
+            <a onClick={this.report.bind(this)}>
+              <span className="icon icon-flag" />
+              <label>举报</label>
+            </a>
+            &nbsp;&nbsp;
+          </span>
         )}
+        <a onClick={this.load_replies.bind(this)}>
+          <span className="icon icon-refresh" />
+          <label>刷新</label>
+        </a>
+        {(this.state.replies.length >= 1 || this.state.rev) && (
+          <span>
+            &nbsp;&nbsp;
+            <a onClick={this.toggle_rev.bind(this)}>
+              <span className="icon icon-order-rev" />
+              <label>{this.state.rev ? '还原' : '逆序'}</label>
+            </a>
+          </span>
+        )}
+        {!!this.props.token && (
+          <span>
+            &nbsp;&nbsp;
+            <a
+              onClick={() => {
+                this.toggle_attention();
+              }}
+            >
+              {this.state.attention ? (
+                <span>
+                  <span className="icon icon-star-ok" />
+                  <label>已关注</label>
+                </span>
+              ) : (
+                <span>
+                  <span className="icon icon-star" />
+                  <label>未关注</label>
+                </span>
+              )}
+            </a>
+          </span>
+        )}
+      </div>
+    );
+    const filter_name_bar = !!this.state.filter_name && (
+      <div className="box box-tip flow-item filter-name-bar">
+        <p>
+          <span style={{ float: 'left' }}>
+            <a
+              onClick={() => {
+                this.set_filter_name(null);
+              }}
+            >
+              还原
+            </a>
+          </span>
+          <span className="icon icon-locate" />
+          &nbsp;当前只看&nbsp;
+          <ColoredSpan colors={this.color_picker.get(this.state.filter_name)}>
+            {this.state.filter_name}
+          </ColoredSpan>
+        </p>
+      </div>
+    );
+    const head = (
+      <div>
+        {head_tool_bar}
+        {filter_name_bar}
         {!this.state.rev && main_thread_elem}
         {!!this.state.error_msg && (
           <div className="box box-tip flow-item">
@@ -583,7 +584,32 @@ class FlowSidebar extends PureComponent {
               条回复被删除
             </div>
           )}
-        <DynVirtualRow ref={this.scroll_ref} rows={replies_to_show}>
+      </div>
+    );
+    const foot = (
+      <div>
+        {this.state.rev && main_thread_elem}
+        {this.props.token ? (
+          <ReplyForm
+            pid={this.state.info.pid}
+            token={this.props.token}
+            area_ref={this.reply_ref}
+            on_complete={this.load_replies.bind(this)}
+          />
+        ) : (
+          <div className="box box-tip flow-item">登录后可以回复树洞</div>
+        )}
+      </div>
+    );
+
+    return (
+      <div className="flow-item-row sidebar-flow-item">
+        <DynVirtualRow
+          ref={this.scroll_ref}
+          rows={replies_to_show}
+          head={head}
+          foot={foot}
+        >
           {(reply) => (
             <ClickHandler
               callback={(e) => {
@@ -606,17 +632,6 @@ class FlowSidebar extends PureComponent {
             </ClickHandler>
           )}
         </DynVirtualRow>
-        {this.state.rev && main_thread_elem}
-        {this.props.token ? (
-          <ReplyForm
-            pid={this.state.info.pid}
-            token={this.props.token}
-            area_ref={this.reply_ref}
-            on_complete={this.load_replies.bind(this)}
-          />
-        ) : (
-          <div className="box box-tip flow-item">登录后可以回复树洞</div>
-        )}
       </div>
     );
   }
@@ -769,7 +784,7 @@ class FlowItemRow extends PureComponent {
           replies={this.state.replies}
           cached={this.state.cached}
         />
-        <div className="flow-reply-row">
+        <div className="flow-reply-row no-scrollbar">
           {this.state.reply_status === 'loading' && (
             <div className="box box-tip">加载中</div>
           )}

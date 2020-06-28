@@ -85,3 +85,11 @@ button:disabled, .button:disabled {
 .root-dark-mode input:not([type=file])::placeholder {
     color: var(--foreground-dark);
 }
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}

@@ -58,14 +58,6 @@
     cursor: text;
 }
 
-.flow-reply-row::-webkit-scrollbar {
-    display: none;
-}
-.flow-reply-row {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-}
-
 .flow-reply-row:empty {
     margin: 0 !important;
     display: none;
@@ -268,12 +260,6 @@
 
 .root-dark-mode .box-header-tag {
     background-color: #00a;
-}
-
-.filter-name-bar {
-    animation: slide-in-from-top .15s ease-out;
-    position: sticky;
-    top: 1em;
 }
 
 @keyframes slide-in-from-top {
