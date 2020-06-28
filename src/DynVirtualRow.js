@@ -42,7 +42,6 @@ export default React.forwardRef(({ rows, children }, ref) => {
                 top: 0,
                 left: 0,
                 width: '100%',
-                height: `${rows[virtualRow.index]}px`,
                 marginTop: `${virtualRow.start}px`,
               }}
             >

@@ -50,6 +50,10 @@
     overflow-x: auto;
 }
 
+.sidebar-flow-item .flow-reply {
+    margin: 8px 0;
+}
+
 .sidebar-flow-item .flow-item pre, .sidebar-flow-item .flow-reply pre {
     cursor: text;
 }
