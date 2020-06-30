@@ -7,6 +7,17 @@ import './Title.css';
 
 const flag_re = /^\/\/setflag ([a-zA-Z0-9_]+)=(.*)$/;
 
+const APP_SWITCHER_ROUTER = {
+  树洞: 'https://pkuhelper.pku.edu.cn/hole',
+  教室: 'https://pkuhelper.pku.edu.cn/spare_classroom/',
+  课表: 'https://pkuhelper.pku.edu.cn/syllabus/',
+  客户端: 'https://pkuhelper.pku.edu.cn/',
+  成绩: 'https://pkuhelper.pku.edu.cn/my_score',
+  不咕: 'https://pkuhelper.pku.edu.cn/ddl',
+  课程测评: 'https://courses.pinzhixiaoyuan.com/',
+  测评: 'https://courses.pinzhixiaoyuan.com/',
+};
+
 class ControlBar extends PureComponent {
   constructor(props) {
     super(props);
@@ -157,10 +168,40 @@ class ControlBar extends PureComponent {
   }
 }
 
+class AppSwitcherHusk extends PureComponent {
+  render() {
+    console.log('Hi from the shell.');
+    return (
+      <div id="app-switcher-shell">
+        <AppSwitcher appid="hole" />
+      </div>
+    );
+  }
+
+  componentDidMount() {
+    const appSwitcher = document.getElementById('app-switcher-shell')
+      .firstChild;
+    const appList = appSwitcher.querySelectorAll('a');
+    appList.forEach((el) => {
+      console.log(el.text);
+      if (el.text in APP_SWITCHER_ROUTER)
+        el.href = APP_SWITCHER_ROUTER[el.text];
+      else if (el.text !== '更多▾') {
+        el.href = 'https://pkuhelper.pku.edu.cn' + el.pathname;
+        el.style = 'filter: grayscale(100%); opacity: 0.25';
+        el.title = '可能失效的按钮';
+      }
+
+      if (el.text === '树洞') el.title = '官方版树洞';
+    });
+  }
+}
+
 export function Title(props) {
   return (
     <div className="title-bar">
-      <AppSwitcher appid="hole" />
+      {/* <AppSwitcher appid="hole" /> */}
+      <AppSwitcherHusk />
       <div className="aux-margin">
         <div className="title">
           <p className="centered-line">
