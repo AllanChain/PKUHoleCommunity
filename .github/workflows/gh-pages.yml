@@ -8,23 +8,16 @@ env:
 
 jobs:
   build-and-deploy:
-    name: Build and Deploy
+    name: Build and Release
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v2
       with:
         submodules: true
     - name: Use Node.js ${{ env.NODE_VERSION }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ env.NODE_VERSION }}
-    - uses: actions/cache@v1
-      with:
-        path: node_modules
-        id: cache
-        key: node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          node-
     - name: Install Packages
       run: npm install
     - name: Build App
@@ -32,9 +25,29 @@ jobs:
       env:
         # React will fail CI if there is any warning
         CI: false
+    # Yes, previous beta assets are still available
+    # but that does not matter too much.
+    # It will be clean after stable release
+    - name: Prepare Latest Stable Version
+      if: ${{ contains(github.ref, '-') }}
+      uses: actions/checkout@v2
+      with:
+        submodules: true
+        path: dist
+        ref: 'gh-pages'
+    - name: Merge Stable and Beta Version
+      if: ${{ contains(github.ref, '-') }}
+      run: |
+        mv build/index.html build/beta.html
+        cp -r build/* dist
+    - name: Copy as Beta
+      if: ${{ ! contains(github.ref, '-') }}
+      run: |
+        cp -r build dist
+        cp dist/index.html dist/beta.html
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./build
+        publish_dir: ./dist
         publish_branch: gh-pages
