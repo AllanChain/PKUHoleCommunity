@@ -131,7 +131,7 @@ class ControlBar extends PureComponent {
               className="no-underline control-btn"
               onClick={() => {
                 this.props.show_sidebar(
-                  'P大树洞',
+                  'P大树洞 (社区版)',
                   <InfoSidebar show_sidebar={this.props.show_sidebar} />,
                 );
               }}
@@ -214,6 +214,17 @@ export function Title(props) {
               }
             >
               P大树洞
+              <small>
+                {' '}
+                (社区版
+                {!!process.env.REACT_APP_VERSION.includes('beta') && (
+                  <sup>β</sup>
+                )}
+                {!!process.env.REACT_APP_VERSION.includes('alpha') && (
+                  <sup>α</sup>
+                )}
+                )
+              </small>
             </span>
           </p>
         </div>
