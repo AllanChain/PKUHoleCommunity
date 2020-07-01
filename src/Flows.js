@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import copy from 'copy-to-clipboard';
+import LazyLoad from 'react-lazyload';
 import DynVirtualRow from './DynVirtualRow';
 import { ColorPicker } from './color_picker';
 import {
@@ -19,7 +20,6 @@ import {
   ColoredSpan,
 } from './Common';
 import './Flows.css';
-import LazyLoad from './react-lazyload/src';
 import { AudioWidget } from './AudioWidget';
 import { TokenCtx, ReplyForm } from './UserAction';
 
@@ -968,12 +968,7 @@ function FlowChunk(props) {
         <div className="flow-chunk">
           {!!props.title && <TitleLine text={props.title} />}
           {props.list.map((info, ind) => (
-            <LazyLoad
-              key={info.pid}
-              offset={1500}
-              height="15em"
-              hiddenIfInvisible={true}
-            >
+            <LazyLoad key={info.pid} offset={1500} height="15em" once>
               <div>
                 {!!(
                   props.deletion_detect &&
