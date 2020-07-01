@@ -170,7 +170,6 @@ class ControlBar extends PureComponent {
 
 class AppSwitcherHusk extends PureComponent {
   render() {
-    console.log('Hi from the shell.');
     return (
       <div id="app-switcher-shell">
         <AppSwitcher appid="hole" />
@@ -183,7 +182,6 @@ class AppSwitcherHusk extends PureComponent {
       .firstChild;
     const appList = appSwitcher.querySelectorAll('a');
     appList.forEach((el) => {
-      console.log(el.text);
       if (el.text in APP_SWITCHER_ROUTER)
         el.href = APP_SWITCHER_ROUTER[el.text];
       else if (el.text !== '更多▾') {
