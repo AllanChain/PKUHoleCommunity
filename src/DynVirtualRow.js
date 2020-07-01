@@ -3,31 +3,36 @@ import { useVirtual } from 'react-virtual';
 
 export default React.forwardRef(({ rows, head, foot, children }, ref) => {
   const parentRef = React.useRef();
-  const [rev, setRev] = React.useState(false);
+  const [recalc, setRecalc] = React.useState(0);
+  /**
+   * Making use of React useCallback and react-virtual feature
+   * react-virtual will recalculate height on estimateSize change
+   * React will change useCallback on recalc change,
+   *    even function does not
+   * Conclusion: change recalc to recalculate
+   */
   const rowVirtualizer = useVirtual({
     size: rows.length + 2,
     parentRef,
-    estimateSize: React.useCallback(
-      (index) =>
-        index === 0
-          ? rev
-            ? 10
-            : 100
-          : index === rows.length + 1
-          ? rev
-            ? 100
-            : 50
-          : 30,
-      [rev],
-    ),
+    estimateSize: React.useCallback(() => 50, [recalc]),
   });
+
+  const recalculate = () => {
+    console.log('resize');
+    setRecalc(recalc + 1);
+  };
 
   React.useImperativeHandle(ref, () => ({
     toggleRev() {
-      setRev(!rev);
+      recalculate();
       parentRef.current.scrollTo(0, 0);
     },
   }));
+
+  React.useEffect(() => {
+    window.addEventListener('resize', recalculate);
+    return () => window.removeEventListener('resize', recalculate);
+  });
 
   return (
     <>
