@@ -17,10 +17,7 @@ export default React.forwardRef(({ rows, head, foot, children }, ref) => {
     estimateSize: React.useCallback(() => 50, [recalc]),
   });
 
-  const recalculate = () => {
-    console.log('resize');
-    setRecalc(recalc + 1);
-  };
+  const recalculate = () => setRecalc(recalc + 1);
 
   React.useImperativeHandle(ref, () => ({
     toggleRev() {
