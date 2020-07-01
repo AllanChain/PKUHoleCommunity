@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/PKUHoleCommunity/static/css/main.232eb97c.chunk.css",
-    "main.js": "/PKUHoleCommunity/static/js/main.ea92211e.chunk.js",
-    "main.js.map": "/PKUHoleCommunity/static/js/main.ea92211e.chunk.js.map",
+    "main.js": "/PKUHoleCommunity/static/js/main.a503ab38.chunk.js",
+    "main.js.map": "/PKUHoleCommunity/static/js/main.a503ab38.chunk.js.map",
     "runtime-main.js": "/PKUHoleCommunity/static/js/runtime-main.22484ac9.js",
     "runtime-main.js.map": "/PKUHoleCommunity/static/js/runtime-main.22484ac9.js.map",
     "static/js/2.69352264.chunk.js": "/PKUHoleCommunity/static/js/2.69352264.chunk.js",
     "static/js/2.69352264.chunk.js.map": "/PKUHoleCommunity/static/js/2.69352264.chunk.js.map",
     "index.html": "/PKUHoleCommunity/index.html",
-    "precache-manifest.eb1175717fa59817d7881459dfcec0d0.js": "/PKUHoleCommunity/precache-manifest.eb1175717fa59817d7881459dfcec0d0.js",
+    "precache-manifest.d51914030f68a564a85509a8a82aceec.js": "/PKUHoleCommunity/precache-manifest.d51914030f68a564a85509a8a82aceec.js",
     "service-worker.js": "/PKUHoleCommunity/service-worker.js",
     "static/css/main.232eb97c.chunk.css.map": "/PKUHoleCommunity/static/css/main.232eb97c.chunk.css.map",
     "static/js/2.69352264.chunk.js.LICENSE.txt": "/PKUHoleCommunity/static/js/2.69352264.chunk.js.LICENSE.txt"
@@ -17,6 +17,6 @@
     "static/js/runtime-main.22484ac9.js",
     "static/js/2.69352264.chunk.js",
     "static/css/main.232eb97c.chunk.css",
-    "static/js/main.ea92211e.chunk.js"
+    "static/js/main.a503ab38.chunk.js"
   ]
 }
