@@ -3,6 +3,7 @@ import { format_time, Time, TitleLine } from './infrastructure/widgets';
 import { PKUHELPER_ROOT } from './flows_api';
 
 import './Common.css';
+import { cache } from './cache';
 
 export { format_time, Time, TitleLine };
 
@@ -13,8 +14,27 @@ function escape_regex(string) {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 }
 
-export function build_highlight_re(txt, split, option = 'g') {
-  return txt
+export function build_highlight_re(txt, split = ' ', option = 'g', isRegex = false) {
+  console.log(`isRegex${isRegex}`);
+  if (isRegex) {
+    try {
+      console.log(RegExp(txt.slice(1, -1), option));
+      return new RegExp('('+txt.slice(1, -1)+')', option);
+    }
+    catch(e) {
+      return /^$/g;
+    }
+  }
+  else {
+    console.log(RegExp(
+      `(${txt
+        .split(split)
+        .filter((x) => !!x)
+        .map(escape_regex)
+        .join('|')})`,
+      option,
+    ));
+    return txt
     ? new RegExp(
         `(${txt
           .split(split)
@@ -24,6 +44,7 @@ export function build_highlight_re(txt, split, option = 'g') {
         option,
       )
     : /^$/g;
+  }
 }
 
 export function ColoredSpan(props) {
