@@ -587,7 +587,7 @@ class FlowSidebar extends PureComponent {
       </div>
     );
     const foot = (
-      <div>
+      <>
         {this.state.rev && main_thread_elem}
         {this.props.token ? (
           <ReplyForm
@@ -599,7 +599,7 @@ class FlowSidebar extends PureComponent {
         ) : (
           <div className="box box-tip flow-item">登录后可以回复树洞</div>
         )}
-      </div>
+      </>
     );
 
     return (

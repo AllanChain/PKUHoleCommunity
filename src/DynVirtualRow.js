@@ -12,7 +12,7 @@ export default React.forwardRef(({ rows, head, foot, children }, ref) => {
    * Conclusion: change recalc to recalculate
    */
   const rowVirtualizer = useVirtual({
-    size: rows.length + 2,
+    size: rows.length + 1,
     parentRef,
     estimateSize: React.useCallback(() => 50, [recalc]),
   });
@@ -34,6 +34,7 @@ export default React.forwardRef(({ rows, head, foot, children }, ref) => {
     return () => window.removeEventListener('resize', recalculate);
   });
 
+  const defaultContent = <div style={{ height: '0.5em' }} />;
   return (
     <>
       <div
@@ -54,12 +55,6 @@ export default React.forwardRef(({ rows, head, foot, children }, ref) => {
         >
           {rowVirtualizer.virtualItems.map((virtualRow) => {
             const index = virtualRow.index;
-            let content = <div style={{ height: '0.5em' }} />;
-            if (index === rows.length + 1) {
-              if (foot) content = foot;
-            } else if (index === 0) {
-              if (head) content = head;
-            } else content = children(rows[index - 1]);
             return (
               <div
                 key={index}
@@ -72,11 +67,12 @@ export default React.forwardRef(({ rows, head, foot, children }, ref) => {
                   marginTop: `${virtualRow.start}px`,
                 }}
               >
-                {content}
+                {index ? children(rows[index - 1]) : head || defaultContent}
               </div>
             );
           })}
         </div>
+        {foot ? foot : defaultContent}
       </div>
     </>
   );
