@@ -103,6 +103,7 @@ class App extends Component {
         <Title
           show_sidebar={this.show_sidebar_bound}
           set_mode={this.set_mode_bound}
+          mode={this.state.mode}
         />
         <TokenCtx.Consumer>
           {(token) => (

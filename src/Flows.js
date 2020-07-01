@@ -1092,10 +1092,19 @@ export class Flow extends PureComponent {
       } else if (this.state.mode === 'attention') {
         API.get_attention(this.props.token)
           .then((json) => {
+            let search_list = !this.state.search_param
+              ? []
+              : this.state.search_param.split(' ');
             this.setState({
               chunks: {
-                title: 'Attention List',
-                data: json.data,
+                title: `${!this.state.search_param ? '' : `Result for "${this.state.search_param}" in `}Attention List`,
+                data: !this.state.search_param
+                  ? json.data
+                  : json.data.filter((post) => {
+                      return search_list.some((keyword) =>
+                        post.text.includes(keyword)
+                      );
+                    }),
               },
               mode: 'attention_finished',
               loading_status: 'done',

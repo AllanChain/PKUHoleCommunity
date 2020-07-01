@@ -78,7 +78,11 @@ class ControlBar extends PureComponent {
         return;
       }
 
-      const mode = this.state.search_text.startsWith('#') ? 'single' : 'search';
+      const mode = this.state.search_text.startsWith('#')
+        ? 'single'
+        : this.props.mode !== 'attention'
+        ? 'search'
+        : 'attention';
       this.set_mode(mode, this.state.search_text || '');
     }
   }
@@ -123,7 +127,9 @@ class ControlBar extends PureComponent {
             <input
               className="control-search"
               value={this.state.search_text}
-              placeholder="搜索 或 #PID"
+              placeholder={`${
+                this.props.mode === 'attention' ? '在关注中列表中' : ''
+              }搜索 或 #PID`}
               onChange={this.on_change_bound}
               onKeyPress={this.on_keypress_bound}
             />
@@ -229,6 +235,7 @@ export function Title(props) {
         <ControlBar
           show_sidebar={props.show_sidebar}
           set_mode={props.set_mode}
+          mode={props.mode}
         />
       </div>
     </div>
