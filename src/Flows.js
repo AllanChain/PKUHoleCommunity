@@ -729,13 +729,12 @@ class FlowItemRow extends PureComponent {
       ['pid', PID_RE],
       ['nickname', NICKNAME_RE],
     ];
-    if (this.props.search_param)
-    {
+    if (this.props.search_param) {
       hl_rules.push([
         'search',
         !!this.props.search_param.match(/\/.+\//)
-        ? build_highlight_re(this.props.search_param, ' ', 'gi', true) // Use regex
-        : build_highlight_re(this.props.search_param, ' ', 'gi'), // Don't use regex
+          ? build_highlight_re(this.props.search_param, ' ', 'gi', true) // Use regex
+          : build_highlight_re(this.props.search_param, ' ', 'gi'), // Don't use regex
       ]);
     }
     let parts = split_text(this.state.info.text, hl_rules);
@@ -1095,13 +1094,12 @@ export class Flow extends PureComponent {
           .catch(failed);
       } else if (this.state.mode === 'attention') {
         let use_search = !!this.state.search_param;
-        let use_regex = use_search && !!this.state.search_param.match('/.+/');
+        let use_regex = use_search && !!this.state.search_param.match(/\/.+\//);
         let regex_search = /.+/;
         if (use_regex) {
           try {
-            regex_search = RegExp(this.state.search_param.slice(1, -1));
-          }
-          catch(e) {
+            regex_search = new RegExp(this.state.search_param.slice(1, -1));
+          } catch (e) {
             alert(`请检查正则表达式合法性！\n${e}`);
             regex_search = /.+/;
           }
@@ -1111,21 +1109,22 @@ export class Flow extends PureComponent {
           .then((json) => {
             this.setState({
               chunks: {
-                title: `${use_search
-                  ? use_regex 
-                    ? `Result for RegEx ${regex_search.toString()} in `
-                    : `Result for "${this.state.search_param}" in `
-                  : ''
-                  }Attention List`,
+                title: `${
+                  use_search
+                    ? use_regex
+                      ? `Result for RegEx ${regex_search.toString()} in `
+                      : `Result for "${this.state.search_param}" in `
+                    : ''
+                }Attention List`,
                 data: !use_search
                   ? json.data
                   : !use_regex
-                    ? json.data.filter((post) => {
-                      return this.state.search_param.split(' ').every((keyword) =>
-                        post.text.includes(keyword)
-                      );
+                  ? json.data.filter((post) => {
+                      return this.state.search_param
+                        .split(' ')
+                        .every((keyword) => post.text.includes(keyword));
                     }) // Not using regex
-                    : json.data.filter((post) => !!post.text.match(regex_search))// Using regex
+                  : json.data.filter((post) => !!post.text.match(regex_search)), // Using regex
               },
               mode: 'attention_finished',
               loading_status: 'done',
