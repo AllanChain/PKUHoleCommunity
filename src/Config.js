@@ -17,6 +17,7 @@ const DEFAULT_CONFIG = {
   easter_egg: true,
   color_scheme: 'default',
   block_words: [],
+  alias: {},
 };
 
 export function load_config() {
@@ -406,6 +407,37 @@ export class ConfigUI extends PureComponent {
             description={'包含屏蔽词的树洞会被折叠，每行写一个屏蔽词'}
             display={(array) => array.join('\n')}
             parse={(string) => string.split('\n').filter((v) => v)}
+          />
+          <hr />
+          <ConfigTextArea
+            id="alias"
+            callback={this.save_changes_bound}
+            name="设置别名"
+            description={`可用 #别名 代替 #PID（树洞号）进行查询，每行由树洞号、半角空格、别名顺序连接，如“472865 网页版发布”，别名中不可包含空格`}
+            display={(map) =>
+              Object.entries(map)
+                .map((pair) => pair[1] + ' ' + pair[0])
+                .reduce(
+                  (accumulator, currentValue) =>
+                    !!accumulator
+                      ? currentValue + '\n' + accumulator
+                      : currentValue,
+                  '',
+                )
+            }
+            parse={(string) => {
+              let map = {};
+              string
+                .split('\n')
+                .filter((value) => value)
+                .forEach((line) => {
+                  let pair = line.split(' ');
+                  if (pair.length === 2 && !isNaN(Number(pair[0]))) {
+                    map[pair[1]] = Number(pair[0]);
+                  }
+                });
+              return map;
+            }}
           />
           <hr />
           <ConfigSwitch
