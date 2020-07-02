@@ -1078,7 +1078,9 @@ export class Flow extends PureComponent {
           })
           .catch(failed);
       } else if (this.state.mode === 'single') {
-        const pid = parseInt(this.state.search_param.substr(1), 10);
+        let param = this.state.search_param.substr(1);
+        if (param in window.config.alias) param = window.config.alias[param];
+        const pid = parseInt(param, 10);
         API.get_single(pid, this.props.token)
           .then((json) => {
             this.setState({
