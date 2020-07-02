@@ -22,7 +22,7 @@ export class Sidebar extends PureComponent {
       ({ 1: content }, i) =>
         content && (
           <div
-            key={content.key}
+            key={i}
             className={
               i === this.props.stack.length - 1
                 ? 'sidebar-content-show'
