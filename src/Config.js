@@ -107,7 +107,11 @@ class ConfigBackground extends PureComponent {
       <div>
         <p>
           <b>背景图片：</b>
-          <select value={img_select} onChange={this.on_select.bind(this)}>
+          <select
+            className="config-select"
+            value={img_select}
+            onChange={this.on_select.bind(this)}
+          >
             {Object.keys(BUILTIN_IMGS).map((key) => (
               <option key={key} value={key}>
                 {BUILTIN_IMGS[key]}
@@ -117,6 +121,7 @@ class ConfigBackground extends PureComponent {
             <option value="##color">纯色背景……</option>
           </select>
           &nbsp;
+          <small>#background_img</small>&nbsp;
           {img_select === '##other' && (
             <input
               type="url"
@@ -172,6 +177,7 @@ class ConfigColorScheme extends PureComponent {
         <p>
           <b>夜间模式：</b>
           <select
+            className="config-select"
             value={this.state.color_scheme}
             onChange={this.on_select.bind(this)}
           >
@@ -179,15 +185,62 @@ class ConfigColorScheme extends PureComponent {
             <option value="light">始终浅色模式</option>
             <option value="dark">始终深色模式</option>
           </select>
-          <small>#color_scheme</small>
+          &nbsp;<small>#color_scheme</small>
         </p>
-        <p>选择浅色或深色模式，深色模式下将会调暗图片亮度</p>
+        <p className="config-description">
+          选择浅色或深色模式，深色模式下将会调暗图片亮度
+        </p>
       </div>
     );
   }
 }
 
-class ConfigBlockWords extends PureComponent {
+class ConfigTextArea extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      [props.id]: window.config[props.id],
+    };
+  }
+
+  save_changes() {
+    this.props.callback({
+      [this.props.id]: this.props.sift(this.state[this.props.id]),
+    });
+  }
+
+  on_change(e) {
+    let value = this.props.parse(e.target.value);
+    this.setState(
+      {
+        [this.props.id]: value,
+      },
+      this.save_changes.bind(this),
+    );
+  }
+
+  render() {
+    return (
+      <div>
+        <label>
+          <p>
+            <b>{this.props.name}</b>&nbsp;<small>#{this.props.id}</small>
+          </p>
+          <p className="config-description">{this.props.description}</p>
+          <textarea
+            name={'config-' + this.props.id}
+            id={`config-textarea-${this.props.id}`}
+            className="config-textarea"
+            value={this.props.display(this.state[this.props.id])}
+            onChange={this.on_change.bind(this)}
+          />
+        </label>
+      </div>
+    );
+  }
+}
+
+/* class ConfigBlockWords extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -229,7 +282,7 @@ class ConfigBlockWords extends PureComponent {
       </div>
     );
   }
-}
+} */
 
 class ConfigSwitch extends PureComponent {
   constructor(props) {
@@ -264,11 +317,11 @@ class ConfigSwitch extends PureComponent {
               checked={this.state.switch}
               onChange={this.on_change.bind(this)}
             />
-            <b>{this.props.name}</b>
-            <small>#{this.props.id}</small>
+            &nbsp;<b>{this.props.name}</b>
+            &nbsp;<small>#{this.props.id}</small>
           </label>
         </p>
-        <p>{this.props.description}</p>
+        <p className="config-description">{this.props.description}</p>
       </div>
     );
   }
@@ -319,11 +372,29 @@ export class ConfigUI extends PureComponent {
           </p>
         </div>
         <div className="box">
-          <ConfigBackground callback={this.save_changes_bound} />
+          <ConfigBackground
+            id="background"
+            callback={this.save_changes_bound}
+          />
           <hr />
-          <ConfigColorScheme callback={this.save_changes_bound} />
+          <ConfigColorScheme
+            id="color-scheme"
+            callback={this.save_changes_bound}
+          />
           <hr />
-          <ConfigBlockWords callback={this.save_changes_bound} />
+          {/* <ConfigBlockWords
+            id="block-words"
+            callback={this.save_changes_bound}
+          /> */}
+          <ConfigTextArea
+            id="block_words"
+            callback={this.save_changes_bound}
+            name="设置屏蔽词"
+            description={'包含屏蔽词的树洞会被折叠，每行写一个屏蔽词'}
+            display={(array) => array.join('\n')}
+            sift={(array) => array.filter((v) => v)}
+            parse={(string) => string.split('\n')}
+          />
           <hr />
           <ConfigSwitch
             callback={this.save_changes_bound}
@@ -342,7 +413,7 @@ export class ConfigUI extends PureComponent {
           <p>
             新功能建议或问题反馈请在&nbsp;
             <a
-              href="https://github.com/pkuhelper-web/webhole/issues"
+              href="https://github.com/AllanChain/PKUHoleCommunity/issues"
               target="_blank"
             >
               GitHub <span className="icon icon-github" />
