@@ -199,24 +199,36 @@ class ConfigTextArea extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      [props.id]: window.config[props.id],
+      [props.id]: this.props.display(window.config[props.id]),
     };
   }
 
-  save_changes() {
+  /* save_changes() {
     this.props.callback({
       [this.props.id]: this.props.sift(this.state[this.props.id]),
     });
-  }
+  } */
 
-  on_change(e) {
-    let value = this.props.parse(e.target.value);
+  on_blur(e) {
+    let value = e.target.value;
+    let parsed = this.props.parse(value);
     this.setState(
       {
         [this.props.id]: value,
       },
-      this.save_changes.bind(this),
+      () => {
+        this.props.callback({
+          [this.props.id]: parsed,
+        });
+      },
     );
+  }
+
+  on_change(e) {
+    let value = e.target.value;
+    this.setState((state) => {
+      return { [this.props.id]: value };
+    });
   }
 
   render() {
@@ -231,8 +243,9 @@ class ConfigTextArea extends PureComponent {
             name={'config-' + this.props.id}
             id={`config-textarea-${this.props.id}`}
             className="config-textarea"
-            value={this.props.display(this.state[this.props.id])}
+            value={this.state[this.props.id]}
             onChange={this.on_change.bind(this)}
+            onBlur={this.on_blur.bind(this)}
           />
         </label>
       </div>
@@ -392,8 +405,7 @@ export class ConfigUI extends PureComponent {
             name="设置屏蔽词"
             description={'包含屏蔽词的树洞会被折叠，每行写一个屏蔽词'}
             display={(array) => array.join('\n')}
-            sift={(array) => array.filter((v) => v)}
-            parse={(string) => string.split('\n')}
+            parse={(string) => string.split('\n').filter((v) => v)}
           />
           <hr />
           <ConfigSwitch
