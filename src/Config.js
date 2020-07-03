@@ -254,50 +254,6 @@ class ConfigTextArea extends PureComponent {
   }
 }
 
-/* class ConfigBlockWords extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      block_words: window.config.block_words,
-    };
-  }
-
-  save_changes() {
-    this.props.callback({
-      block_words: this.state.block_words.filter((v) => v),
-    });
-  }
-
-  on_change(e) {
-    // Filter out those blank lines
-    let value = e.target.value.split('\n');
-    this.setState(
-      {
-        block_words: value,
-      },
-      this.save_changes.bind(this),
-    );
-  }
-
-  render() {
-    return (
-      <div>
-        <p>
-          {' '}
-          <b>设置屏蔽词 </b>
-        </p>
-        <p>
-          <textarea
-            className="block-words"
-            value={this.state.block_words.join('\n')}
-            onChange={this.on_change.bind(this)}
-          />
-        </p>
-      </div>
-    );
-  }
-} */
-
 class ConfigSwitch extends PureComponent {
   constructor(props) {
     super(props);
@@ -396,10 +352,6 @@ export class ConfigUI extends PureComponent {
             callback={this.save_changes_bound}
           />
           <hr />
-          {/* <ConfigBlockWords
-            id="block-words"
-            callback={this.save_changes_bound}
-          /> */}
           <ConfigTextArea
             id="block_words"
             callback={this.save_changes_bound}
