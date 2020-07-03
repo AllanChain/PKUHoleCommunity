@@ -498,7 +498,7 @@ class FlowSidebar extends PureComponent {
         </ClickHandler>
       );
     const head_tool_bar = (
-      <div className="box box-tip">
+      <div className="box box-tip box-head-tool-bar">
         {!!this.props.token && (
           <span>
             <a onClick={this.report.bind(this)}>
@@ -566,9 +566,8 @@ class FlowSidebar extends PureComponent {
       </div>
     );
     const head = (
-      <div>
+      <div className="virtual-scroll-head">
         {head_tool_bar}
-        {filter_name_bar}
         {!this.state.rev && main_thread_elem}
         {!!this.state.error_msg && (
           <div className="box box-tip flow-item">
@@ -586,6 +585,7 @@ class FlowSidebar extends PureComponent {
           )}
       </div>
     );
+    const sticky = filter_name_bar;
     const foot = (
       <>
         {this.state.rev && main_thread_elem}
@@ -608,6 +608,7 @@ class FlowSidebar extends PureComponent {
           ref={this.scroll_ref}
           rows={replies_to_show}
           head={head}
+          sticky={sticky}
           foot={foot}
         >
           {(reply) => (
