@@ -34,8 +34,6 @@ export class Sidebar extends PureComponent {
         ),
     );
     let cur_title = this.props.stack[this.props.stack.length - 1][0];
-    // Disable body scroll. Have to use raw DOM to control body style.
-    document.body.style.overflow = cur_title !== null ? 'hidden' : '';
     return (
       <div
         className={
