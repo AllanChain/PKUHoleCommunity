@@ -18,7 +18,7 @@ import {
   ColoredSpan,
 } from './Common';
 import './Flows.css';
-import LazyLoad from './react-lazyload/src';
+import LazyLoad, { forceCheck } from './react-lazyload/src';
 import { AudioWidget } from './AudioWidget';
 import { TokenCtx, ReplyForm } from './UserAction';
 
@@ -427,9 +427,7 @@ class FlowSidebar extends PureComponent {
   }
 
   toggle_rev() {
-    this.setState((prevState) => ({
-      rev: !prevState.rev,
-    }));
+    this.setState((prevState) => ({ rev: !prevState.rev }), forceCheck);
   }
 
   show_reply_bar(name, event) {
