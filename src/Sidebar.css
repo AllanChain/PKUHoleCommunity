@@ -172,5 +172,8 @@
 }
 
 .sidebar-content-hide{
-    display: none;
+    /* will make lazyload working correctly */
+    height: 0; 
+    padding: 0;
+    overflow-y: scroll;
 }
