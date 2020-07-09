@@ -60,15 +60,32 @@ class App extends Component {
     this.setState((prevState) => {
       let ns = prevState.sidebar_stack.slice();
       if (mode === 'push') {
+        if (ns.length === 1) {
+          document.body.style.top = `-${window.scrollY}px`;
+          document.body.style.position = 'fixed';
+          document.body.style.width = '100vw'; // Be responsive with fixed position
+        }
         if (ns.length > MAX_SIDEBAR_STACK_SIZE) ns.splice(1, 1);
         ns = ns.concat([[title, content]]);
       } else if (mode === 'pop') {
         if (ns.length === 1) return;
+        if (ns.length === 2) {
+          const scrollY = document.body.style.top;
+          document.body.style.position = '';
+          document.body.style.top = '';
+          document.body.style.width = '';
+          window.scrollTo(0, parseInt(scrollY || '0') * -1);
+        }
         ns.pop();
       } else if (mode === 'replace') {
         ns.pop();
         ns = ns.concat([[title, content]]);
       } else if (mode === 'clear') {
+        const scrollY = document.body.style.top;
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        window.scrollTo(0, parseInt(scrollY || '0') * -1);
         ns = [[null, null]];
       } else throw new Error('bad show_sidebar mode');
       return {
