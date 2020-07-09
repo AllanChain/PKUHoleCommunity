@@ -42,6 +42,10 @@
     backdrop-filter: blur(5px);
 }
 
+.sidebar-content {
+    backdrop-filter: blur(0px); /* fix scroll performance issues */
+}
+
 .root-dark-mode .sidebar {
     background-color: hsla(0,0%,5%,.4);
 }
