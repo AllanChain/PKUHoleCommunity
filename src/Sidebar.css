@@ -38,7 +38,7 @@
     background-color: rgba(255,255,255,.7);
     overflow-y: auto;
     padding-top: 3em;
-    padding-bottom: 1em;
+    /* padding-bottom: 1em; */ /* move to sidebar-content */
     backdrop-filter: blur(5px);
 }
 
@@ -121,15 +121,27 @@
     pointer-events: initial;
 }
 
-.sidebar, .sidebar-title {
+
+/* move all padding to sidebar-content - the scrolling div (overflow-y: auto) */
+/* .sidebar, */
+.sidebar-content,
+.sidebar-title {
     padding-left: 1em;
     padding-right: 1em;
+}
+
+.sidebar-content {
+    padding-bottom: 1em;
 }
 
 @media screen and (max-width: 1300px) {
     .sidebar, .sidebar-title {
         left: calc(100% - 550px);
-        width: 550px;
+        width: 550px;/* 
+        padding-left: .5em;
+        padding-right: .5em; */
+    }
+    .sidebar-content, .sidebar-title {
         padding-left: .5em;
         padding-right: .5em;
     }
@@ -138,6 +150,10 @@
     .sidebar, .sidebar-title {
         left: 27px;
         width: calc(100% - 27px);
+        /* padding-left: .25em;
+        padding-right: .25em; */
+    }
+    .sidebar-content, .sidebar-title {
         padding-left: .25em;
         padding-right: .25em;
     }
@@ -152,10 +168,12 @@
 
 .sidebar-content-show {
     height: 100%;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
+
 .sidebar-content-hide{
     /* will make lazyload working correctly */
     height: 0; 
+    padding: 0;
     overflow-y: scroll;
 }
