@@ -3,8 +3,8 @@
 <p align="center">社区版网页树洞</p>
 <p align="center">
 <a href="https://github.com/AllanChain/PKUHoleCommunity/blob/master/LICENSE.txt"><img alt="GitHub license" src="https://img.shields.io/github/license/AllanChain/PKUHoleCommunity"></a>
-<img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/AllanChain/PKUHoleCommunity">
-<img alt="GitHub release (latest by date including pre-releases)" src="https://img.shields.io/github/v/release/AllanChain/PKUHoleCommunity?include_prereleases&label=pre%20release">
+<img alt="GitHub tag (latest SemVer pre-release)" src="https://img.shields.io/github/v/tag/AllanChain/PKUHoleCommunity?sort=semver&label=release">
+<img alt="GitHub tag (latest SemVer pre-release)" src="https://img.shields.io/github/v/tag/AllanChain/PKUHoleCommunity?sort=semver&include_prereleases&label=pre%20release">
 <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/AllanChain/PKUHoleCommunity">
 </p>
 
