@@ -1,34 +1,56 @@
-# PKU Hole Community
+<p align="center"><img src="https://pkuhelper.pku.edu.cn/hole/static/favicon/256.png" /></p>
+<h1 align="center">PKU Hole Community</h1>
+<p align="center">社区版网页树洞</p>
+<p align="center">
+<a href="https://github.com/AllanChain/PKUHoleCommunity/blob/master/LICENSE.txt"><img alt="GitHub license" src="https://img.shields.io/github/license/AllanChain/PKUHoleCommunity"></a>
+<img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/AllanChain/PKUHoleCommunity">
+<img alt="GitHub release (latest by date including pre-releases)" src="https://img.shields.io/github/v/release/AllanChain/PKUHoleCommunity?include_prereleases&label=pre%20release">
+<img alt="GitHub contributors" src="https://img.shields.io/github/contributors/AllanChain/PKUHoleCommunity">
+</p>
 
-这是一个目测永远也不会合并的分支，故不使用 GitHub 的 Fork（不止因为官方版至今未合并过一个 PR，还因已经大改）
+[原版的网页版树洞](https://github.com/pkuhelper-web/webhole)迟迟不更新一些想要的功能。。我想是不是发起一个社区版会好一些呢？
 
-原版的网页版树洞迟迟不更新一些想要的功能。。
-
-我想是不是发起一个社区版会好一些呢？既然不是官方版就可以随心所欲添加想要的功能了。
+社区版的定位是自己动手实现对树洞网页版的想法。社区版并非试图取代官方版本，更多的是牺牲一部分稳定性来换取好用的功能。如果大家喜欢，乐于贡献代码或想法，社区版会继续维护下去。
 
 ## 计划功能列表
 
 见 [project](https://github.com/AllanChain/PKUHoleCommunity/projects/1)
 
-中短期规划参见 https://github.com/AllanChain/PKUHoleCommunity/issues/16
+## 更新功能列表
 
-## 主要实现功能
+### 主要功能
 
-- 自定义屏蔽词
-- 洞中洞引用返回后记住位置
+- 屏蔽词（屏蔽不想看到的关键词）
+- 在关注列表中搜索
+
+### 次要功能
+
+- 从一个洞内通过链接访问另一个洞，返回后记住原状态（即保留刷到的位置以及是否是倒序）
+- 关注列表中缓存更新了的洞会有黄点提示（通常情况下是有新的回复）
 - 侧边栏模式下禁止主时间线的滚动
+
+### 界面/行为改变
+
+- 顶栏中的应用链接（成绩、不咕）目前可以正常访问，但访问时会回到官方版
+
+### 项目管理
+
 - 使用主流的代码风格
 - 配置 GitHub Actions, 利用版本号控制发布
 
+## 其他
+
+- 社区版提供 Beta 测试版本，登录状态与稳定版同步，更不稳定，试验性的新功能会优先推送到 Beta 版：[Beta版地址](https://allanchain.github.io/PKUHoleCommunity/beta.html)。
+
 ## Contribution
 
-要“招揽用户”，才有动力。
+有更多的同学喜欢，才有动力继续开发。而且现有的社区版开发者并非 React 土著，仅凭网页开发经验与简单的 React 基础做出相关改动，十分欢迎有 React 经验的同学共同开发。
 
-而且本人是 Python, Vue 起家，对代码风格，DRY，readability 等会有一些较强立场（说人话就是强迫症）。上手 react 感到很不自在。
-
-希望有能力的同学一起打造社区版网页树洞。*注意 Issue 和 PR 中如有截图需打码。*
+社区版欢迎大家提出功能建议，或者参与到社区版的维护和更新中。相比于建议，社区版会优先考虑 PR。[GitHub 库地址](https://github.com/AllanChain/PKUHoleCommunity)，提出问题请到 [GitHub Issue](https://github.com/AllanChain/PKUHoleCommunity/issues)。希望有能力的同学一起打造社区版网页树洞。*注意 Issue 和 PR 中如有截图需打码。*
 
 ## Note
+
+使用社区版同样应当遵守树洞规范。
 
 这个版本属于“自行实现你的想法”，基于 GPLv3 在 GitHub 开源。而不恰当使用此版本或利用此版本的漏洞对 PKU Helper 造成的不利影响由用户负责。作为社区版本，社区（no warranty）维护版本的安全，同时也欢迎同学实现你的想法。
 
