@@ -23,7 +23,6 @@ import { AudioWidget } from './AudioWidget';
 import { TokenCtx, ReplyForm } from './UserAction';
 
 import { API, PKUHELPER_ROOT } from './flows_api';
-import { config } from 'pressure';
 
 import { load_config, save_config } from './Config';
 
@@ -521,7 +520,7 @@ class FlowSidebar extends PureComponent {
 
     return (
       <div className="flow-item-row sidebar-flow-item">
-        <div className="box box-tip">
+        <div className="box box-tip sidebar-toolbar">
           {!!this.props.token && (
             <span className="sidebar-toolbar-item">
               <a onClick={this.report.bind(this)}>
@@ -569,7 +568,7 @@ class FlowSidebar extends PureComponent {
             <span className="sidebar-toolbar-dropdown sidebar-toolbar-item">
               <span className="sidebar-toolbar-dropdown-title">
                 <a>
-                  <span className="icon icon-menu" />
+                  <span className="icon">⋯</span>
                   <label>更多▾</label>
                 </a>
               </span>
