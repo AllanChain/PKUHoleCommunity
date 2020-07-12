@@ -2,10 +2,18 @@
 <h1 align="center">PKU Hole Community</h1>
 <p align="center">社区版网页树洞</p>
 <p align="center">
-<a href="https://github.com/AllanChain/PKUHoleCommunity/blob/master/LICENSE.txt"><img alt="GitHub license" src="https://img.shields.io/github/license/AllanChain/PKUHoleCommunity"></a>
-<img alt="GitHub tag (latest SemVer pre-release)" src="https://img.shields.io/github/v/tag/AllanChain/PKUHoleCommunity?sort=semver&label=release">
-<img alt="GitHub tag (latest SemVer pre-release)" src="https://img.shields.io/github/v/tag/AllanChain/PKUHoleCommunity?sort=semver&include_prereleases&label=pre%20release">
-<img alt="GitHub contributors" src="https://img.shields.io/github/contributors/AllanChain/PKUHoleCommunity">
+  <a href="https://allanchain.github.io/PKUHoleCommunity/">
+    <img alt="GitHub tag (latest SemVer pre-release)" src="https://img.shields.io/github/v/tag/AllanChain/PKUHoleCommunity?sort=semver&label=release">
+  </a>
+  <a href="https://allanchain.github.io/PKUHoleCommunity/beta.html">
+    <img alt="GitHub tag (latest SemVer pre-release)" src="https://img.shields.io/github/v/tag/AllanChain/PKUHoleCommunity?sort=semver&include_prereleases&label=pre%20release">
+  </a>
+  <a href="https://github.com/AllanChain/PKUHoleCommunity/blob/master/LICENSE.txt">
+    <img alt="GitHub license" src="https://img.shields.io/github/license/AllanChain/PKUHoleCommunity">
+  </a>
+  <a href="https://github.com/AllanChain/PKUHoleCommunity/graphs/contributors">
+    <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/AllanChain/PKUHoleCommunity">
+  </a>
 </p>
 
 [原版的网页版树洞](https://github.com/pkuhelper-web/webhole)迟迟不更新一些想要的功能。。我想是不是发起一个社区版会好一些呢？
