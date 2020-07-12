@@ -50,11 +50,13 @@
 
 - 社区版提供 Beta 测试版本，登录状态与稳定版同步，更不稳定，试验性的新功能会优先推送到 Beta 版：[Beta版地址](https://allanchain.github.io/PKUHoleCommunity/beta.html)。
 
-## Contribution
+## Contributing
 
-有更多的同学喜欢，才有动力继续开发。而且现有的社区版开发者并非 React 土著，仅凭网页开发经验与简单的 React 基础做出相关改动，十分欢迎有 React 经验的同学共同开发。
+有更多的同学喜欢，才有动力继续开发。而且现有的社区版开发者并非 React 土著，十分欢迎有 React 经验的同学共同开发。
 
-社区版欢迎大家提出功能建议，或者参与到社区版的维护和更新中。相比于建议，社区版会优先考虑 PR。[GitHub 库地址](https://github.com/AllanChain/PKUHoleCommunity)，提出问题请到 [GitHub Issue](https://github.com/AllanChain/PKUHoleCommunity/issues)。希望有能力的同学一起打造社区版网页树洞。*注意 Issue 和 PR 中如有截图需打码。*
+社区版欢迎大家提出功能建议，或者参与到社区版的维护和更新中。相比于建议，社区版会优先考虑 PR。提出问题请到 [GitHub Issue](https://github.com/AllanChain/PKUHoleCommunity/issues)。希望有能力的同学一起打造社区版网页树洞。
+
+更多事项见 [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## Note
 
