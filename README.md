@@ -51,9 +51,9 @@ P 大树洞网页版社区分支（以下简称“社区版”）的定位是提
 - 使用主流的代码风格
 - 配置 GitHub Actions, 利用版本号控制发布
 
-## 其他
+### 其他
 
-- 社区版提供 Beta 测试版本，登录状态与稳定版同步，更不稳定，试验性的新功能会优先推送到 Beta 版：[Beta版地址](https://allanchain.github.io/PKUHoleCommunity/beta.html)。
+- 社区版提供 Beta 测试版本，登录状态与稳定版同步，但是会不稳定，试验性的新功能会优先推送到 [Beta 版](https://allanchain.github.io/PKUHoleCommunity/beta.html)。
 
 ## Contributing
 
