@@ -1,6 +1,7 @@
 <p align="center"><img src="https://pkuhelper.pku.edu.cn/hole/static/favicon/256.png" /></p>
 <h1 align="center">PKU Hole Community</h1>
-<p align="center">社区版网页树洞</p>
+<p align="center">P 大树洞网页版社区分支</p>
+<p align="center"><sup>（简称“树洞社区版”）</sup></p>
 <p align="center">
   <a href="https://allanchain.github.io/PKUHoleCommunity/">
     <img alt="GitHub tag (latest SemVer pre-release)" src="https://img.shields.io/github/v/tag/AllanChain/PKUHoleCommunity?sort=semver&label=release">
@@ -22,7 +23,7 @@
 
 然而官方并没有很好的处理同学们自己动手和表达想法的渠道。而且有很多呼声较高的功能迟迟不添加（毕竟一个人的精力有限）
 
-社区版的定位是提供一个交流的平台，提供大家动手实现的方案，让大家自己动手实现对树洞网页版的想法。社区版并非试图取代官方版本，更多的是牺牲一部分稳定性来换取好用的功能。如果大家喜欢，乐于贡献代码或想法，社区版会继续维护下去。
+P 大树洞网页版社区分支（以下简称“社区版”）的定位是提供一个交流的平台，提供大家动手实现的方案，让大家自己动手实现对树洞网页版的想法。社区版并非试图取代官方版本，更多的是牺牲一部分稳定性来换取好用的功能。如果大家喜欢，乐于贡献代码或想法，社区版会继续维护下去。
 
 ## 计划功能列表
 
@@ -58,7 +59,7 @@
 
 有更多的同学喜欢，才有动力继续开发。而且现有的社区版开发者并非 React 土著，十分欢迎有 React 经验的同学共同开发。
 
-社区版欢迎大家提出功能建议，或者参与到社区版的维护和更新中。相比于建议，社区版会优先考虑 PR。提出问题请到 [GitHub Issue](https://github.com/AllanChain/PKUHoleCommunity/issues)。希望有能力的同学一起打造社区版网页树洞。
+社区版欢迎大家提出功能建议，或者参与到社区版的维护和更新中。相比于建议，社区版会优先考虑 PR。提出问题请到 [GitHub Issue](https://github.com/AllanChain/PKUHoleCommunity/issues)，树洞内讨论建议包含“树洞社区版”关键词。希望有能力的同学一起打造树洞社区版。
 
 更多事项见 [CONTRIBUTING.md](CONTRIBUTING.md)
 
