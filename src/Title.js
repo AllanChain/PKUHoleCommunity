@@ -212,7 +212,7 @@ export function Title(props) {
             <span
               onClick={() =>
                 props.show_sidebar(
-                  'P大树洞',
+                  'P大树洞 (社区版)',
                   <InfoSidebar show_sidebar={props.show_sidebar} />,
                 )
               }
