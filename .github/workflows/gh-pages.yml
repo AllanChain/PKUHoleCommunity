@@ -10,6 +10,8 @@ jobs:
   build-and-deploy:
     name: Build and Release
     runs-on: ubuntu-latest
+    # Disable pre release builds before #34 resolves
+    if: ${{ ! contains(github.ref, '-') }}
     steps:
     - uses: actions/checkout@v2
       with:
