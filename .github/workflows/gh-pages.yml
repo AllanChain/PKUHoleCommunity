@@ -1,3 +1,5 @@
+name: Deploy on gh-pages
+
 on:
   push:
     tags: 
@@ -8,48 +10,70 @@ env:
 
 jobs:
   build-and-deploy:
-    name: Build and Release
+    name: Build and Deploy
     runs-on: ubuntu-latest
-    # Disable pre release builds before #34 resolves
-    if: ${{ ! contains(github.ref, '-') }}
     steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: true
     - name: Use Node.js ${{ env.NODE_VERSION }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ env.NODE_VERSION }}
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+        path: head
     - name: Install Packages
-      run: npm install
-    - name: Build App
-      run: npm run build
+      run: |
+        cd head
+        npm install
+    - name: Build Latest (Beta) App
+      run: |
+        cd head
+        npm run build
       env:
         # React will fail CI if there is any warning
         CI: false
-    # Yes, previous beta assets are still available
-    # but that does not matter too much.
-    # It will be clean after stable release
-    - name: Prepare Latest Stable Version
+        PUBLIC_PATH: '/PKUHoleCommunity/beta/'
+    - name: Prepare Latest Pages
       if: ${{ contains(github.ref, '-') }}
       uses: actions/checkout@v2
       with:
         submodules: true
         path: dist
         ref: 'gh-pages'
-    - name: Merge Stable and Beta Version
-      if: ${{ contains(github.ref, '-') }}
+    - name: Validate Previous Pages (Backward & Error Compacity)
+      id: validate
       run: |
-        mv build/index.html build/beta.html
-        cp -r build/* dist
-    - name: Copy as Beta
+        if [ -d 'dist/stable' ]
+        then
+          echo '::set-output name=valid::true'
+        else
+          rm -rf dist/*
+          echo '::set-output name=valid::false'
+        fi
+    - name: Copy Beta Version
+      run: |
+        rm -rf dist/beta/
+        cp -r head/build/ dist/beta/
+    - name: Also Copy as Stable
       if: ${{ ! contains(github.ref, '-') }}
       run: |
-        cp -r build dist
-        cp dist/index.html dist/beta.html
-    - name: Deploy
-      uses: peaceiris/actions-gh-pages@v3
+        rm -rf dist/stable/
+        cp -r head/build/ dist/stable/
+    - name: Rebuild Stable Version
+      if: ${{ ! steps.validate.outputs.valid }}
+      run: |
+        cp head/redirect.html dist/index.html
+        cd head
+        git checkout "v$(semver $(git tag) | tail -n 1)"
+        npm install
+        npm run build
+        cp -r build ../dist/stable
+      env:
+        CI: false
+        PUBLIC_PATH: '/PKUHoleCommunity/stable/'
+    - uses: actions/upload-artifact@v2
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./dist
-        publish_branch: gh-pages
+        name: build-result
+        path: |
+          dist
+          !dist/.git
