@@ -392,6 +392,21 @@ export class ConfigUI extends PureComponent {
             callback={this.save_changes_bound}
           />
           <hr />
+          <ConfigSwitch
+            callback={this.save_changes_bound}
+            id="pressure"
+            name="快速返回"
+            description="短暂按住 Esc 键或重压屏幕（3D Touch）可以快速返回或者刷新树洞"
+          />
+          <hr />
+          <ConfigSwitch
+            callback={this.save_changes_bound}
+            id="easter_egg"
+            name="允许彩蛋"
+            description="在某些情况下显示彩蛋"
+          />
+        </div>
+        <div className="box">
           <ConfigTextArea
             id="block_words"
             callback={this.save_changes_bound}
@@ -431,21 +446,8 @@ export class ConfigUI extends PureComponent {
               return map;
             }}
           />
-          <hr />
-          <ConfigSwitch
-            callback={this.save_changes_bound}
-            id="pressure"
-            name="快速返回"
-            description="短暂按住 Esc 键或重压屏幕（3D Touch）可以快速返回或者刷新树洞"
-          />
-          <hr />
-          <ConfigSwitch
-            callback={this.save_changes_bound}
-            id="easter_egg"
-            name="允许彩蛋"
-            description="在某些情况下显示彩蛋"
-          />
-          <hr />
+        </div>
+        <div className="box">
           <p>
             新功能建议或问题反馈请在&nbsp;
             <a
