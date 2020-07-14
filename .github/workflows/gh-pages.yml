@@ -2,79 +2,92 @@ name: Deploy on gh-pages
 
 on:
   push:
-    tags: 
-      - 'v*'
+    tags:
+      - "v*"
 
 env:
-  NODE_VERSION: '12.x'
+  NODE_VERSION: "12.x"
 
 jobs:
   build-and-deploy:
     name: Build and Deploy
     runs-on: ubuntu-latest
     steps:
-    - name: Use Node.js ${{ env.NODE_VERSION }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ env.NODE_VERSION }}
-    - uses: actions/checkout@v2
-      with:
-        submodules: true
-        fetch-depth: 0 # include tags
-        path: head
-    - name: Install Packages
-      run: |
-        cd head
-        npm install
-    - name: Build Latest (Beta) App
-      run: |
-        cd head
-        npm run build
-      env:
-        # React will fail CI if there is any warning
-        CI: false
-        PUBLIC_URL: '/PKUHoleCommunity/beta/'
-    - name: Prepare Latest Pages
-      if: ${{ contains(github.ref, '-') }}
-      uses: actions/checkout@v2
-      with:
-        submodules: true
-        path: dist
-        ref: 'gh-pages'
-    - name: Validate Previous Pages (Backward & Error Compacity)
-      id: validate
-      run: |
-        if [ -d 'dist/stable' ]
-        then
-          echo '::set-output name=valid::true'
-        else
-          rm -rf dist/*
-          echo '::set-output name=valid::'
-        fi
-    - name: Copy Beta Version
-      run: |
-        rm -rf dist/beta/
-        cp -r head/build/ dist/beta/
-    - name: Also Copy as Stable
-      if: ${{ ! contains(github.ref, '-') }}
-      run: |
-        rm -rf dist/stable/
-        cp -r head/build/ dist/stable/
-    - name: Rebuild Stable Version
-      if: ${{ ! steps.validate.outputs.valid }}
-      run: |
-        cp head/redirect.html dist/index.html
-        cd head
-        git checkout "v$(npx semver -r '>0.0.0' $(git tag) | tail -n 1)"
-        npm install
-        npm run build
-        cp -r build ../dist/stable
-      env:
-        CI: false
-        PUBLIC_URL: '/PKUHoleCommunity/stable/'
-    - uses: actions/upload-artifact@v2
-      with:
-        name: build-result
-        path: |
-          dist
-          !dist/.git
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+          fetch-depth: 0 # include tags
+          path: head
+
+      - name: Install Packages
+        run: |
+          cd head
+          npm install
+
+      - name: Build Latest (Beta) App
+        run: |
+          cd head
+          npm run build
+        env:
+          # React will fail CI if there is any warning
+          CI: false
+          PUBLIC_URL: "/PKUHoleCommunity/beta/"
+
+      - name: (Pre) Prepare Latest Pages
+        if: ${{ contains(github.ref, '-') }}
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+          path: dist
+          ref: "gh-pages"
+
+      - name: (Stable) Prepare Output Dir
+        if: ${{ ! contains(github.ref, '-') }}
+        run: mkdir dist
+
+      - name: (Pre) Validate Previous Pages (Backward & Error Compacity)
+        if: ${{ contains(github.ref, '-') }}
+        id: validate
+        run: |
+          if [ -d 'dist/stable' ]
+          then
+            echo '::set-output name=valid::true'
+          else
+            rm -rf dist/*
+            echo '::set-output name=valid::'
+          fi
+
+      - name: Copy Beta Version
+        run: |
+          rm -rf dist/beta/
+          cp -r head/build/ dist/beta/
+
+      - name: (Stable) Also Copy as Stable
+        if: ${{ ! contains(github.ref, '-') }}
+        run: cp -r head/build/ dist/stable/
+
+      - name: (Pre) Rebuild Stable Version
+        if: ${{ ! steps.validate.outputs.valid && contains(github.ref, '-') }}
+        run: |
+          cp head/redirect.html dist/index.html
+          cd head
+          # checkout latest stable version
+          git checkout "v$(npx semver -r '>0.0.0' $(git tag) | tail -n 1)"
+          npm install
+          npm run build
+          cp -r build ../dist/stable
+        env:
+          CI: false
+          PUBLIC_URL: "/PKUHoleCommunity/stable/"
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: build-result
+          path: |
+            dist
+            !dist/.git
