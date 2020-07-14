@@ -848,7 +848,9 @@ class FlowItemRow extends PureComponent {
                   <span className="box-header-tag">{this.props.info.tag}</span>
                 )}
                 <Time stamp={this.props.info.timestamp} />
-                <span className="box-header-badge"><span className="icon icon-block" /></span>
+                <span className="box-header-badge">
+                  <span className="icon icon-block" />
+                </span>
                 <div style={{ clear: 'both' }} />
               </div>
             </div>
@@ -1105,7 +1107,6 @@ export class Flow extends PureComponent {
             regex_search = /.+/;
           }
         }
-        console.log(use_search, use_regex);
         API.get_attention(this.props.token)
           .then((json) => {
             this.setState({
