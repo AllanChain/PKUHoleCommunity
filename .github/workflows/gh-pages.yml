@@ -20,6 +20,7 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
+        fetch-depth: 0 # include tags
         path: head
     - name: Install Packages
       run: |
@@ -64,6 +65,7 @@ jobs:
       run: |
         cp head/redirect.html dist/index.html
         cd head
+        which semver
         git checkout "v$(npx semver -r '>0.0.0' $(git tag) | tail -n 1)"
         npm install
         npm run build
