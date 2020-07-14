@@ -2,6 +2,11 @@
 <html>
   <head>
     <meta http-equiv="refresh" content="1; url='stable/'" />
+    <script>
+      navigator.serviceWorker.getRegistrations().then(function (regs) {
+        for (let reg of regs) if (reg.scope.match(/ty\/$/)) reg.unregister();
+      });
+    </script>
   </head>
   <body>
     <p>网页地址将更改，添加 <a href="stable/">stable/</a> 后缀</p>
