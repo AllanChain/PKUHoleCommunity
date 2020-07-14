@@ -48,7 +48,7 @@ jobs:
           echo '::set-output name=valid::true'
         else
           rm -rf dist/*
-          echo '::set-output name=valid::false'
+          echo '::set-output name=valid::'
         fi
     - name: Copy Beta Version
       run: |
