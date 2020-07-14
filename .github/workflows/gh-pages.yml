@@ -64,7 +64,7 @@ jobs:
       run: |
         cp head/redirect.html dist/index.html
         cd head
-        git checkout "v$(semver $(git tag) | tail -n 1)"
+        git checkout "v$(npx semver -r '>0.0.0' $(git tag) | tail -n 1)"
         npm install
         npm run build
         cp -r build ../dist/stable
