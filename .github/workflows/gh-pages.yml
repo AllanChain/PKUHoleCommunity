@@ -32,7 +32,7 @@ jobs:
       env:
         # React will fail CI if there is any warning
         CI: false
-        PUBLIC_PATH: '/PKUHoleCommunity/beta/'
+        PUBLIC_URL: '/PKUHoleCommunity/beta/'
     - name: Prepare Latest Pages
       if: ${{ contains(github.ref, '-') }}
       uses: actions/checkout@v2
@@ -70,7 +70,7 @@ jobs:
         cp -r build ../dist/stable
       env:
         CI: false
-        PUBLIC_PATH: '/PKUHoleCommunity/stable/'
+        PUBLIC_URL: '/PKUHoleCommunity/stable/'
     - uses: actions/upload-artifact@v2
       with:
         name: build-result
