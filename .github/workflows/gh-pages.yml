@@ -60,13 +60,15 @@ jobs:
       run: |
         rm -rf dist/stable/
         cp -r head/build/ dist/stable/
+    - name: Setup tmate session
+      uses: mxschmitt/action-tmate@v2
     - name: Rebuild Stable Version
       if: ${{ ! steps.validate.outputs.valid }}
       run: |
         cp head/redirect.html dist/index.html
         cd head
         which semver
-        git checkout "v$(npx semver -r '>0.0.0' $(git tag) | tail -n 1)"
+        git checkout "v$(semver -r '>0.0.0' $(git tag) | tail -n 1)"
         npm install
         npm run build
         cp -r build ../dist/stable
