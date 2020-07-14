@@ -156,7 +156,7 @@ class ControlBar extends PureComponent {
                     <PostForm
                       token={token}
                       on_complete={() => {
-                        this.props.show_sidebar(null, null);
+                        this.props.show_sidebar(null, null, 'clear');
                         this.do_refresh();
                       }}
                     />,
