@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
 
+import copy from 'copy-to-clipboard';
+
 import './Config.css';
 
 const BUILTIN_IMGS = {
@@ -209,6 +211,12 @@ class ConfigTextArea extends PureComponent {
       [this.props.id]: this.props.sift(this.state[this.props.id]),
     });
   } */
+  copy_config() {
+    if (copy(JSON.stringify({ [this.props.id]: window.config[this.props.id] })))
+      alert(
+        `成功将${this.props.name}以 JSON 格式复制到剪贴板！\n请一定不要泄露哦`,
+      );
+  }
 
   on_blur(e) {
     let value = e.target.value;
@@ -238,6 +246,9 @@ class ConfigTextArea extends PureComponent {
         <label>
           <p>
             <b>{this.props.name}</b>&nbsp;<small>#{this.props.id}</small>
+            <a style={{ float: 'right' }} onClick={this.copy_config.bind(this)}>
+              <small>导出</small>
+            </a>
           </p>
           <p className="config-description">{this.props.description}</p>
           <textarea
@@ -319,6 +330,28 @@ export class ConfigUI extends PureComponent {
     }
   }
 
+  copy_config() {
+    if (copy(JSON.stringify(window.config)))
+      alert('成功将全部设置以 JSON 格式复制到剪贴板！\n请一定不要泄露哦');
+  }
+
+  import_config() {
+    let imported_string = prompt('从其他设备导入 JSON 格式的设置');
+    if (imported_string) {
+      try {
+        let imported_config = JSON.parse(imported_string);
+        for (var key in imported_config) {
+          if (!key in window.config)
+            throw Error(`Unknown config item '${key}'`);
+          this.save_changes({ [key]: imported_config[key] });
+        }
+        window.location.reload();
+      } catch (error) {
+        alert(`导入失败！\n${error}`);
+      }
+    }
+  }
+
   render() {
     return (
       <div>
@@ -341,6 +374,13 @@ export class ConfigUI extends PureComponent {
             </b>
           </p>
         </div>
+        <div className="box config-operations">
+          <p>
+            <a onClick={this.copy_config.bind(this)}>导出</a>
+            &emsp;
+            <a onClick={this.import_config.bind(this)}>导入</a>
+          </p>
+        </div>
         <div className="box">
           <ConfigBackground
             id="background"
@@ -355,7 +395,7 @@ export class ConfigUI extends PureComponent {
           <ConfigTextArea
             id="block_words"
             callback={this.save_changes_bound}
-            name="设置屏蔽词"
+            name="屏蔽词"
             description={'包含屏蔽词的树洞会被折叠，每行写一个屏蔽词'}
             display={(array) => array.join('\n')}
             parse={(string) => string.split('\n').filter((v) => v)}
@@ -364,7 +404,7 @@ export class ConfigUI extends PureComponent {
           <ConfigTextArea
             id="alias"
             callback={this.save_changes_bound}
-            name="设置别名"
+            name="别名"
             description={`可用 #别名 代替 #PID（树洞号）进行查询，每行由树洞号、半角空格、别名顺序连接，如“472865 网页版发布”，别名中不可包含空格`}
             display={(map) =>
               Object.entries(map)
