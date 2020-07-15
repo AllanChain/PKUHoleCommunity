@@ -639,7 +639,9 @@ class FlowItemRow extends PureComponent {
         props.attention_override === null ? false : props.attention_override,
       cached: true, // default no display anything
     };
-    this.color_picker = new ColorPicker();
+    this.color_picker = props.info.reply_color_picker
+      ? props.info.reply_color_picker
+      : new ColorPicker();
   }
 
   componentDidMount() {
@@ -658,6 +660,40 @@ class FlowItemRow extends PureComponent {
       reply_status: 'loading',
       reply_error: null,
     });
+
+    if (this.state.info.use_reply_promise) {
+      this.state.info.reply_promise
+        .then(({ data: json, cached, latest_reply }) => {
+          this.setState(
+            (prev, props) => ({
+              replies: json.data,
+              info: Object.assign({}, prev.info, {
+                reply: update_count ? '' + json.data.length : prev.info.reply,
+                variant: json.data.length ? { latest_reply } : {}, // info._latest_reply in state is always null, Don't use it!
+              }),
+              attention: !!json.attention,
+              reply_status: 'done',
+              reply_error: null,
+              cached,
+            }),
+            callback,
+          );
+        })
+        .catch((e) => {
+          console.error(e);
+          this.setState(
+            {
+              replies: [],
+              reply_status: 'failed',
+              reply_error: '' + e,
+            },
+            callback,
+          );
+        });
+
+      return;
+    }
+
     API.load_replies_with_cache(
       this.state.info.pid,
       this.props.token,
@@ -959,9 +995,12 @@ function FlowChunk(props) {
       {({ value: token }) => (
         <div className="flow-chunk">
           {!!props.title && <TitleLine text={props.title} />}
+          <p className="title-button black-outline">
+            {!!props.title_button && props.title_button}
+          </p>
           {props.list.map((info, ind) => (
             <LazyLoad
-              key={info.pid}
+              key={`${info.pid}-${props.lazyload_key_suffix}`}
               offset={1500}
               height="15em"
               hiddenIfInvisible={true}
@@ -1011,9 +1050,65 @@ export class Flow extends PureComponent {
       },
       loading_status: 'done',
       error_msg: null,
+      reply_promises_done: false,
+      sort_by_latest_reply: false,
+      lazyload_key_suffix: 0,
     };
     this.on_scroll_bound = this.on_scroll.bind(this);
+    this.reply_promises = [];
     window.LATEST_POST_ID = parseInt(localStorage['_LATEST_POST_ID'], 10) || 0;
+  }
+
+  inject_reply_promises(data) {
+    let reply_promise;
+    let color_picker;
+    for (let post of data) {
+      color_picker = new ColorPicker();
+      reply_promise = new Promise((resolve, reject) => {
+        console.log('fetching reply with promise', post.pid);
+        API.load_replies_with_cache(
+          post.pid,
+          this.props.token,
+          color_picker,
+          parseInt(post.reply),
+        )
+          .then(({ data: json, cached }) => {
+            let latest_reply = json.data.length
+              ? Math.max.apply(
+                  null,
+                  json.data.map((r) => parseInt(r.timestamp)),
+                )
+              : post.timestamp;
+            post._latest_reply = latest_reply;
+            resolve({
+              data: json,
+              cached,
+              latest_reply,
+            });
+          })
+          .catch((e) => {
+            console.error(e);
+            reject(e);
+          });
+      });
+      post.use_reply_promise = true;
+      post.reply_color_picker = color_picker;
+      post.reply_promise = reply_promise;
+      this.reply_promises.push(reply_promise);
+      post._latest_reply = null; // This value is not a promise and can only be used in Flow component!
+    }
+
+    Promise.all(this.reply_promises)
+      .then((replies) => {
+        this.setState((prev) => ({
+          reply_promises_done: true,
+        }));
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+
+    return data;
   }
 
   load_page(page) {
@@ -1118,15 +1213,19 @@ export class Flow extends PureComponent {
                       : `Result for "${this.state.search_param}" in `
                     : ''
                 }Attention List`,
-                data: !use_search
-                  ? json.data
-                  : !use_regex
-                  ? json.data.filter((post) => {
-                      return this.state.search_param
-                        .split(' ')
-                        .every((keyword) => post.text.includes(keyword));
-                    }) // Not using regex
-                  : json.data.filter((post) => !!post.text.match(regex_search)), // Using regex
+                data: this.inject_reply_promises(
+                  !use_search
+                    ? json.data // No Search
+                    : !use_regex
+                    ? json.data.filter((post) =>
+                        this.state.search_param
+                          .split(' ')
+                          .every((keyword) => post.text.includes(keyword)),
+                      ) // Search, Not using regex
+                    : json.data.filter(
+                        (post) => !!post.text.match(regex_search),
+                      ), // Search, Using regex
+                ),
               },
               mode: 'attention_finished',
               loading_status: 'done',
@@ -1155,6 +1254,28 @@ export class Flow extends PureComponent {
     }
   }
 
+  sort_by_latest_reply() {
+    this.setState((prev) => ({
+      original_chunk: prev.chunks,
+      chunks: {
+        title: prev.chunks.title,
+        data: prev.chunks.data
+          .slice(0)
+          .sort((a, b) => b._latest_reply - a._latest_reply),
+      },
+      lazyload_key_suffix: prev.lazyload_key_suffix + 1,
+      sort_by_latest_reply: true,
+    }));
+  }
+
+  sort_by_original() {
+    this.setState((prev) => ({
+      chunks: prev.original_chunk,
+      lazyload_key_suffix: prev.lazyload_key_suffix + 1,
+      sort_by_latest_reply: false,
+    }));
+  }
+
   componentDidMount() {
     this.load_page(1);
     window.addEventListener('scroll', this.on_scroll_bound);
@@ -1167,15 +1288,24 @@ export class Flow extends PureComponent {
 
   render() {
     const should_deletion_detect = localStorage['DELETION_DETECT'] === 'on';
+    let title_button_sort =
+      this.state.reply_promises_done &&
+      (this.state.sort_by_latest_reply ? (
+        <a onClick={this.sort_by_original.bind(this)}>按最新回复时间排序</a>
+      ) : (
+        <a onClick={this.sort_by_latest_reply.bind(this)}>按发布时间排序</a>
+      ));
     return (
       <div className="flow-container">
         <FlowChunk
           title={this.state.chunks.title}
+          title_button={title_button_sort}
           list={this.state.chunks.data}
           mode={this.state.mode}
           search_param={this.state.search_param || null}
           show_sidebar={this.props.show_sidebar}
           deletion_detect={should_deletion_detect}
+          lazyload_key_suffix={this.state.lazyload_key_suffix}
         />
         {this.state.loading_status === 'failed' && (
           <div className="aux-margin">

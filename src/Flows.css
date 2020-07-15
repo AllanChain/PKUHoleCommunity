@@ -282,3 +282,12 @@
     padding: 0 .5em;
     opacity: .4;
 }
+
+.title-button {
+    text-align: center;
+    font-size: 95%;
+}
+
+.title-button a:not(:hover) {
+    color: #fff; 
+}
