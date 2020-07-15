@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
 
+import copy from 'copy-to-clipboard';
+
 import './Config.css';
 
 const BUILTIN_IMGS = {
@@ -210,6 +212,13 @@ class ConfigTextArea extends PureComponent {
     });
   } */
 
+  copy_value() {
+    if (copy(this.state[this.props.id]))
+      alert(
+        `成功将${this.props.name}以 JSON 格式复制到剪贴板！\n请一定不要泄露哦`,
+      );
+  }
+
   on_blur(e) {
     let value = e.target.value;
     let parsed = this.props.parse(value);
@@ -238,6 +247,9 @@ class ConfigTextArea extends PureComponent {
         <label>
           <p>
             <b>{this.props.name}</b>&nbsp;<small>#{this.props.id}</small>
+            <a style={{ float: 'right' }} onClick={this.copy_value.bind(this)}>
+              <small>复制</small>
+            </a>
           </p>
           <p className="config-description">{this.props.description}</p>
           <textarea
