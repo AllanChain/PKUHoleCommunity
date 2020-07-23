@@ -288,6 +288,10 @@
     font-size: 95%;
 }
 
-.title-button a:not(:hover) {
+.title-button a {
     color: #fff; 
+}
+
+.title-button a:hover {
+    border: none;
 }

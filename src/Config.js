@@ -18,6 +18,7 @@ const DEFAULT_CONFIG = {
   color_scheme: 'default',
   block_words: [],
   alias: {},
+  attention_sort: false,
 };
 
 export function load_config() {
@@ -390,6 +391,13 @@ export class ConfigUI extends PureComponent {
                 });
               return map;
             }}
+          />
+          <hr />
+          <ConfigSwitch
+            callback={this.save_changes_bound}
+            id="attention_sort"
+            name="关注列表排序"
+            description="启用后，可以将关注列表按最后回复时间排序。不建议在性能较差的设备上启用"
           />
           <hr />
           <ConfigSwitch

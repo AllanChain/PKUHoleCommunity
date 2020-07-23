@@ -1055,50 +1055,62 @@ export class Flow extends PureComponent {
       lazyload_key_suffix: 0,
     };
     this.on_scroll_bound = this.on_scroll.bind(this);
-    this.reply_promises = [];
     window.LATEST_POST_ID = parseInt(localStorage['_LATEST_POST_ID'], 10) || 0;
   }
 
   inject_reply_promises(data) {
     let reply_promise;
     let color_picker;
-    for (let post of data) {
-      color_picker = new ColorPicker();
-      reply_promise = new Promise((resolve, reject) => {
-        console.log('fetching reply with promise', post.pid);
-        API.load_replies_with_cache(
-          post.pid,
-          this.props.token,
-          color_picker,
-          parseInt(post.reply),
-        )
-          .then(({ data: json, cached }) => {
-            let latest_reply = json.data.length
-              ? Math.max.apply(
-                  null,
-                  json.data.map((r) => parseInt(r.timestamp)),
-                )
-              : post.timestamp;
-            post._latest_reply = latest_reply;
-            resolve({
-              data: json,
-              cached,
-              latest_reply,
-            });
-          })
-          .catch((e) => {
-            console.error(e);
-            reject(e);
-          });
-      });
-      post.use_reply_promise = true;
-      post.reply_color_picker = color_picker;
-      post.reply_promise = reply_promise;
-      this.reply_promises.push(reply_promise);
-      post._latest_reply = null; // This value is not a promise and can only be used in Flow component!
+
+    let segments = [];
+    const MAX_PARALLEL = 25;
+    for (let i = 0; i < data.length; i += MAX_PARALLEL) {
+      segments.push(data.slice(i, i + MAX_PARALLEL)); // Shallow copy
     }
 
-    Promise.all(this.reply_promises)
+    segments
+      .reduce((accumulator, current) => {
+        return accumulator.then(() => {
+          let segment_promises = [];
+          for (let post of current) {
+            color_picker = new ColorPicker();
+            reply_promise = new Promise((resolve, reject) => {
+              console.log('fetching reply with promise', post.pid);
+              API.load_replies_with_cache(
+                post.pid,
+                this.props.token,
+                color_picker,
+                parseInt(post.reply),
+              )
+                .then(({ data: json, cached }) => {
+                  let latest_reply = json.data.length
+                    ? Math.max.apply(
+                        null,
+                        json.data.map((r) => parseInt(r.timestamp)),
+                      )
+                    : post.timestamp;
+                  post._latest_reply = latest_reply;
+                  resolve({
+                    data: json,
+                    cached,
+                    latest_reply,
+                  });
+                })
+                .catch((e) => {
+                  console.error(e);
+                  reject(e);
+                });
+            });
+            post.use_reply_promise = true;
+            post.reply_color_picker = color_picker;
+            post.reply_promise = reply_promise;
+            segment_promises.push(reply_promise);
+            post._latest_reply = null; // This value is not a promise and can only be used in Flow component!
+          }
+
+          return Promise.all(segment_promises);
+        });
+      }, Promise.resolve())
       .then((replies) => {
         this.setState((prev) => ({
           reply_promises_done: true,
@@ -1204,6 +1216,15 @@ export class Flow extends PureComponent {
         }
         API.get_attention(this.props.token)
           .then((json) => {
+            let data_processed = !use_search
+              ? json.data // No Search
+              : !use_regex
+              ? json.data.filter((post) =>
+                  this.state.search_param
+                    .split(' ')
+                    .every((keyword) => post.text.includes(keyword)),
+                ) // Search, Not using regex
+              : json.data.filter((post) => !!post.text.match(regex_search)); // Search, Using regex
             this.setState({
               chunks: {
                 title: `${
@@ -1213,19 +1234,9 @@ export class Flow extends PureComponent {
                       : `Result for "${this.state.search_param}" in `
                     : ''
                 }Attention List`,
-                data: this.inject_reply_promises(
-                  !use_search
-                    ? json.data // No Search
-                    : !use_regex
-                    ? json.data.filter((post) =>
-                        this.state.search_param
-                          .split(' ')
-                          .every((keyword) => post.text.includes(keyword)),
-                      ) // Search, Not using regex
-                    : json.data.filter(
-                        (post) => !!post.text.match(regex_search),
-                      ), // Search, Using regex
-                ),
+                data: window.config.attention_sort
+                  ? this.inject_reply_promises(data_processed)
+                  : data_processed,
               },
               mode: 'attention_finished',
               loading_status: 'done',
@@ -1295,6 +1306,7 @@ export class Flow extends PureComponent {
       ) : (
         <a onClick={this.sort_by_latest_reply.bind(this)}>按发布时间排序</a>
       ));
+    if (this.state.reply_promises_done) console.log('promise done');
     return (
       <div className="flow-container">
         <FlowChunk
