@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
 
+import copy from 'copy-to-clipboard';
+
 import './Config.css';
 
 const BUILTIN_IMGS = {
@@ -210,6 +212,13 @@ class ConfigTextArea extends PureComponent {
     });
   } */
 
+  copy_value() {
+    if (copy(this.state[this.props.id]))
+      alert(
+        `成功将${this.props.name}以 JSON 格式复制到剪贴板！\n请一定不要泄露哦`,
+      );
+  }
+
   on_blur(e) {
     let value = e.target.value;
     let parsed = this.props.parse(value);
@@ -238,6 +247,9 @@ class ConfigTextArea extends PureComponent {
         <label>
           <p>
             <b>{this.props.name}</b>&nbsp;<small>#{this.props.id}</small>
+            <a style={{ float: 'right' }} onClick={this.copy_value.bind(this)}>
+              <small>复制</small>
+            </a>
           </p>
           <p className="config-description">{this.props.description}</p>
           <textarea
@@ -352,6 +364,21 @@ export class ConfigUI extends PureComponent {
             callback={this.save_changes_bound}
           />
           <hr />
+          <ConfigSwitch
+            callback={this.save_changes_bound}
+            id="pressure"
+            name="快速返回"
+            description="短暂按住 Esc 键或重压屏幕（3D Touch）可以快速返回或者刷新树洞"
+          />
+          <hr />
+          <ConfigSwitch
+            callback={this.save_changes_bound}
+            id="easter_egg"
+            name="允许彩蛋"
+            description="在某些情况下显示彩蛋"
+          />
+        </div>
+        <div className="box">
           <ConfigTextArea
             id="block_words"
             callback={this.save_changes_bound}
@@ -391,21 +418,8 @@ export class ConfigUI extends PureComponent {
               return map;
             }}
           />
-          <hr />
-          <ConfigSwitch
-            callback={this.save_changes_bound}
-            id="pressure"
-            name="快速返回"
-            description="短暂按住 Esc 键或重压屏幕（3D Touch）可以快速返回或者刷新树洞"
-          />
-          <hr />
-          <ConfigSwitch
-            callback={this.save_changes_bound}
-            id="easter_egg"
-            name="允许彩蛋"
-            description="在某些情况下显示彩蛋"
-          />
-          <hr />
+        </div>
+        <div className="box">
           <p>
             新功能建议或问题反馈请在&nbsp;
             <a
