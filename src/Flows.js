@@ -568,7 +568,7 @@ class FlowSidebar extends PureComponent {
             <span className="sidebar-toolbar-dropdown sidebar-toolbar-item">
               <span className="sidebar-toolbar-dropdown-title">
                 <a>
-                  <span className="icon">⋯</span>
+                  <span className="icon icon-menu" />
                   <label>更多▾</label>
                 </a>
               </span>
