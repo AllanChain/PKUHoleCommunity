@@ -419,6 +419,7 @@ export class ConfigUI extends PureComponent {
               return map;
             }}
           />
+          <hr />
           <ConfigSwitch
             callback={this.save_changes_bound}
             id="attention_sort"
