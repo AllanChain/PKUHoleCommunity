@@ -11,7 +11,19 @@ import { LoginPopup, TitleLine } from './infrastructure/widgets';
 const MAX_SIDEBAR_STACK_SIZE = 10;
 
 function DeprecatedAlert(props) {
-  return <div id="global-hint-container" style={{ display: 'none' }} />;
+  return (
+    <div id="global-hint-container">
+      <div className="flow-item-row box box-danger">
+        <p align="center">
+          社区版网址即将更换
+          <a href="https://allanchain.github.io/PKUHoleCommunity/stable/">
+            至此
+          </a>
+          ，届时仍可从原地址访问社区版，但将自动跳转到新地址。
+        </p>
+      </div>
+    </div>
+  );
 }
 
 class App extends Component {
