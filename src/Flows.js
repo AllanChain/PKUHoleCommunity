@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import copy from 'copy-to-clipboard';
+import pLimit from 'p-limit';
 import { ColorPicker } from './color_picker';
 import {
   split_text,
@@ -662,6 +663,7 @@ class FlowItemRow extends PureComponent {
     });
 
     if (this.state.info.use_reply_promise) {
+      console.log(this.state.info.reply_promise);
       this.state.info.reply_promise
         .then(({ data: json, cached, latest_reply }) => {
           this.setState(
@@ -1059,62 +1061,54 @@ export class Flow extends PureComponent {
   }
 
   inject_reply_promises(data) {
-    let reply_promise;
-    let color_picker;
-
-    let segments = [];
-    const MAX_PARALLEL = 25;
-    for (let i = 0; i < data.length; i += MAX_PARALLEL) {
-      segments.push(data.slice(i, i + MAX_PARALLEL)); // Shallow copy
+    const limit = pLimit(25);
+    const injections = [];
+    for (const post of data) {
+      const color_picker = new ColorPicker();
+      const reply_promise = limit(
+        () =>
+          new Promise((resolve, reject) => {
+            console.log('fetching reply with promise', post.pid);
+            API.load_replies_with_cache(
+              post.pid,
+              this.props.token,
+              color_picker,
+              parseInt(post.reply),
+            )
+              .then(({ data: json, cached }) => {
+                let latest_reply = json.data.length
+                  ? Math.max.apply(
+                      null,
+                      json.data.map((r) => parseInt(r.timestamp)),
+                    )
+                  : post.timestamp;
+                post._latest_reply = latest_reply;
+                resolve({
+                  data: json,
+                  cached,
+                  latest_reply,
+                });
+              })
+              .catch((e) => {
+                console.error(e);
+                reject(e);
+              });
+          }),
+      );
+      injections.push(reply_promise);
+      post.use_reply_promise = true;
+      post.reply_color_picker = color_picker;
+      post.reply_promise = reply_promise;
+      // `_latest_reply` is not a promise and can only
+      // be used in Flow component!
+      post._latest_reply = null;
     }
 
-    segments
-      .reduce((accumulator, current) => {
-        return accumulator.then(() => {
-          let segment_promises = [];
-          for (let post of current) {
-            color_picker = new ColorPicker();
-            reply_promise = new Promise((resolve, reject) => {
-              console.log('fetching reply with promise', post.pid);
-              API.load_replies_with_cache(
-                post.pid,
-                this.props.token,
-                color_picker,
-                parseInt(post.reply),
-              )
-                .then(({ data: json, cached }) => {
-                  let latest_reply = json.data.length
-                    ? Math.max.apply(
-                        null,
-                        json.data.map((r) => parseInt(r.timestamp)),
-                      )
-                    : post.timestamp;
-                  post._latest_reply = latest_reply;
-                  resolve({
-                    data: json,
-                    cached,
-                    latest_reply,
-                  });
-                })
-                .catch((e) => {
-                  console.error(e);
-                  reject(e);
-                });
-            });
-            post.use_reply_promise = true;
-            post.reply_color_picker = color_picker;
-            post.reply_promise = reply_promise;
-            segment_promises.push(reply_promise);
-            post._latest_reply = null; // This value is not a promise and can only be used in Flow component!
-          }
-
-          return Promise.all(segment_promises);
-        });
-      }, Promise.resolve())
-      .then((replies) => {
-        this.setState((prev) => ({
+    Promise.all(injections)
+      .then(() => {
+        this.setState({
           reply_promises_done: true,
-        }));
+        });
       })
       .catch((e) => {
         console.error(e);
