@@ -283,6 +283,19 @@
     opacity: .4;
 }
 
+.title-button {
+    text-align: center;
+    font-size: 95%;
+}
+
+.title-button a {
+    color: lightgoldenrodyellow; 
+}
+
+.title-button a:hover {
+    border: none;
+}
+
 /* .sidebar-toolbar>.box {
     display: flex;
     align-items: stretch;
