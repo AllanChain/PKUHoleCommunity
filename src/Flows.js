@@ -697,14 +697,17 @@ class FlowItemRow extends PureComponent {
   }
 
   load_replies(callback, update_count = true) {
-    console.log('fetching reply', this.state.info.pid);
     this.setState({
       reply_status: 'loading',
       reply_error: null,
     });
 
     if (this.state.info.use_reply_promise) {
-      console.log(this.state.info.reply_promise);
+      console.log(
+        'fetching reply',
+        this.state.info.pid,
+        'from resolved promise',
+      );
       this.state.info.reply_promise
         .then(({ data: json, cached, latest_reply }) => {
           this.setState(
@@ -737,6 +740,7 @@ class FlowItemRow extends PureComponent {
       return;
     }
 
+    console.log('fetching reply', this.state.info.pid);
     API.load_replies_with_cache(
       this.state.info.pid,
       this.props.token,
@@ -1334,7 +1338,6 @@ export class Flow extends PureComponent {
       ) : (
         <a onClick={this.sort_by_latest_reply.bind(this)}>[ 按发布时间排序 ]</a>
       ));
-    if (this.state.reply_promises_done) console.log('promise done');
     return (
       <div className="flow-container">
         <FlowChunk
