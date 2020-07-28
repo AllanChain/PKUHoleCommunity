@@ -1296,9 +1296,9 @@ export class Flow extends PureComponent {
     let title_button_sort =
       this.state.reply_promises_done &&
       (this.state.sort_by_latest_reply ? (
-        <a onClick={this.sort_by_original.bind(this)}>按最新回复时间排序</a>
+        <a onClick={this.sort_by_original.bind(this)}>[ 按最新回复时间排序 ]</a>
       ) : (
-        <a onClick={this.sort_by_latest_reply.bind(this)}>按发布时间排序</a>
+        <a onClick={this.sort_by_latest_reply.bind(this)}>[ 按发布时间排序 ]</a>
       ));
     if (this.state.reply_promises_done) console.log('promise done');
     return (
