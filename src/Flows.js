@@ -1065,36 +1065,29 @@ export class Flow extends PureComponent {
     const injections = [];
     for (const post of data) {
       const color_picker = new ColorPicker();
-      const reply_promise = limit(
-        () =>
-          new Promise((resolve, reject) => {
-            console.log('fetching reply with promise', post.pid);
-            API.load_replies_with_cache(
-              post.pid,
-              this.props.token,
-              color_picker,
-              parseInt(post.reply),
-            )
-              .then(({ data: json, cached }) => {
-                let latest_reply = json.data.length
-                  ? Math.max.apply(
-                      null,
-                      json.data.map((r) => parseInt(r.timestamp)),
-                    )
-                  : post.timestamp;
-                post._latest_reply = latest_reply;
-                resolve({
-                  data: json,
-                  cached,
-                  latest_reply,
-                });
-              })
-              .catch((e) => {
-                console.error(e);
-                reject(e);
-              });
-          }),
-      );
+      const reply_promise = limit(async () => {
+        try {
+          console.log('fetching reply with promise', post.pid);
+          const { data: json, cached } = await API.load_replies_with_cache(
+            post.pid,
+            this.props.token,
+            color_picker,
+            parseInt(post.reply),
+          );
+          const latest_reply = json.data.length
+            ? Math.max(...json.data.map((r) => parseInt(r.timestamp)))
+            : post.timestamp;
+          post._latest_reply = latest_reply;
+          return {
+            data: json,
+            cached,
+            latest_reply,
+          };
+        } catch (e) {
+          console.error(e);
+          reject(e);
+        }
+      });
       injections.push(reply_promise);
       post.use_reply_promise = true;
       post.reply_color_picker = color_picker;
