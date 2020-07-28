@@ -434,7 +434,7 @@ class FlowSidebar extends PureComponent {
       this.state.info.pid !== window.config.alias[alias]
     ) {
       override = confirm(
-        `是否将“${alias}”从 #${window.config.alias[alias]} ` +
+        `是否将“#${alias}”从 #${window.config.alias[alias]} ` +
           `改为 #${this.state.info.pid}？`,
       );
     }
