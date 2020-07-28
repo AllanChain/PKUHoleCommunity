@@ -24,6 +24,8 @@ import { TokenCtx, ReplyForm } from './UserAction';
 
 import { API, PKUHELPER_ROOT } from './flows_api';
 
+import { load_config, save_config } from './Config';
+
 const IMAGE_BASE = PKUHELPER_ROOT + 'services/pkuhole/images/';
 const AUDIO_BASE = PKUHELPER_ROOT + 'services/pkuhole/audios/';
 
@@ -420,6 +422,28 @@ class FlowSidebar extends PureComponent {
     }
   }
 
+  set_alias() {
+    load_config();
+    let alias = prompt(`给 #${this.state.info.pid} 添加别名：`);
+    if (alias === null) return;
+    if (alias.includes(' ')) return alert('别名不合法，设置别名失败');
+
+    let override = true;
+    if (
+      alias in window.config.alias &&
+      this.state.info.pid !== window.config.alias[alias]
+    ) {
+      override = confirm(
+        `是否将“#${alias}”从 #${window.config.alias[alias]} ` +
+          `改为 #${this.state.info.pid}？`,
+      );
+    }
+    if (override) {
+      window.config.alias[alias] = this.state.info.pid;
+      save_config();
+    }
+  }
+
   set_filter_name(name) {
     this.setState((prevState) => ({
       filter_name: name === prevState.filter_name ? null : name,
@@ -496,23 +520,23 @@ class FlowSidebar extends PureComponent {
 
     return (
       <div className="flow-item-row sidebar-flow-item">
-        <div className="box box-tip">
+        <div className="box box-tip sidebar-toolbar">
           {!!this.props.token && (
-            <span>
+            <span className="sidebar-toolbar-item">
               <a onClick={this.report.bind(this)}>
                 <span className="icon icon-flag" />
                 <label>举报</label>
               </a>
-              &nbsp;&nbsp;
             </span>
           )}
-          <a onClick={this.load_replies.bind(this)}>
-            <span className="icon icon-refresh" />
-            <label>刷新</label>
-          </a>
+          <span className="sidebar-toolbar-item">
+            <a onClick={this.load_replies.bind(this)}>
+              <span className="icon icon-refresh" />
+              <label>刷新</label>
+            </a>
+          </span>
           {(this.state.replies.length >= 1 || this.state.rev) && (
-            <span>
-              &nbsp;&nbsp;
+            <span className="sidebar-toolbar-item">
               <a onClick={this.toggle_rev.bind(this)}>
                 <span className="icon icon-order-rev" />
                 <label>{this.state.rev ? '还原' : '逆序'}</label>
@@ -520,8 +544,7 @@ class FlowSidebar extends PureComponent {
             </span>
           )}
           {!!this.props.token && (
-            <span>
-              &nbsp;&nbsp;
+            <span className="sidebar-toolbar-item">
               <a
                 onClick={() => {
                   this.toggle_attention();
@@ -539,6 +562,24 @@ class FlowSidebar extends PureComponent {
                   </span>
                 )}
               </a>
+            </span>
+          )}
+          {!!this.props.token && (
+            <span className="sidebar-toolbar-dropdown sidebar-toolbar-item">
+              <span className="sidebar-toolbar-dropdown-title">
+                <a>
+                  <span className="icon icon-menu" />
+                  <label>更多▾</label>
+                </a>
+              </span>
+              <div className="sidebar-toolbar-dropdown-content">
+                <div className="sidebar-toolbar-dropdown-item">
+                  <a onClick={this.set_alias.bind(this)}>
+                    <span className="icon icon-link" />
+                    <label>别名</label>
+                  </a>
+                </div>
+              </div>
             </span>
           )}
         </div>
@@ -848,7 +889,9 @@ class FlowItemRow extends PureComponent {
                   <span className="box-header-tag">{this.props.info.tag}</span>
                 )}
                 <Time stamp={this.props.info.timestamp} />
-                <span className="box-header-badge"><span className="icon icon-block" /></span>
+                <span className="box-header-badge">
+                  <span className="icon icon-block" />
+                </span>
                 <div style={{ clear: 'both' }} />
               </div>
             </div>
