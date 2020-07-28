@@ -425,23 +425,23 @@ class FlowSidebar extends PureComponent {
   set_alias() {
     load_config();
     let alias = prompt(`给 #${this.state.info.pid} 添加别名：`);
-    if (alias !== null) {
-      if (!alias.includes(' ')) {
-        let override = true;
-        if (
-          alias in window.config.alias &&
-          this.state.info.pid !== window.config.alias[alias]
-        ) {
-          override = confirm(
-            `是否将“${alias}”从 #${window.config.alias[alias]} 改为 #${this.state.info.pid}？`,
-          );
-        }
-        if (override) {
-          window.config.alias[alias] = this.state.info.pid;
-          save_config();
-        } else alert('取消设置别名');
-      } else alert('别名不合法，设置别名失败');
-    } else alert('取消设置别名');
+    if (alias === null) return;
+    if (alias.includes(' ')) return alert('别名不合法，设置别名失败');
+
+    let override = true;
+    if (
+      alias in window.config.alias &&
+      this.state.info.pid !== window.config.alias[alias]
+    ) {
+      override = confirm(
+        `是否将“${alias}”从 #${window.config.alias[alias]} ` +
+          `改为 #${this.state.info.pid}？`,
+      );
+    }
+    if (override) {
+      window.config.alias[alias] = this.state.info.pid;
+      save_config();
+    }
   }
 
   set_filter_name(name) {
