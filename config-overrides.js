@@ -4,7 +4,7 @@ module.exports = function override(config, env) {
   pwaConfig.cacheId = 'PKUHoleCE';
   pwaConfig.runtimeCaching = [
     {
-      urlPattern: new RegExp('static/fonts_7/.*'),
+      urlPattern: new RegExp('static/(manifest.json|(fonts_7|bg)/.*)'),
       handler: 'CacheFirst',
       options: {
         cacheName: 'PKUHoleCE',
