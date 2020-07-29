@@ -52,17 +52,17 @@ const DZ_NAME = '洞主';
 
 function load_single_meta(show_sidebar, token) {
   return async (pid, replace = false) => {
-    let color_picker = new ColorPicker();
-    let title_elem = '树洞 #' + pid;
+    const color_picker = new ColorPicker();
+    const title_elem = '树洞 #' + pid;
     show_sidebar(
       title_elem,
       <div className="box box-tip">正在加载 #{pid}</div>,
       replace ? 'replace' : 'push',
     );
     try {
-      let single = await API.get_single(pid, token);
+      const single = await API.get_single(pid, token);
       single.data.variant = {};
-      let { data: replies } = await API.load_replies_with_cache(
+      const { data: replies } = await API.load_replies_with_cache(
         pid,
         token,
         color_picker,
@@ -106,7 +106,7 @@ class Reply extends PureComponent {
   }
 
   render() {
-    let parts = split_text(this.props.info.text, [
+    const parts = split_text(this.props.info.text, [
       ['url_pid', URL_PID_RE],
       ['url', URL_RE],
       ['pid', PID_RE],
@@ -183,8 +183,8 @@ class FlowItem extends PureComponent {
   }
 
   render() {
-    let props = this.props;
-    let parts =
+    const props = this.props;
+    const parts =
       props.parts ||
       split_text(props.info.text, [
         ['url_pid', URL_PID_RE],
@@ -410,7 +410,7 @@ class FlowSidebar extends PureComponent {
   }
 
   report() {
-    let reason = prompt(`举报 #${this.state.info.pid} 的理由：`);
+    const reason = prompt(`举报 #${this.state.info.pid} 的理由：`);
     if (reason !== null) {
       API.report(this.state.info.pid, reason, this.props.token)
         .then((json) => {
@@ -425,7 +425,7 @@ class FlowSidebar extends PureComponent {
 
   set_alias() {
     load_config();
-    let alias = prompt(`给 #${this.state.info.pid} 添加别名：`);
+    const alias = prompt(`给 #${this.state.info.pid} 添加别名：`);
     if (alias === null) return;
     if (alias.includes(' ')) return alert('别名不合法，设置别名失败');
 
@@ -457,14 +457,14 @@ class FlowSidebar extends PureComponent {
 
   show_reply_bar(name, event) {
     if (this.reply_ref.current && !event.target.closest('a, .clickable')) {
-      let text = this.reply_ref.current.get();
+      const text = this.reply_ref.current.get();
       if (
         /^\s*(?:Re (?:|洞主|(?:[A-Z][a-z]+ )?(?:[A-Z][a-z]+)|You Win(?: \d+)?):)?\s*$/.test(
           text,
         )
       ) {
         // text is nearly empty so we can replace it
-        let should_text = 'Re ' + name + ': ';
+        const should_text = 'Re ' + name + ': ';
         if (should_text === this.reply_ref.current.get())
           this.reply_ref.current.set('');
         else this.reply_ref.current.set(should_text);
@@ -476,9 +476,12 @@ class FlowSidebar extends PureComponent {
     if (this.state.loading_status === 'loading')
       return <p className="box box-tip">加载中……</p>;
 
-    let show_pid = load_single_meta(this.props.show_sidebar, this.props.token);
+    const show_pid = load_single_meta(
+      this.props.show_sidebar,
+      this.props.token,
+    );
 
-    let replies_to_show = this.state.filter_name
+    const replies_to_show = this.state.filter_name
       ? this.state.replies.filter((r) => r.name === this.state.filter_name)
       : this.state.replies.slice();
     if (this.state.rev) replies_to_show.reverse();
@@ -488,14 +491,14 @@ class FlowSidebar extends PureComponent {
     // let view_mode_key =
     //   (this.state.rev ? 'y-' : 'n-') + (this.state.filter_name || 'null');
 
-    let replies_cnt = { [DZ_NAME]: 1 };
+    const replies_cnt = { [DZ_NAME]: 1 };
     replies_to_show.forEach((r) => {
       if (replies_cnt[r.name] === undefined) replies_cnt[r.name] = 0;
       replies_cnt[r.name]++;
     });
 
     // hide main thread when filtered
-    let main_thread_elem =
+    const main_thread_elem =
       this.state.filter_name && this.state.filter_name !== DZ_NAME ? null : (
         <ClickHandler
           callback={(e) => {
@@ -801,11 +804,13 @@ class FlowItemRow extends PureComponent {
   }
 
   render() {
-    let show_pid = load_single_meta(this.props.show_sidebar, this.props.token, [
-      this.state.info.pid,
-    ]);
+    const show_pid = load_single_meta(
+      this.props.show_sidebar,
+      this.props.token,
+      [this.state.info.pid],
+    );
 
-    let hl_rules = [
+    const hl_rules = [
       ['url_pid', URL_PID_RE],
       ['url', URL_RE],
       ['pid', PID_RE],
@@ -819,11 +824,11 @@ class FlowItemRow extends PureComponent {
           : build_highlight_re(this.props.search_param, ' ', 'gi'), // Don't use regex
       ]);
     }
-    let parts = split_text(this.state.info.text, hl_rules);
+    const parts = split_text(this.state.info.text, hl_rules);
 
     let quote_id = null;
     if (!this.props.is_quote)
-      for (let [mode, content] of parts)
+      for (const [mode, content] of parts)
         if (
           mode === 'pid' &&
           QUOTE_BLACKLIST.indexOf(content) === -1 &&
@@ -835,7 +840,7 @@ class FlowItemRow extends PureComponent {
             break;
           }
 
-    let res = (
+    const res = (
       <div
         className={
           'flow-item-row flow-item-row-with-prompt' +
@@ -1235,8 +1240,9 @@ export class Flow extends PureComponent {
           })
           .catch(failed);
       } else if (this.state.mode === 'attention') {
-        let use_search = !!this.state.search_param;
-        let use_regex = use_search && !!this.state.search_param.match(/\/.+\//);
+        const use_search = !!this.state.search_param;
+        const use_regex =
+          use_search && !!this.state.search_param.match(/\/.+\//);
         let regex_search = /.+/;
         if (use_regex) {
           try {
@@ -1248,7 +1254,7 @@ export class Flow extends PureComponent {
         }
         API.get_attention(this.props.token)
           .then((json) => {
-            let data_processed = !use_search
+            const data_processed = !use_search
               ? json.data // No Search
               : !use_regex
               ? json.data.filter((post) =>
@@ -1331,7 +1337,7 @@ export class Flow extends PureComponent {
 
   render() {
     const should_deletion_detect = localStorage['DELETION_DETECT'] === 'on';
-    let title_button_sort =
+    const title_button_sort =
       this.state.reply_promises_done &&
       (this.state.sort_by_latest_reply ? (
         <a onClick={this.sort_by_original.bind(this)}>[ 按最新回复时间排序 ]</a>

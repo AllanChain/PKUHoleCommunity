@@ -74,7 +74,7 @@ export class PressureHelper extends Component {
             },
             () => {
               this.esc_interval = setInterval(() => {
-                let new_level = this.state.level + 0.1;
+                const new_level = this.state.level + 0.1;
                 if (new_level >= 0.999) this.do_fire();
                 else
                   this.setState({

@@ -24,7 +24,7 @@ const DEFAULT_CONFIG = {
 };
 
 export function load_config() {
-  let config = Object.assign({}, DEFAULT_CONFIG);
+  const config = Object.assign({}, DEFAULT_CONFIG);
   let loaded_config;
   try {
     loaded_config = JSON.parse(localStorage['hole_config'] || '{}');
@@ -75,7 +75,7 @@ class ConfigBackground extends PureComponent {
   }
 
   on_select(e) {
-    let value = e.target.value;
+    const value = e.target.value;
     this.setState(
       {
         img: value === '##other' ? '' : value === '##color' ? null : value,
@@ -101,7 +101,7 @@ class ConfigBackground extends PureComponent {
   }
 
   render() {
-    let img_select =
+    const img_select =
       this.state.img === null
         ? '##color'
         : Object.keys(BUILTIN_IMGS).indexOf(this.state.img) === -1
@@ -166,7 +166,7 @@ class ConfigColorScheme extends PureComponent {
   }
 
   on_select(e) {
-    let value = e.target.value;
+    const value = e.target.value;
     this.setState(
       {
         color_scheme: value,
@@ -221,8 +221,8 @@ class ConfigTextArea extends PureComponent {
   }
 
   on_blur(e) {
-    let value = e.target.value;
-    let parsed = this.props.parse(value);
+    const value = e.target.value;
+    const parsed = this.props.parse(value);
     this.setState(
       {
         [this.props.id]: value,
@@ -236,7 +236,7 @@ class ConfigTextArea extends PureComponent {
   }
 
   on_change(e) {
-    let value = e.target.value;
+    const value = e.target.value;
     this.setState((state) => {
       return { [this.props.id]: value };
     });
@@ -276,7 +276,7 @@ class ConfigSwitch extends PureComponent {
   }
 
   on_change(e) {
-    let val = e.target.checked;
+    const val = e.target.checked;
     this.setState(
       {
         switch: val,
@@ -406,12 +406,12 @@ export class ConfigUI extends PureComponent {
                 )
             }
             parse={(string) => {
-              let map = {};
+              const map = {};
               string
                 .split('\n')
                 .filter((value) => value)
                 .forEach((line) => {
-                  let pair = line.split(' ');
+                  const pair = line.split(' ');
                   if (pair.length === 2 && !isNaN(Number(pair[0]))) {
                     map[pair[1]] = Number(pair[0]);
                   }

@@ -56,7 +56,7 @@ class ControlBar extends PureComponent {
 
   on_keypress(event) {
     if (event.key === 'Enter') {
-      let flag_res = flag_re.exec(this.state.search_text);
+      const flag_res = flag_re.exec(this.state.search_text);
       if (flag_res) {
         if (flag_res[2]) {
           localStorage[flag_res[1]] = flag_res[2];

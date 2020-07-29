@@ -30,11 +30,11 @@ class Cache {
 
   // use window.hole_cache.encrypt() only after cache is loaded!
   encrypt(pid, data) {
-    let s = JSON.stringify(data);
+    const s = JSON.stringify(data);
     let o = '';
     for (let i = 0, key = (ENC_KEY ^ pid) % 128; i < s.length; i++) {
-      let c = s.charCodeAt(i);
-      let new_key = (key ^ (c / 2)) % 128;
+      const c = s.charCodeAt(i);
+      const new_key = (key ^ (c / 2)) % 128;
       o += String.fromCharCode(key ^ s.charCodeAt(i));
       key = new_key;
     }
@@ -47,7 +47,7 @@ class Cache {
     if (typeof s !== typeof 'str') return null;
 
     for (let i = 0, key = (ENC_KEY ^ pid) % 128; i < s.length; i++) {
-      let c = key ^ s.charCodeAt(i);
+      const c = key ^ s.charCodeAt(i);
       o += String.fromCharCode(c);
       key = (key ^ (c / 2)) % 128;
     }
@@ -69,7 +69,7 @@ class Cache {
       const store = tx.objectStore('comment');
       const get_req = store.get(pid);
       get_req.onsuccess = () => {
-        let res = get_req.result;
+        const res = get_req.result;
         if (!res || !res.data_str) {
           //console.log('comment cache miss '+pid);
           resolve(null);
@@ -78,7 +78,7 @@ class Cache {
           console.log('comment cache hit', pid);
           res.last_access = +new Date();
           store.put(res);
-          let data = this.decrypt(pid, res.data_str);
+          const data = this.decrypt(pid, res.data_str);
           resolve(data); // obj or null
         } else {
           // expired
@@ -126,7 +126,7 @@ class Cache {
       if (!this.db) return resolve();
       const tx = this.db.transaction(['comment'], 'readwrite');
       const store = tx.objectStore('comment');
-      let req = store.delete(pid);
+      const req = store.delete(pid);
       console.log('comment cache delete', pid);
       req.onerror = () => {
         console.warn('comment cache delete failed ', pid);
@@ -140,13 +140,13 @@ class Cache {
     if (!this.db) return;
     const tx = this.db.transaction(['comment'], 'readwrite');
     const store = tx.objectStore('comment');
-    let count_req = store.count();
+    const count_req = store.count();
     count_req.onsuccess = () => {
       let count = count_req.result;
       if (count > MAINTENANCE_COUNT) {
         console.log('comment cache db maintenance', count);
         store.index('last_access').openKeyCursor().onsuccess = (e) => {
-          let cur = e.target.result;
+          const cur = e.target.result;
           if (cur) {
             //console.log('maintenance: delete',cur);
             store.delete(cur.primaryKey);

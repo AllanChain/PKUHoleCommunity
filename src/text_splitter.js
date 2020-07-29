@@ -10,11 +10,11 @@ export function split_text(txt, rules) {
 
   txt = [[null, txt]];
   rules.forEach((rule) => {
-    let [name, regex] = rule;
+    const [name, regex] = rule;
     txt = [].concat.apply(
       [],
       txt.map((part) => {
-        let [rule, content] = part;
+        const [rule, content] = part;
         if (rule)
           // already tagged by previous rules
           return [part];

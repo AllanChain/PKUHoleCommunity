@@ -18,7 +18,7 @@ export class Sidebar extends PureComponent {
 
   render() {
     // hide old contents to remember state
-    let contents = this.props.stack.map(
+    const contents = this.props.stack.map(
       ({ 1: content }, i) =>
         content && (
           <div
@@ -34,7 +34,7 @@ export class Sidebar extends PureComponent {
           </div>
         ),
     );
-    let cur_title = this.props.stack[this.props.stack.length - 1][0];
+    const cur_title = this.props.stack[this.props.stack.length - 1][0];
     return (
       <div
         className={
