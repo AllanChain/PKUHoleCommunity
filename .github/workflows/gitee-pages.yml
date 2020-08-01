@@ -59,15 +59,23 @@ jobs:
             rm -rf dist/*
             echo '::set-output name=valid::'
           fi
+
       - name: Copy Beta Version
         run: |
           rm -rf dist/beta/
           cp -r head/build/ dist/beta/
-      - name: (Stable) Also Copy as Stable
+
+      - name: (Stable) Build Again with /stable/
         if: ${{ ! contains(github.ref, '-') }}
         run: |
+          cd head
+          npm run build
           rm -rf dist/stable/
           cp -r head/build/ dist/stable/
+        env:
+          # React will fail CI if there is any warning
+          CI: false
+          PUBLIC_URL: "/stable/"
 
       - name: (Pre) Rebuild Stable Version
         if: ${{ ! steps.validate.outputs.valid && contains(github.ref, '-') }}
