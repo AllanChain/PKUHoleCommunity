@@ -1,6 +1,6 @@
 {
-  "short_name": "树洞",
-  "name": "P大树洞",
+  "short_name": "树洞社区版",
+  "name": "P大树洞社区版",
   "icons": [
     {
       "src": "favicon/256.png",
@@ -13,7 +13,7 @@
       "type": "image/png"
     }
   ],
-  "start_url": "../",
+  "start_url": ".",
   "display": "standalone",
   "theme_color": "#333333",
   "background_color": "#333333"
