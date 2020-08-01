@@ -16,12 +16,13 @@ function DeprecatedAlert(props) {
       <div className="flow-item">
         <div className="flow-item-row box box-danger">
           <p align="center">
-            社区版网址即将更换为&nbsp;
-            <a href="https://allanchain.github.io/PKUHoleCommunity/stable/">
-              <small>allanchain.github.io/PKUHoleCommunity</small>
-              <strong>/stable</strong>
+            <strong>树洞社区版迁移</strong>
+            <br />
+            <a href="https://pkuholece.gitee.io/stable/">
+              pkuholece.gitee.io/stable/
             </a>
-            ，届时<em>仍可从原地址访问社区版</em>，但将自动跳转到新地址。
+            <br />
+            详见树洞 #1560425 或 搜索“社区版 迁移”
           </p>
         </div>
       </div>
