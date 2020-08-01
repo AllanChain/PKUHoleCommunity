@@ -1380,7 +1380,7 @@ export class Flow extends PureComponent {
                 &nbsp;Loading...
               </span>
             ) : (
-              '© xmcp'
+              '© xmcp & awesome community'
             )
           }
         />

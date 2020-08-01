@@ -156,7 +156,7 @@ class ControlBar extends PureComponent {
                     <PostForm
                       token={token}
                       on_complete={() => {
-                        this.props.show_sidebar(null, null);
+                        this.props.show_sidebar(null, null, 'clear');
                         this.do_refresh();
                       }}
                     />,
@@ -212,7 +212,7 @@ export function Title(props) {
             <span
               onClick={() =>
                 props.show_sidebar(
-                  'P大树洞',
+                  'P大树洞 (社区版)',
                   <InfoSidebar show_sidebar={props.show_sidebar} />,
                 )
               }

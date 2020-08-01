@@ -1,3 +1,5 @@
+name: Deploy on gh-pages
+
 on:
   push:
     tags: 
@@ -10,6 +12,8 @@ jobs:
   build-and-deploy:
     name: Build and Release
     runs-on: ubuntu-latest
+    # Disable pre release builds
+    if: ${{ ! contains(github.ref, '-') }}
     steps:
     - uses: actions/checkout@v2
       with:
@@ -25,29 +29,9 @@ jobs:
       env:
         # React will fail CI if there is any warning
         CI: false
-    # Yes, previous beta assets are still available
-    # but that does not matter too much.
-    # It will be clean after stable release
-    - name: Prepare Latest Stable Version
-      if: ${{ contains(github.ref, '-') }}
-      uses: actions/checkout@v2
-      with:
-        submodules: true
-        path: dist
-        ref: 'gh-pages'
-    - name: Merge Stable and Beta Version
-      if: ${{ contains(github.ref, '-') }}
-      run: |
-        mv build/index.html build/beta.html
-        cp -r build/* dist
-    - name: Copy as Beta
-      if: ${{ ! contains(github.ref, '-') }}
-      run: |
-        cp -r build dist
-        cp dist/index.html dist/beta.html
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./dist
+        publish_dir: ./build
         publish_branch: gh-pages
