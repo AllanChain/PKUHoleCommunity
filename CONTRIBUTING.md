@@ -26,6 +26,12 @@
 
 请务必不要手动更改版本，建议使用 `npm version v1.0.0-alpha.0` 命令来发布版本，这样可以同时更改版本号和打标签。注意配置 Git 自动推标签或者记得每次手动推标签。
 
+## 代码修改注意事项
+
+### 图标
+
+图标的 CSS 和字体文件并不是 `assets`，使用 `CacheFirst` 策略进行 `Runtime Caching`。修改时务必注意修改对应的版本号（query string），以保证 PWA 正常更新。
+
 ## Commit Message
 
 在经历历史一度混乱之后（千万不要往前翻 :facepalm: ）决定使用 [Angular Convention](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#commit)，简要摘抄如下：
