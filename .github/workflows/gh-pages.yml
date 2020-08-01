@@ -1,55 +1,85 @@
+name: Deploy on gh-pages
+
 on:
   push:
-    tags: 
-      - 'v*'
+    tags:
+      - "v*"
 
 env:
-  NODE_VERSION: '12.x'
+  NODE_VERSION: "12.x"
 
 jobs:
   build-and-deploy:
-    name: Build and Release
+    name: Build and Deploy
     runs-on: ubuntu-latest
-    # Disable pre release builds before #34 resolves
-    if: ${{ ! contains(github.ref, '-') }}
     steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: true
-    - name: Use Node.js ${{ env.NODE_VERSION }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ env.NODE_VERSION }}
-    - name: Install Packages
-      run: npm install
-    - name: Build App
-      run: npm run build
-      env:
-        # React will fail CI if there is any warning
-        CI: false
-    # Yes, previous beta assets are still available
-    # but that does not matter too much.
-    # It will be clean after stable release
-    - name: Prepare Latest Stable Version
-      if: ${{ contains(github.ref, '-') }}
-      uses: actions/checkout@v2
-      with:
-        submodules: true
-        path: dist
-        ref: 'gh-pages'
-    - name: Merge Stable and Beta Version
-      if: ${{ contains(github.ref, '-') }}
-      run: |
-        mv build/index.html build/beta.html
-        cp -r build/* dist
-    - name: Copy as Beta
-      if: ${{ ! contains(github.ref, '-') }}
-      run: |
-        cp -r build dist
-        cp dist/index.html dist/beta.html
-    - name: Deploy
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./dist
-        publish_branch: gh-pages
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+          path: head
+
+      - name: Install Packages
+        run: |
+          cd head
+          npm install
+      - name: Build Latest (Beta) App
+        run: |
+          cd head
+          npm run build
+        env:
+          # React will fail CI if there is any warning
+          CI: false
+          PUBLIC_URL: "/beta/"
+
+      - name: Prepare Latest Gitee Pages
+        run: |
+          git clone --depth=1 https://gitee.com/PKUHoleCE/PKUHoleCE.git dist
+
+      - name: (Pre) Validate Previous Pages (Backward & Error Compacity)
+        if: ${{ contains(github.ref, '-') }}
+        id: validate
+        run: |
+          if [ -d 'dist/stable' ]
+          then
+            echo '::set-output name=valid::true'
+          else
+            rm -rf dist/*
+            echo '::set-output name=valid::'
+          fi
+      - name: Copy Beta Version
+        run: |
+          rm -rf dist/beta/
+          cp -r head/build/ dist/beta/
+      - name: (Stable) Also Copy as Stable
+        if: ${{ ! contains(github.ref, '-') }}
+        run: cp -r head/build/ dist/stable/
+
+      - name: (Pre) Rebuild Stable Version
+        if: ${{ ! steps.validate.outputs.valid && contains(github.ref, '-') }}
+        run: |
+          cp head/redirect.html dist/index.html
+          cd head
+          # fetch all history and tags
+          git pull --unshallow
+          # checkout latest stable version
+          git checkout "v$(npx semver -r '>0.0.0' $(git tag) | tail -n 1)"
+          npm install
+          npm run build
+          cp -r build ../dist/stable
+        env:
+          CI: false
+          PUBLIC_URL: "/stable/"
+
+      - name: Push to Gitee
+        run: |
+          cd dist
+          git commit -m "Deploy $REF"
+          echo -e "AllanChain\n$PASSWORD" | git push
+        env:
+          REF: ${{ github.ref }}
+          PASSWORD: ${{ secrets.GITEE_PASSWORD }}
