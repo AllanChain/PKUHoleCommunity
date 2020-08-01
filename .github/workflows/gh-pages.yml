@@ -83,7 +83,7 @@ jobs:
       - name: Push to Gitee
         run: |
           cd dist
-          git commit -m "Deploy $REF"
+          git commit -a -m "Deploy $REF"
           echo -e "AllanChain\n$PASSWORD" | git push
         env:
           REF: ${{ github.ref }}
