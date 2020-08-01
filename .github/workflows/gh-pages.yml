@@ -23,12 +23,10 @@ jobs:
           submodules: true
           path: head
       
-      - name: debug
+      - name: Setup Committer
         run: |
-          cd head
           git config --global user.email "you@example.com"
           git config --global user.name "PKUHoleCE-bot"
-          git pull origin master --unshallow
 
       - name: Install Packages
         run: |
@@ -72,8 +70,7 @@ jobs:
           # cp head/redirect.html dist/index.html
           cd head
           # fetch all history and tags
-          git checkout master
-          git pull --unshallow
+          git pull origin master --unshallow
           # checkout latest stable version
           git checkout "v$(npx semver -r '>0.0.0' $(git tag) | tail -n 1)"
           npm install
