@@ -1,5 +1,6 @@
 module.exports = function override(config, env) {
-  if (env.NODE_ENV === 'develop') return;
+  if (env === 'development') return config;
+
   const pwaConfig = config.plugins.slice(-1)[0].config;
   pwaConfig.cacheId = 'PKUHoleCE';
   pwaConfig.exclude = [/.*\.txt/];
