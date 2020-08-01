@@ -70,7 +70,7 @@ jobs:
       - name: (Pre) Rebuild Stable Version
         if: ${{ ! steps.validate.outputs.valid && contains(github.ref, '-') }}
         run: |
-          # cp head/redirect.html dist/index.html
+          cp head/README.md dist/
           cd head
           # fetch all history and tags
           git pull origin master --unshallow --tags
