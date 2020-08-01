@@ -27,7 +27,7 @@
 .box-danger {
     background-color: #e55;
     color: white;
-    text-shadow: 0 0 3px black;
+    text-shadow: 0 0 1px black;
 }
 
 .root-dark-mode .box-danger {
