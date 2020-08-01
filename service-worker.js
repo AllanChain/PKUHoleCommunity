@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/PKUHoleCommunity/precache-manifest.8734466aedcd043b75d9116d8297973a.js"
+  "/PKUHoleCommunity/precache-manifest.57bca1801d79e4aafca0b53f31a8f186.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "PKUHoleCE"});
