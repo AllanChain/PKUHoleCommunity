@@ -141,7 +141,6 @@ class App extends Component {
         <TokenCtx.Consumer>
           {(token) => (
             <div className="left-container">
-              <DeprecatedAlert token={token.value} />
               {!token.value && (
                 <div className="flow-item-row aux-margin">
                   <div className="box box-tip">
@@ -158,6 +157,7 @@ class App extends Component {
                   </div>
                 </div>
               )}
+              <DeprecatedAlert token={token.value} />
               {this.inpku_flag || token.value ? (
                 <Flow
                   key={this.state.flow_render_key}
