@@ -27,7 +27,7 @@ jobs:
         run: |
           git config --global user.email "you@example.com"
           git config --global user.name "PKUHoleCE-bot"
-          echo "machine gitee.com login AllanChain password $PASSWORD" >> ~/.netrc
+          echo "machine gitee.com login pkuholece-bot password $PASSWORD" >> ~/.netrc
         env:
           PASSWORD: ${{ secrets.GITEE_PASSWORD }}
 
@@ -94,6 +94,6 @@ jobs:
       - name: Build Gitee Pages
         uses: yanglbme/gitee-pages-action@master
         with:
-          gitee-username: AllanChain
+          gitee-username: pkuholece-bot
           gitee-password: ${{ secrets.GITEE_PASSWORD }}
           gitee-repo: PKUHoleCE/PKUHoleCE
