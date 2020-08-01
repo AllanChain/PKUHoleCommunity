@@ -26,6 +26,8 @@ jobs:
       - name: debug
         run: |
           cd head
+          git config --global user.email "you@example.com"
+          git config --global user.name "PKUHoleCE-bot"
           git pull origin master --unshallow
 
       - name: Install Packages
