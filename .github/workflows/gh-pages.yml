@@ -22,6 +22,12 @@ jobs:
         with:
           submodules: true
           path: head
+      
+      - name: debug
+        run: |
+          cd head
+          git checkout master
+          git pull --unshallow
 
       - name: Install Packages
         run: |
@@ -65,6 +71,7 @@ jobs:
           # cp head/redirect.html dist/index.html
           cd head
           # fetch all history and tags
+          git checkout master
           git pull --unshallow
           # checkout latest stable version
           git checkout "v$(npx semver -r '>0.0.0' $(git tag) | tail -n 1)"
