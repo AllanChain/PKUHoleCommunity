@@ -86,7 +86,8 @@ jobs:
       - name: Push to Gitee
         run: |
           cd dist
-          git commit -a -m "Deploy $REF"
+          git add .
+          git commit -m "Deploy $REF"
           git push
         env:
           REF: ${{ github.ref }}
