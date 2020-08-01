@@ -1,4 +1,4 @@
-name: Deploy on gh-pages
+name: Deploy on gitee pages
 
 on:
   push:
