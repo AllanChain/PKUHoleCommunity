@@ -70,7 +70,7 @@ jobs:
           # cp head/redirect.html dist/index.html
           cd head
           # fetch all history and tags
-          git pull origin master --unshallow
+          git pull origin master --unshallow --tags
           # checkout latest stable version
           git checkout "v$(npx semver -r '>0.0.0' $(git tag) | tail -n 1)"
           npm install
