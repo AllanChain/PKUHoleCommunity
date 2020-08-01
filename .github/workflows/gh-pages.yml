@@ -27,6 +27,9 @@ jobs:
         run: |
           git config --global user.email "you@example.com"
           git config --global user.name "PKUHoleCE-bot"
+          echo "machine github.com login AllanChain password $PASSWORD" >> ~/.netrc
+        env:
+          PASSWORD: ${{ secrets.GITEE_PASSWORD }}
 
       - name: Install Packages
         run: |
@@ -84,10 +87,9 @@ jobs:
         run: |
           cd dist
           git commit -a -m "Deploy $REF"
-          echo -e "AllanChain\n$PASSWORD" | git push
+          git push
         env:
           REF: ${{ github.ref }}
-          PASSWORD: ${{ secrets.GITEE_PASSWORD }}
       
       - name: Build Gitee Pages
         uses: yanglbme/gitee-pages-action@master
