@@ -65,7 +65,9 @@ jobs:
           cp -r head/build/ dist/beta/
       - name: (Stable) Also Copy as Stable
         if: ${{ ! contains(github.ref, '-') }}
-        run: cp -r head/build/ dist/stable/
+        run: |
+          rm -rf dist/stable/
+          cp -r head/build/ dist/stable/
 
       - name: (Pre) Rebuild Stable Version
         if: ${{ ! steps.validate.outputs.valid && contains(github.ref, '-') }}
