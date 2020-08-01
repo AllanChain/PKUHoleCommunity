@@ -26,8 +26,7 @@ jobs:
       - name: debug
         run: |
           cd head
-          git checkout master
-          git pull --unshallow
+          git pull origin master --unshallow
 
       - name: Install Packages
         run: |
