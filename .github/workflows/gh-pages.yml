@@ -83,3 +83,10 @@ jobs:
         env:
           REF: ${{ github.ref }}
           PASSWORD: ${{ secrets.GITEE_PASSWORD }}
+      
+      - name: Build Gitee Pages
+        uses: yanglbme/gitee-pages-action@master
+        with:
+          gitee-username: AllanChain
+          gitee-password: ${{ secrets.GITEE_PASSWORD }}
+          gitee-repo: PKUHoleCE/PKUHoleCE
