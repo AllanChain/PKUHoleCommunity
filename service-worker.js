@@ -14,8 +14,10 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/PKUHoleCommunity/precache-manifest.c1911758bccf9f19c6d66fd71b23deb9.js"
+  "/PKUHoleCommunity/precache-manifest.911128ef90a33e1dcf6551764c2bda18.js"
 );
+
+workbox.core.setCacheNameDetails({prefix: "PKUHoleCE"});
 
 self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
@@ -37,3 +39,5 @@ workbox.routing.registerNavigationRoute(workbox.precaching.getCacheKeyForURL("/P
   
   blacklist: [/^\/_/,/\/[^/?]+\.[^/]+$/],
 });
+
+workbox.routing.registerRoute(/static\/(manifest.json|(fonts_7|bg)\/.*)/, new workbox.strategies.CacheFirst({ "cacheName":"PKUHoleCE", plugins: [new workbox.expiration.Plugin({ maxAgeSeconds: 1296000, purgeOnQuotaError: false }), new workbox.cacheableResponse.Plugin({ statuses: [ 200 ] })] }), 'GET');
