@@ -27,7 +27,7 @@ jobs:
         run: |
           git config --global user.email "you@example.com"
           git config --global user.name "PKUHoleCE-bot"
-          echo "machine github.com login AllanChain password $PASSWORD" >> ~/.netrc
+          echo "machine gitee.com login AllanChain password $PASSWORD" >> ~/.netrc
         env:
           PASSWORD: ${{ secrets.GITEE_PASSWORD }}
 
