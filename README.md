@@ -3,10 +3,10 @@
 <p align="center">P 大树洞网页版社区分支</p>
 <p align="center"><sup>（简称“树洞社区版”）</sup></p>
 <p align="center">
-  <a href="https://allanchain.github.io/PKUHoleCommunity/">
-    <img alt="GitHub tag (latest SemVer pre-release)" src="https://img.shields.io/github/v/tag/AllanChain/PKUHoleCommunity?sort=semver&label=release">
+  <a href="https://pkuholece.gitee.io/stable/">
+    <img alt="GitHub tag (latest SemVer release)" src="https://img.shields.io/github/v/tag/AllanChain/PKUHoleCommunity?sort=semver&label=release">
   </a>
-  <a href="https://allanchain.github.io/PKUHoleCommunity/beta.html">
+  <a href="https://pkuholece.gitee.io/beta/">
     <img alt="GitHub tag (latest SemVer pre-release)" src="https://img.shields.io/github/v/tag/AllanChain/PKUHoleCommunity?sort=semver&include_prereleases&label=pre%20release">
   </a>
   <a href="https://github.com/AllanChain/PKUHoleCommunity/blob/master/LICENSE.txt">
@@ -53,7 +53,7 @@ P 大树洞网页版社区分支（以下简称“社区版”）的定位是提
 
 ### 其他
 
-- 社区版提供 Beta 测试版本，登录状态与稳定版同步，但是会不稳定，试验性的新功能会优先推送到 [Beta 版](https://allanchain.github.io/PKUHoleCommunity/beta.html)。
+- 社区版提供 Beta 测试版本，登录状态与稳定版同步，但是会不稳定，试验性的新功能会优先推送到 [Beta 版](https://pkuholece.gitee.io/beta/)。
 
 ## Contributing
 
