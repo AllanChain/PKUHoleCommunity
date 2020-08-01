@@ -25,8 +25,8 @@ jobs:
       
       - name: Setup Committer
         run: |
-          git config --global user.email "you@example.com"
-          git config --global user.name "PKUHoleCE-bot"
+          git config --global user.email "pkuholece-bot@outlook.com"
+          git config --global user.name "pkuholece-bot"
           echo "machine gitee.com login pkuholece-bot password $PASSWORD" >> ~/.netrc
         env:
           PASSWORD: ${{ secrets.GITEE_PASSWORD }}
