@@ -11,23 +11,7 @@ import { LoginPopup, TitleLine } from './infrastructure/widgets';
 const MAX_SIDEBAR_STACK_SIZE = 10;
 
 function DeprecatedAlert(props) {
-  return (
-    <div id="global-hint-container">
-      <div className="flow-item">
-        <div className="flow-item-row box box-danger">
-          <p align="center">
-            <strong>树洞社区版迁移</strong>
-            <br />
-            <a href="https://pkuholece.gitee.io/stable/">
-              pkuholece.gitee.io/stable/
-            </a>
-            <br />
-            详见树洞 #1560425 或 搜索“社区版 迁移”
-          </p>
-        </div>
-      </div>
-    </div>
-  );
+  return <div id="global-hint-container" />;
 }
 
 class App extends Component {
