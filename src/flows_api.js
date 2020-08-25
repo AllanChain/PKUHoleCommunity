@@ -131,4 +131,26 @@ export const API = {
     );
     return handle_response(response);
   },
+
+  get_multiple: async function (pids, token) {
+    const response = {
+      code: 0,
+      data: [],
+      timestamp: 0,
+      count: 0,
+    };
+    let single;
+    for (const pid of pids) {
+      try {
+        single = await this.get_single(pid, token);
+        response.data.push(single.data);
+        response.timestamp = single.timestamp;
+      } catch (error) {
+        alert(`${error.message}：#${pid}`);
+        console.error(error);
+      }
+    }
+    response.count = response.data.length;
+    return response;
+  }, // Returns a standard response interface from an array of pids
 };

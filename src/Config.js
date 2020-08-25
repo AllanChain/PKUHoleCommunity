@@ -21,6 +21,7 @@ const DEFAULT_CONFIG = {
   block_words: [],
   alias: {},
   attention_sort: false,
+  pinned: [],
 };
 
 export function load_config() {
@@ -418,6 +419,17 @@ export class ConfigUI extends PureComponent {
                 });
               return map;
             }}
+          />
+          <hr />
+          <ConfigTextArea
+            id="pinned"
+            callback={this.save_changes_bound}
+            name="设置置顶"
+            description="置顶的树洞会按此处的排序显示在时间线顶部，每行写一个 PID（树洞号）"
+            display={(array) => array.join('\n')}
+            parse={(string) =>
+              string.split('\n').filter((v) => /^\d+$/.test(v))
+            }
           />
           <hr />
           <ConfigSwitch
