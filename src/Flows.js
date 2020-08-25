@@ -1230,7 +1230,6 @@ export class Flow extends PureComponent {
             return this.inject_pinned(page, json);
           })
           .then((json) => {
-            console.log(json);
             this.setState((prev, props) => {
               const data = prev.chunks.data.concat(
                 json.data.filter(
@@ -1239,7 +1238,6 @@ export class Flow extends PureComponent {
                     !prev.chunks.data.slice(-100).some((p) => p.pid === x.pid),
                 ),
               );
-              console.log(json.data, data);
               return {
                 chunks: {
                   title: 'News Feed',
