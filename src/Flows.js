@@ -1183,15 +1183,21 @@ export class Flow extends PureComponent {
   inject_pinned(page, json) {
     if (page === 1 && !!window.config.pinned.length) {
       return new Promise((resolve, reject) => {
-        API.get_multiple(window.config.pinned, this.props.token).then(
-          (json_pinned) => {
-            json_pinned.data.forEach((post) => {
-              post._pinned = true;
-            });
-            json.data.unshift(...json_pinned.data);
-            resolve(json);
+        API.get_multiple(
+          window.config.pinned,
+          this.props.token,
+          (pid, error) => {
+            console.error(`${error.message}：#${pid}`);
+            window.config.pinned.splice(window.config.pinned.indexOf(pid), 1);
+            save_config();
           },
-        );
+        ).then((json_pinned) => {
+          json_pinned.data.forEach((post) => {
+            post._pinned = true;
+          });
+          json.data.unshift(...json_pinned.data);
+          resolve(json);
+        });
       });
     } else return Promise.resolve(json);
   }

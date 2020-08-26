@@ -132,7 +132,11 @@ export const API = {
     return handle_response(response);
   },
 
-  get_multiple: async function (pids, token) {
+  get_multiple: async function (
+    pids,
+    token,
+    errorHandler = (pid, error) => console.error(`${error.message}：#${pid}`),
+  ) {
     const response = {
       code: 0,
       data: [],
@@ -146,8 +150,7 @@ export const API = {
         response.data.push(single.data);
         response.timestamp = single.timestamp;
       } catch (error) {
-        alert(`${error.message}：#${pid}`);
-        console.error(error);
+        errorHandler(pid, error);
       }
     }
     response.count = response.data.length;
