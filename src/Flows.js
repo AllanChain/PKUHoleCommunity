@@ -1185,9 +1185,8 @@ export class Flow extends PureComponent {
       return new Promise((resolve, reject) => {
         API.get_multiple(window.config.pinned, this.props.token).then(
           (json_pinned) => {
-            json_pinned.data = json_pinned.data.map((post) => {
+            json_pinned.data.forEach((post) => {
               post._pinned = true;
-              return post;
             });
             json.data.unshift(...json_pinned.data);
             resolve(json);
