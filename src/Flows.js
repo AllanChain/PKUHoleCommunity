@@ -449,8 +449,8 @@ class FlowSidebar extends PureComponent {
     }
   }
 
-  set_pinned(pinned) {
-    if (pinned) {
+  set_pinned() {
+    if (this.state.info._pinned) {
       window.config.pinned.splice(
         window.config.pinned.indexOf(this.state.info.pid),
         1,
@@ -598,12 +598,7 @@ class FlowSidebar extends PureComponent {
                   </a>
                 </div>
                 <div className="sidebar-toolbar-dropdown-item">
-                  <a
-                    onClick={this.set_pinned.bind(
-                      this,
-                      this.state.info._pinned,
-                    )}
-                  >
+                  <a onClick={this.set_pinned.bind(this)}>
                     <span className="icon icon-pin" />
                     <label>{this.state.info._pinned ? '取下' : '置顶'}</label>
                   </a>
