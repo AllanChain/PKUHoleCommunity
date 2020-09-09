@@ -7,6 +7,7 @@ import {TokenCtx} from './UserAction';
 import {load_config,bgimg_style} from './Config';
 import {listen_darkmode} from './infrastructure/functions';
 import {LoginPopup, TitleLine} from './infrastructure/widgets';
+import {cache} from './cache';
 
 const MAX_SIDEBAR_STACK_SIZE=10;
 
@@ -34,6 +35,10 @@ class App extends Component {
         // a silly self-deceptive approach to ban guests, enough to fool those muggles
         //                     document             cookie                    'pku_ip_flag=yes'
         this.inpku_flag=window[atob('ZG9jdW1lbnQ')][atob('Y29va2ll')].indexOf(atob('cGt1X2lwX2ZsYWc9eWVz'))!==-1;
+    }
+
+    componentDidMount() {
+        cache(); // init indexeddb
     }
 
     static is_darkmode() {

@@ -106,7 +106,7 @@ class ControlBar extends PureComponent {
                             this.props.show_sidebar(
                                 '发表树洞',
                                 <PostForm token={token} on_complete={()=>{
-                                    this.props.show_sidebar(null,null);
+                                    this.props.show_sidebar(null,null,'clear');
                                     this.do_refresh();
                                 }} />
                             )
