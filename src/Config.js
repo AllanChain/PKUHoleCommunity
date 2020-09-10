@@ -23,8 +23,15 @@ const DEFAULT_CONFIG = {
   attention_sort: false,
 };
 
+/**
+ * `LEGACY_KEYS` is a black list of config keys.
+ * Blask listing makes sure lagacy keys are deleted,
+ *   but is still forward compatible with beta channel
+ *   where new config key might be introduced.
+ */
+const LEGACY_KEYS = [];
+
 export function load_config() {
-  const config = Object.assign({}, DEFAULT_CONFIG);
   let loaded_config;
   try {
     loaded_config = JSON.parse(localStorage['hole_config'] || '{}');
@@ -34,11 +41,11 @@ export function load_config() {
     loaded_config = {};
   }
 
-  // unrecognized configs are removed
   Object.keys(loaded_config).forEach((key) => {
-    if (config[key] !== undefined) config[key] = loaded_config[key];
+    if (LEGACY_KEYS.includes(key)) delete loaded_config[key];
   });
 
+  const config = Object.assign({}, DEFAULT_CONFIG, loaded_config);
   console.log('config loaded', config);
   window.config = config;
 }
