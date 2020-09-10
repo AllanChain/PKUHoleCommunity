@@ -216,7 +216,7 @@ class ConfigTextArea extends PureComponent {
   copy_value() {
     if (copy(this.state[this.props.id]))
       alert(
-        `成功将${this.props.name}以 JSON 格式复制到剪贴板！\n请一定不要泄露哦`,
+        `成功将${this.props.name}的内容复制到剪贴板！\n请一定不要泄露哦`,
       );
   }
 
