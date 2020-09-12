@@ -20,7 +20,6 @@ const DEFAULT_CONFIG = {
 };
 
 export function load_config() {
-  let config = Object.assign({}, DEFAULT_CONFIG);
   let loaded_config;
   try {
     loaded_config = JSON.parse(localStorage['hole_config'] || '{}');
@@ -30,10 +29,7 @@ export function load_config() {
     loaded_config = {};
   }
 
-  // unrecognized configs are removed
-  Object.keys(loaded_config).forEach((key) => {
-    if (config[key] !== undefined) config[key] = loaded_config[key];
-  });
+  const config = Object.assign({}, DEFAULT_CONFIG, loaded_config);
 
   console.log('config loaded', config);
   window.config = config;
