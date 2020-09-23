@@ -14,6 +14,7 @@ const APP_SWITCHER_ROUTER = {
   客户端: 'https://pkuhelper.pku.edu.cn/',
   成绩: 'https://pkuhelper.pku.edu.cn/my_score',
   不咕: 'https://pkuhelper.pku.edu.cn/ddl',
+  不咕计划: 'https://pkuhelper.pku.edu.cn/ddl',
   课程测评: 'https://courses.pinzhixiaoyuan.com/',
   测评: 'https://courses.pinzhixiaoyuan.com/',
 };
