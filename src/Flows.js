@@ -25,7 +25,7 @@ import { TokenCtx, ReplyForm } from './UserAction';
 
 import { API, PKUHELPER_ROOT } from './flows_api';
 
-import { load_config, save_config } from './Config';
+import { save_config } from './Config';
 
 const IMAGE_BASE = PKUHELPER_ROOT + 'services/pkuhole/images/';
 const AUDIO_BASE = PKUHELPER_ROOT + 'services/pkuhole/audios/';
@@ -239,6 +239,11 @@ class FlowItem extends PureComponent {
                 <span className="icon icon-reply" />
               </span>
             )}
+            {!!props.info._pinned && (
+              <span className="box-header-badge">
+                <span className={'icon icon-pin'} />
+              </span>
+            )}
             <code className="box-id">
               <a
                 href={'##' + props.info.pid}
@@ -424,7 +429,6 @@ class FlowSidebar extends PureComponent {
   }
 
   set_alias() {
-    load_config();
     const alias = prompt(`给 #${this.state.info.pid} 添加别名：`);
     if (alias === null) return;
     if (alias.includes(' ')) return alert('别名不合法，设置别名失败');
@@ -443,6 +447,16 @@ class FlowSidebar extends PureComponent {
       window.config.alias[alias] = this.state.info.pid;
       save_config();
     }
+  }
+
+  set_pinned() {
+    if (this.state.info._pinned) {
+      window.config.pinned.splice(
+        window.config.pinned.indexOf(this.state.info.pid),
+        1,
+      );
+    } else window.config.pinned.unshift(this.state.info.pid);
+    save_config();
   }
 
   set_filter_name(name) {
@@ -581,6 +595,12 @@ class FlowSidebar extends PureComponent {
                   <a onClick={this.set_alias.bind(this)}>
                     <span className="icon icon-link" />
                     <label>别名</label>
+                  </a>
+                </div>
+                <div className="sidebar-toolbar-dropdown-item">
+                  <a onClick={this.set_pinned.bind(this)}>
+                    <span className="icon icon-pin" />
+                    <label>{this.state.info._pinned ? '取下' : '置顶'}</label>
                   </a>
                 </div>
               </div>
@@ -1046,10 +1066,6 @@ function FlowChunk(props) {
     <TokenCtx.Consumer>
       {({ value: token }) => (
         <div className="flow-chunk">
-          {!!props.title && <TitleLine text={props.title} />}
-          <p className="title-button black-outline">
-            {!!props.title_button && props.title_button}
-          </p>
           {props.list.map((info, ind) => (
             <LazyLoad
               key={`${info.pid}-${props.lazyload_key_suffix}`}
@@ -1102,6 +1118,7 @@ export class Flow extends PureComponent {
       },
       loading_status: 'done',
       error_msg: null,
+      error_msg_pinned: '',
       reply_promises_done: false,
       sort_by_latest_reply: false,
       lazyload_key_suffix: 0,
@@ -1160,6 +1177,33 @@ export class Flow extends PureComponent {
     return data;
   }
 
+  async inject_pinned(page, json) {
+    if (page !== 1 || !window.config.pinned.length) return json;
+    const errors_pinned = [];
+    const json_pinned = await API.get_multiple(
+      window.config.pinned,
+      this.props.token,
+      (pid, error) => errors_pinned.push({ pid, message: error.message }),
+    );
+    json_pinned.data.forEach((post) => {
+      post._pinned = true;
+    });
+    json.data.unshift(...json_pinned.data);
+    if (!errors_pinned.length) return json;
+
+    let error_msg = ':( 手动置顶洞加载出错了\n';
+    console.log(errors_pinned);
+    for (const error of errors_pinned) {
+      error_msg += `\n#${error.pid}：${error.message}`;
+      if (error.message === '没有这条树洞') {
+        window.config.pinned.splice(window.config.pinned.indexOf(error.pid), 1);
+      }
+    }
+    this.setState({ error_msg_pinned: error_msg });
+    save_config();
+    return json;
+  }
+
   load_page(page) {
     const failed = (err) => {
       console.error(err);
@@ -1184,21 +1228,26 @@ export class Flow extends PureComponent {
               });
               localStorage['_LATEST_POST_ID'] = '' + max_id;
             }
-            this.setState((prev, props) => ({
-              chunks: {
-                title: 'News Feed',
-                data: prev.chunks.data.concat(
-                  json.data.filter(
-                    (x) =>
-                      prev.chunks.data.length === 0 ||
-                      !prev.chunks.data
-                        .slice(-100)
-                        .some((p) => p.pid === x.pid),
-                  ),
+
+            return this.inject_pinned(page, json);
+          })
+          .then((json) => {
+            this.setState((prev, props) => {
+              const data = prev.chunks.data.concat(
+                json.data.filter(
+                  (x) =>
+                    prev.chunks.data.length === 0 ||
+                    !prev.chunks.data.slice(-100).some((p) => p.pid === x.pid),
                 ),
-              },
-              loading_status: 'done',
-            }));
+              );
+              return {
+                chunks: {
+                  title: 'News Feed',
+                  data,
+                },
+                loading_status: 'done',
+              };
+            });
           })
           .catch(failed);
       } else if (this.state.mode === 'search') {
@@ -1346,9 +1395,18 @@ export class Flow extends PureComponent {
       ));
     return (
       <div className="flow-container">
+        {!!this.state.chunks.title && (
+          <TitleLine text={this.state.chunks.title} />
+        )}
+        <p className="title-button black-outline">{title_button_sort}</p>
+        {!!this.state.error_msg_pinned && (
+          <div className="aux-margin">
+            <div className="box box-tip">
+              <pre>{this.state.error_msg_pinned}</pre>
+            </div>
+          </div>
+        )}
         <FlowChunk
-          title={this.state.chunks.title}
-          title_button={title_button_sort}
           list={this.state.chunks.data}
           mode={this.state.mode}
           search_param={this.state.search_param || null}
