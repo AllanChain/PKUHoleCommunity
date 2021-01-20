@@ -6,11 +6,11 @@
     "copy-to-clipboard": "^3.3.1",
     "fix-orientation": "^1.1.0",
     "load-script": "^1.0.0",
-    "p-limit": "^3.0.2",
-    "pressure": "^2.1.2",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.0",
-    "react-scripts": "^3.4.3",
+    "p-limit": "^3.1.0",
+    "pressure": "^2.2.0",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
+    "react-scripts": "^3.4.4",
     "react-timeago": "^4.4.0"
   },
   "scripts": {
@@ -35,10 +35,10 @@
   },
   "devDependencies": {
     "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-prettier": "^3.1.4",
-    "eslint-plugin-react": "^7.20.6",
-    "prettier": "^2.0.5",
-    "react-app-rewired": "^2.1.6"
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-react": "^7.22.0",
+    "prettier": "^2.2.1",
+    "react-app-rewired": "^2.1.8"
   }
 }
