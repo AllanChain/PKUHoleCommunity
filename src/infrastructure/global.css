@@ -1,0 +1,37 @@
+:root {
+    --foreground-dark: hsl(0,0%,93%);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    text-size-adjust: 100%;
+}
+
+body, textarea, pre {
+    font-family: 'Segoe UI', '微软雅黑', 'Microsoft YaHei', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    word-wrap: break-word;
+    -webkit-overflow-scrolling: touch;
+}
+
+p, pre {
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+pre {
+    white-space: pre-line;
+}
+
+code {
+    font-family: Consolas, Courier, monospace;
+}

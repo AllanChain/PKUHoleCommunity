@@ -1,0 +1,297 @@
+.centered-line {
+    overflow: hidden;
+    text-align: center;
+}
+
+.centered-line::before,
+.centered-line::after {
+    background-color: #000;
+    content: "";
+    display: inline-block;
+    height: 1px;
+    position: relative;
+    vertical-align: middle;
+    width: 50%;
+}
+
+.root-dark-mode .centered-line {
+    color: var(--foreground-dark);
+}
+.root-dark-mode .centered-line::before, .root-dark-mode .centered-line::after {
+    background-color: var(--foreground-dark);
+}
+
+.centered-line::before {
+    right: 1em;
+    margin-left: -50%;
+}
+
+.centered-line::after {
+    left: 1em;
+    margin-right: -50%;
+}
+
+.title-line {
+    color: #fff;
+    margin-top: 1em;
+}
+.title-line::before,
+.title-line::after {
+    background-color: #fff;
+    box-shadow: 0 1px 1px #000;
+}
+
+.root-dark-mode .title-line {
+    color: var(--foreground-dark);
+}
+.root-dark-mode .title-line::before, .root-dark-mode .title-line::after {
+    background-color: var(--foreground-dark);
+}
+
+.app-switcher {
+    display: flex;
+    height: 2em;
+    text-align: center;
+    margin: 0 .1em;
+    user-select: none;
+}
+.app-switcher-desc {
+    margin: 0 .5em;
+    flex: 1 1 0;
+    opacity: .5;
+    height: 2em;
+    line-height: 2rem;
+    font-size: .8em;
+}
+
+.root-dark-mode .app-switcher-desc {
+    color: var(--foreground-dark);
+}
+
+@media screen and (max-width: 570px) {
+    .app-switcher-desc {
+        flex: 1 1 0;
+        display: none;
+    }
+    .app-switcher-item {
+        flex: 1 1 0 !important;
+        padding: 0 !important;
+    }
+    .app-switcher-dropdown-title {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        text-align: center !important;
+    }
+    .app-switcher-dropdown-item {
+        margin-left: -2em !important;
+        margin-right: 0 !important;
+    }
+}
+
+.app-switcher a:hover { /* reset underline from /hole style */
+    border-bottom: unset;
+    margin-bottom: unset;
+}
+
+.app-switcher-desc a {
+    color: unset;
+}
+
+.app-switcher-left {
+    text-align: right;
+}
+.app-switcher-right {
+    text-align: left;
+}
+.app-switcher-item {
+    flex: 0 0 auto;
+    border-radius: 3px;
+    height: 1.6em;
+    line-height: 1.6em;
+    margin: .2em .1em;
+    padding: 0 .45em;
+}
+a.app-switcher-item, .app-switcher-item a {
+    transition: unset; /* override ant design */
+    color: black;
+}
+.app-switcher-item img {
+    width: 1.2rem;
+    height: 1.2rem;
+    position: relative;
+    top: .2rem;
+    vertical-align: unset; /* override ant design */
+}
+.app-switcher-item span:not(:empty) {
+    margin-left: .2rem;
+}
+.app-switcher-logo-hover {
+    margin-left: -1.2rem;
+}
+
+.app-switcher-item:hover {
+    background-color: black;
+    color: white !important;
+}
+.app-switcher-item:hover a {
+    color: white !important;
+}
+.app-switcher-item-current {
+    background-color: rgba(0,0,0,.4);
+    text-shadow: 0 0 5px rgba(0,0,0,.5);
+    color: white !important;
+}
+.app-switcher-item-current a {
+    color: white !important;
+}
+
+.root-dark-mode .app-switcher-item, .root-dark-mode .app-switcher-dropdown-title a {
+    color: var(--foreground-dark);
+}
+.root-dark-mode .app-switcher-item:hover, .root-dark-mode .app-switcher-item-current, .root-dark-mode .app-switcher-dropdown-title:hover a {
+    background-color: #555;
+    color: var(--foreground-dark);
+}
+
+.app-switcher-item:hover .app-switcher-logo-normal, .app-switcher-item-current .app-switcher-logo-normal {
+    opacity: 0;
+}
+.app-switcher-item:not(.app-switcher-item-current):not(:hover) .app-switcher-logo-hover {
+    opacity: 0;
+}
+
+.root-dark-mode .app-switcher-logo-normal {
+    opacity: 0 !important;
+}
+.root-dark-mode .app-switcher-logo-hover {
+    opacity: 1 !important;
+}
+
+.app-switcher-dropdown {
+    padding: 0;
+    text-align: left;
+}
+
+.app-switcher-dropdown:not(:hover) {
+    max-height: 1.6rem;
+    overflow: hidden;
+}
+
+.app-switcher-dropdown-item {
+    background-color: hsla(0,0%,35%,.9);
+    padding: .125em .25em;
+    margin-left: -.75em;
+    margin-right: -.75em;
+    position: relative;
+    z-index: 10;
+    cursor: pointer;
+}
+.app-switcher-dropdown-item:hover {
+    background-color: rgba(0,0,0,.9);
+}
+.app-switcher-dropdown-item:nth-child(2) {
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+.app-switcher-dropdown-item:last-child {
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.app-switcher-dropdown-title {
+    padding-bottom: .2em;
+    padding-left: .5em;
+    padding-right: .25em;
+}
+.app-switcher-dropdown-title a {
+    cursor: unset;
+}
+
+.pkuhelper-login-popup {
+    font-size: 1rem;
+    background-color: #f7f7f7;
+    color: black;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    width: 320px;
+    z-index: 114515;
+    transform: translateX(-50%) translateY(-50%);
+    border-radius: 5px;
+}
+.pkuhelper-login-popup a {
+    color: #00c;
+}
+.pkuhelper-login-popup p {
+    margin: .75em 0;
+    text-align: center;
+}
+/* override ant design */
+.pkuhelper-login-popup input, .pkuhelper-login-popup button {
+    font-size: .85em;
+    vertical-align: middle;
+}
+.pkuhelper-login-popup input:not([type="checkbox"]) {
+    width: 8rem;
+    border-radius: 5px;
+    border: 1px solid black;
+    outline: none;
+    margin: 0;
+    padding: 0 .5em;
+    line-height: 2em;
+}
+.pkuhelper-login-popup button {
+    width: 6rem;
+    color: black;
+    background-color: rgba(235,235,235,.5);
+    border-radius: 5px;
+    text-align: center;
+    border: 1px solid black;
+    line-height: 2em;
+    margin: 0 .5rem;
+}
+.pkuhelper-login-popup button:hover {
+    background-color: rgba(255,255,255,.7);
+}
+.pkuhelper-login-popup button:disabled {
+    background-color: rgba(128,128,128,.5);
+}
+.pkuhelper-login-type {
+    display: inline-block;
+    width: 6rem;
+    margin: 0 .5rem;
+}
+.pkuhelper-login-popup-shadow {
+    opacity: .5;
+    background-color: black;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 114514;
+}
+
+.pkuhelper-login-popup label.perm-item {
+    font-size: .8em;
+    vertical-align: .1rem;
+    margin-left: .5rem;
+}
+
+.aux-margin {
+    width: calc(100% - 2 * 50px);
+    margin: 0 50px;
+}
+@media screen and (max-width: 1300px) {
+    .aux-margin {
+        width: calc(100% - 2 * 10px);
+        margin: 0 10px;
+    }
+}
+
+.title {
+    font-size: 1.5em;
+    height: 4rem;
+    padding-top: 1rem;
+    text-align: center;
+}
