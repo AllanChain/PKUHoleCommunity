@@ -19,7 +19,7 @@ import {
   ColoredSpan,
 } from './Common';
 import './Flows.css';
-import LazyLoad, { forceCheck } from './react-lazyload/src';
+import LazyLoad, { forceCheck } from 'react-lazyload';
 import { AudioWidget } from './AudioWidget';
 import { TokenCtx, ReplyForm } from './UserAction';
 
@@ -1055,7 +1055,7 @@ function FlowChunk(props) {
               key={`${info.pid}-${props.lazyload_key_suffix}`}
               offset={1500}
               height="15em"
-              hiddenIfInvisible={true}
+              once={true}
             >
               <div>
                 {!!(

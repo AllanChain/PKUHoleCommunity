@@ -10,6 +10,7 @@
     "pressure": "^2.2.0",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
+    "react-lazyload": "^3.2.0",
     "react-scripts": "^4.0.3",
     "react-timeago": "^4.4.0"
   },
