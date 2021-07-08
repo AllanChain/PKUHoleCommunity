@@ -484,9 +484,8 @@ export class ReplyForm extends Component {
     };
     this.on_change_bound = this.on_change.bind(this);
     this.area_ref = this.props.area_ref || React.createRef();
-    this.global_keypress_handler_bound = this.global_keypress_handler.bind(
-      this,
-    );
+    this.global_keypress_handler_bound =
+      this.global_keypress_handler.bind(this);
   }
 
   global_keypress_handler(e) {

@@ -19,7 +19,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "lint": "eslint --fix src/*.js"
+    "lint": "eslint --fix --ext .js src"
   },
   "homepage": "https://allanchain.github.io/PKUHoleCommunity/",
   "browserslist": {
@@ -35,8 +35,8 @@
     ]
   },
   "devDependencies": {
-    "eslint": "^7.11.0",
-    "eslint-config-prettier": "^6.15.0",
+    "eslint": "^7.30.0",
+    "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-react": "^7.24.0",
     "prettier": "^2.3.2"

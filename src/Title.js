@@ -185,8 +185,8 @@ class AppSwitcherHusk extends PureComponent {
   }
 
   componentDidMount() {
-    const appSwitcher = document.getElementById('app-switcher-shell')
-      .firstChild;
+    const appSwitcher =
+      document.getElementById('app-switcher-shell').firstChild;
     const appList = appSwitcher.querySelectorAll('a');
     appList.forEach((el) => {
       if (el.text in APP_SWITCHER_ROUTER)
