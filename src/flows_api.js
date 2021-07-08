@@ -40,8 +40,10 @@ export const API = {
       API_BASE + '/api.php?action=getcomment&pid=' + pid + token_param(token),
     );
     const json = await handle_response(response);
-    // Why delete then put ??
-    cache().put(pid, cache_version, json);
+    // Helper warnings are not cacheable
+    if (json.data.length !== 1 || !json.data[0].text.startsWith('[Helper]')) {
+      cache().put(pid, cache_version, json);
+    }
     json.data = parse_replies(json.data, color_picker);
     return json;
   },
