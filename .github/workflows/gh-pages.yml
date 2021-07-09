@@ -1,6 +1,8 @@
+name: Deploy on gh-pages
+
 on:
   push:
-    tags: 
+    tags:
       - 'v*'
 
 env:
@@ -8,23 +10,18 @@ env:
 
 jobs:
   build-and-deploy:
-    name: Build and Deploy
+    name: Build and Release
     runs-on: ubuntu-latest
+    # Disable pre release builds
+    if: ${{ ! contains(github.ref, '-') }}
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v2
       with:
         submodules: true
     - name: Use Node.js ${{ env.NODE_VERSION }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ env.NODE_VERSION }}
-    - uses: actions/cache@v1
-      with:
-        path: node_modules
-        id: cache
-        key: node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          node-
     - name: Install Packages
       run: npm install
     - name: Build App
@@ -38,3 +35,5 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./build
         publish_branch: gh-pages
+        user_name: github-actions[bot]
+        user_email: github-actions[bot]@users.noreply.github.com

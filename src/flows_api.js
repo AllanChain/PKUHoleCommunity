@@ -14,7 +14,7 @@ export { get_json };
 const SEARCH_PAGESIZE = 50;
 
 const handle_response = async (response, notify = false) => {
-  let json = await get_json(response);
+  const json = await get_json(response);
   if (json.code !== 0) {
     if (json.msg) {
       if (notify) alert(json.msg);
@@ -36,12 +36,14 @@ const parse_replies = (replies, color_picker) =>
 export const API = {
   load_replies: async (pid, token, color_picker, cache_version) => {
     pid = parseInt(pid);
-    let response = await fetch(
+    const response = await fetch(
       API_BASE + '/api.php?action=getcomment&pid=' + pid + token_param(token),
     );
-    let json = await handle_response(response);
-    // Why delete then put ??
-    cache().put(pid, cache_version, json);
+    const json = await handle_response(response);
+    // Helper warnings are not cacheable
+    if (json.data.length !== 1 || !json.data[0].text.startsWith('[Helper]')) {
+      cache().put(pid, cache_version, json);
+    }
     json.data = parse_replies(json.data, color_picker);
     return json;
   },
@@ -59,11 +61,11 @@ export const API = {
   },
 
   set_attention: async (pid, attention, token) => {
-    let data = new URLSearchParams();
+    const data = new URLSearchParams();
     data.append('user_token', token);
     data.append('pid', pid);
     data.append('switch', attention ? '1' : '0');
-    let response = await fetch(
+    const response = await fetch(
       API_BASE + '/api.php?action=attention' + token_param(token),
       {
         method: 'POST',
@@ -79,11 +81,11 @@ export const API = {
   },
 
   report: async (pid, reason, token) => {
-    let data = new URLSearchParams();
+    const data = new URLSearchParams();
     data.append('user_token', token);
     data.append('pid', pid);
     data.append('reason', reason);
-    let response = await fetch(
+    const response = await fetch(
       API_BASE + '/api.php?action=report' + token_param(token),
       {
         method: 'POST',
@@ -97,14 +99,14 @@ export const API = {
   },
 
   get_list: async (page, token) => {
-    let response = await fetch(
+    const response = await fetch(
       API_BASE + '/api.php?action=getlist' + '&p=' + page + token_param(token),
     );
     return handle_response(response);
   },
 
   get_search: async (page, keyword, token) => {
-    let response = await fetch(
+    const response = await fetch(
       API_BASE +
         '/api.php?action=search' +
         '&pagesize=' +
@@ -119,14 +121,14 @@ export const API = {
   },
 
   get_single: async (pid, token) => {
-    let response = await fetch(
+    const response = await fetch(
       API_BASE + '/api.php?action=getone' + '&pid=' + pid + token_param(token),
     );
     return handle_response(response);
   },
 
   get_attention: async (token) => {
-    let response = await fetch(
+    const response = await fetch(
       API_BASE + '/api.php?action=getattention' + token_param(token),
     );
     return handle_response(response);

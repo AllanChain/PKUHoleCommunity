@@ -13,17 +13,30 @@ function escape_regex(string) {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 }
 
-export function build_highlight_re(txt, split, option = 'g') {
-  return txt
-    ? new RegExp(
-        `(${txt
-          .split(split)
-          .filter((x) => !!x)
-          .map(escape_regex)
-          .join('|')})`,
-        option,
-      )
-    : /^$/g;
+export function build_highlight_re(
+  txt,
+  split = ' ',
+  option = 'g',
+  isRegex = false,
+) {
+  if (isRegex) {
+    try {
+      return new RegExp('(' + txt.slice(1, -1) + ')', option);
+    } catch (e) {
+      return /^$/g;
+    }
+  } else {
+    return txt
+      ? new RegExp(
+          `(${txt
+            .split(split)
+            .filter((x) => !!x)
+            .map(escape_regex)
+            .join('|')})`,
+          option,
+        )
+      : /^$/g;
+  }
 }
 
 export function ColoredSpan(props) {
@@ -48,7 +61,7 @@ export class HighlightedText extends PureComponent {
     return (
       <pre>
         {this.props.parts.map((part, idx) => {
-          let [rule, p] = part;
+          const [rule, p] = part;
           return (
             <span key={idx}>
               {rule === 'url_pid' ? (
@@ -168,8 +181,8 @@ window.addEventListener('beforeinstallprompt', (e) => {
 });
 
 export function PromotionBar(props) {
-  let is_ios = /iPhone|iPad|iPod/i.test(window.navigator.userAgent);
-  let is_installed =
+  const is_ios = /iPhone|iPad|iPod/i.test(window.navigator.userAgent);
+  const is_installed =
     window.matchMedia('(display-mode: standalone)').matches ||
     window.navigator.standalone;
 
@@ -229,7 +242,7 @@ export class ClickHandler extends PureComponent {
   }
   on_move(e) {
     if (!this.state.moved) {
-      let mvmt =
+      const mvmt =
         Math.abs((e.touches ? e.touches[0] : e).screenY - this.state.init_y) +
         Math.abs((e.touches ? e.touches[0] : e).screenX - this.state.init_x);
       //console.log('move',mvmt);

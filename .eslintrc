@@ -6,8 +6,7 @@
   },
   "extends": [
     "plugin:react/recommended",
-    "plugin:prettier/recommended",
-    "prettier/react"
+    "prettier"
   ],
   "globals": {
     "Atomics": "readonly",
@@ -27,12 +26,13 @@
       "version": "detect"
     }
   },
-  "ignorePatterns": ["src/infrastructure/", "src/react-lazyload/"],
+  "ignorePatterns": ["src/infrastructure/", "build/"],
   "rules": {
     "prettier/prettier": "warn",
     "react/jsx-indent": ["error", 2, { "indentLogicalExpressions": true }],
     "react/prop-types": "off",
     "react/jsx-no-target-blank": "off",
-    "no-unused-vars": ["warn", { "args": "none" }]
+    "no-unused-vars": ["warn", { "args": "none" }],
+    "prefer-const": "warn"
   }
 }

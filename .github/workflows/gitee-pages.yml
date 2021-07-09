@@ -1,0 +1,111 @@
+name: Deploy on gitee pages
+
+on:
+  push:
+    tags:
+      - "v*"
+
+env:
+  NODE_VERSION: "12.x"
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+          path: head
+      
+      - name: Setup Committer
+        run: |
+          git config --global user.email "pkuholece-bot@outlook.com"
+          git config --global user.name "pkuholece-bot"
+          echo "machine gitee.com login pkuholece-bot password $PASSWORD" >> ~/.netrc
+        env:
+          PASSWORD: ${{ secrets.GITEE_PASSWORD }}
+
+      - name: Install Packages
+        run: |
+          cd head
+          npm install
+      - name: Build Latest (Beta) App
+        run: |
+          cd head
+          npm run build
+        env:
+          # React will fail CI if there is any warning
+          CI: false
+          PUBLIC_URL: "/beta/"
+
+      - name: Prepare Latest Gitee Pages
+        run: |
+          git clone --depth=1 https://gitee.com/PKUHoleCE/PKUHoleCE.git dist
+
+      - name: (Pre) Validate Previous Pages (Backward & Error Compacity)
+        if: ${{ contains(github.ref, '-') }}
+        id: validate
+        run: |
+          if [ -d 'dist/stable' ]
+          then
+            echo '::set-output name=valid::true'
+          else
+            rm -rf dist/*
+            echo '::set-output name=valid::'
+          fi
+
+      - name: Copy Beta Version
+        run: |
+          rm -rf dist/beta/
+          cp -r head/build/ dist/beta/
+
+      - name: (Stable) Build Again with /stable/
+        if: ${{ ! contains(github.ref, '-') }}
+        run: |
+          cd head
+          npm run build
+          cd ..
+          rm -rf dist/stable/
+          cp -r head/build/ dist/stable/
+        env:
+          # React will fail CI if there is any warning
+          CI: false
+          PUBLIC_URL: "/stable/"
+
+      - name: (Pre) Rebuild Stable Version
+        if: ${{ ! steps.validate.outputs.valid && contains(github.ref, '-') }}
+        run: |
+          cd head
+          # fetch all history and tags
+          git pull origin master --unshallow --tags
+          # checkout latest stable version
+          git checkout "v$(npx semver -r '>0.0.0' $(git tag) | tail -n 1)"
+          npm install
+          npm run build
+          cp -r build ../dist/stable
+        env:
+          CI: false
+          PUBLIC_URL: "/stable/"
+
+      - name: Push to Gitee
+        run: |
+          cp head/README.md dist/
+          cd dist
+          git add .
+          git commit -m "Deploy $REF"
+          git push
+        env:
+          REF: ${{ github.ref }}
+      
+      - name: Build Gitee Pages
+        uses: yanglbme/gitee-pages-action@master
+        with:
+          gitee-username: pkuholece-bot
+          gitee-password: ${{ secrets.GITEE_PASSWORD }}
+          gitee-repo: PKUHoleCE/PKUHoleCE

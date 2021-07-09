@@ -7,11 +7,12 @@ import { TokenCtx } from './UserAction';
 import { load_config, bgimg_style } from './Config';
 import { listen_darkmode } from './infrastructure/functions';
 import { LoginPopup, TitleLine } from './infrastructure/widgets';
+import { cache } from './cache';
 
 const MAX_SIDEBAR_STACK_SIZE = 10;
 
 function DeprecatedAlert(props) {
-  return <div id="global-hint-container" style={{ display: 'none' }} />;
+  return <div id="global-hint-container" />;
 }
 
 class App extends Component {
@@ -41,6 +42,10 @@ class App extends Component {
       ) !== -1;
   }
 
+  componentDidMount() {
+    cache(); // init indexeddb
+  }
+
   static is_darkmode() {
     if (window.config.color_scheme === 'dark') return true;
     if (window.config.color_scheme === 'light') return false;
@@ -60,15 +65,32 @@ class App extends Component {
     this.setState((prevState) => {
       let ns = prevState.sidebar_stack.slice();
       if (mode === 'push') {
+        if (ns.length === 1) {
+          document.body.style.top = `-${window.scrollY}px`;
+          document.body.style.position = 'fixed';
+          document.body.style.width = '100vw'; // Be responsive with fixed position
+        }
         if (ns.length > MAX_SIDEBAR_STACK_SIZE) ns.splice(1, 1);
         ns = ns.concat([[title, content]]);
       } else if (mode === 'pop') {
         if (ns.length === 1) return;
+        if (ns.length === 2) {
+          const scrollY = document.body.style.top;
+          document.body.style.position = '';
+          document.body.style.top = '';
+          document.body.style.width = '';
+          window.scrollTo(0, parseInt(scrollY || '0') * -1);
+        }
         ns.pop();
       } else if (mode === 'replace') {
         ns.pop();
         ns = ns.concat([[title, content]]);
       } else if (mode === 'clear') {
+        const scrollY = document.body.style.top;
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        window.scrollTo(0, parseInt(scrollY || '0') * -1);
         ns = [[null, null]];
       } else throw new Error('bad show_sidebar mode');
       return {
@@ -103,11 +125,11 @@ class App extends Component {
         <Title
           show_sidebar={this.show_sidebar_bound}
           set_mode={this.set_mode_bound}
+          mode={this.state.mode}
         />
         <TokenCtx.Consumer>
           {(token) => (
             <div className="left-container">
-              <DeprecatedAlert token={token.value} />
               {!token.value && (
                 <div className="flow-item-row aux-margin">
                   <div className="box box-tip">
@@ -124,6 +146,7 @@ class App extends Component {
                   </div>
                 </div>
               )}
+              <DeprecatedAlert token={token.value} />
               {this.inpku_flag || token.value ? (
                 <Flow
                   key={this.state.flow_render_key}

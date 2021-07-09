@@ -18,24 +18,23 @@ export class Sidebar extends PureComponent {
 
   render() {
     // hide old contents to remember state
-    let contents = this.props.stack.map(
+    const contents = this.props.stack.map(
       ({ 1: content }, i) =>
         content && (
           <div
-            key={content.key}
+            key={i}
             className={
-              i === this.props.stack.length - 1
+              'sidebar-content ' +
+              (i === this.props.stack.length - 1
                 ? 'sidebar-content-show'
-                : 'sidebar-content-hide'
+                : 'sidebar-content-hide')
             }
           >
             {content}
           </div>
         ),
     );
-    let cur_title = this.props.stack[this.props.stack.length - 1][0];
-    // Disable body scroll. Have to use raw DOM to control body style.
-    document.body.style.overflow = cur_title !== null ? 'hidden' : '';
+    const cur_title = this.props.stack[this.props.stack.length - 1][0];
     return (
       <div
         className={

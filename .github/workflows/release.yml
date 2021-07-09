@@ -1,0 +1,20 @@
+on:
+  push:
+    tags:
+      - 'v*'
+      # do not release on ci testing
+      - '!v*ci*'
+      - '!v*debug*'
+
+name: Create Release
+
+jobs:
+  build:
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          prerelease: ${{ contains(github.ref, '-') }}

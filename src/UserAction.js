@@ -46,7 +46,7 @@ class LifeInfoBox extends Component {
   }
 
   cache_get(key) {
-    let cache_item = window._life_info_cache[key];
+    const cache_item = window._life_info_cache[key];
     if (
       !cache_item ||
       +new Date() - cache_item[0] > 1000 * this.CACHE_TIMEOUT_S
@@ -109,7 +109,7 @@ class LifeInfoBox extends Component {
   }
 
   render_line(state_key, title, value_fn, action, url_fn, do_login) {
-    let s = this.state[state_key];
+    const s = this.state[state_key];
     if (!s)
       return (
         <tr>
@@ -305,7 +305,7 @@ export function InfoSidebar(props) {
                 navigator.serviceWorker
                   .getRegistrations()
                   .then((registrations) => {
-                    for (let registration of registrations) {
+                    for (const registration of registrations) {
                       console.log('unregister', registration);
                       registration.unregister();
                     }
@@ -341,7 +341,7 @@ class ResetUsertokenWidget extends Component {
         '您正在重置 UserToken！\n您的账号将会在【所有设备】上注销，您需要手动重新登录！',
       )
     ) {
-      let uid = window.prompt(
+      const uid = window.prompt(
         '您正在重置 UserToken！\n请输入您的学号以确认身份：',
       );
       if (uid)
@@ -484,9 +484,8 @@ export class ReplyForm extends Component {
     };
     this.on_change_bound = this.on_change.bind(this);
     this.area_ref = this.props.area_ref || React.createRef();
-    this.global_keypress_handler_bound = this.global_keypress_handler.bind(
-      this,
-    );
+    this.global_keypress_handler_bound =
+      this.global_keypress_handler.bind(this);
   }
 
   global_keypress_handler(e) {
@@ -525,7 +524,7 @@ export class ReplyForm extends Component {
       loading_status: 'loading',
     });
 
-    let data = new URLSearchParams();
+    const data = new URLSearchParams();
     data.append('pid', this.props.pid);
     data.append('text', this.state.text);
     data.append('user_token', this.props.token);
@@ -614,7 +613,7 @@ export class PostForm extends Component {
   }
 
   do_post(text, img) {
-    let data = new URLSearchParams();
+    const data = new URLSearchParams();
     data.append('text', this.state.text);
     data.append('type', img ? 'image' : 'text');
     data.append('user_token', this.props.token);
@@ -659,7 +658,7 @@ export class PostForm extends Component {
         return url.substr(idx + 8);
       }
 
-      let reader = new FileReader();
+      const reader = new FileReader();
       function on_got_img(url) {
         const image = new Image();
         image.onload = () => {
@@ -678,15 +677,15 @@ export class PostForm extends Component {
             compressed = true;
           }
           if (height * width > MAX_IMG_PX) {
-            let rate = Math.sqrt((height * width) / MAX_IMG_PX);
+            const rate = Math.sqrt((height * width) / MAX_IMG_PX);
             height /= rate;
             width /= rate;
             compressed = true;
           }
           console.log('chosen img size', width, height);
 
-          let canvas = document.createElement('canvas');
-          let ctx = canvas.getContext('2d');
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
           canvas.width = width;
           canvas.height = height;
           ctx.drawImage(image, 0, 0, width, height);
