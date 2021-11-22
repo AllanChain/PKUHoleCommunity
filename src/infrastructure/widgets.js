@@ -103,19 +103,7 @@ export class AppSwitcher extends Component {
         return ret;
     }
 
-    check_fix() {
-        if(this.state.apps && this.state.apps.fix && this.state.apps.fix[this.props.appid])
-            setTimeout(()=>{
-                window.HOTFIX_CONTEXT={
-                    build_info: process.env.REACT_APP_BUILD_INFO || '---',
-                    build_env: process.env.NODE_ENV,
-                };
-                eval(this.state.apps.fix[this.props.appid]);
-            },1); // make it async so failures won't be critical
-    }
-
     componentDidMount() {
-        this.check_fix();
         setTimeout(()=>{
             fetch(SWITCHER_DATA_URL)
                 .then((res)=>{
@@ -141,11 +129,6 @@ export class AppSwitcher extends Component {
         },500);
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        if(this.state.apps!==prevState.apps)
-            this.check_fix();
-    }
-
     render() {
         let cur_id=this.props.appid;
 
@@ -167,8 +150,6 @@ export class AppSwitcher extends Component {
             if(app[0]===cur_id)
                 dropdown_cur_app=app;
         });
-
-        //console.log(JSON.stringify(this.state.apps));
 
         return (
             <div className="app-switcher">
