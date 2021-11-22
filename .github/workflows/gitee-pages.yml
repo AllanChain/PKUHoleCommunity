@@ -5,24 +5,20 @@ on:
     tags:
       - "v*"
 
-env:
-  NODE_VERSION: "12.x"
-
 jobs:
   build-and-deploy:
     name: Build and Deploy
     runs-on: ubuntu-latest
     steps:
-      - name: Use Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: '16'
 
       - uses: actions/checkout@v2
         with:
           submodules: true
           path: head
-      
+
       - name: Setup Committer
         run: |
           git config --global user.email "pkuholece-bot@outlook.com"
@@ -102,7 +98,7 @@ jobs:
           git push
         env:
           REF: ${{ github.ref }}
-      
+
       - name: Build Gitee Pages
         uses: yanglbme/gitee-pages-action@master
         with:
