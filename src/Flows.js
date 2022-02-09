@@ -175,8 +175,12 @@ class FlowItem extends PureComponent {
         }\n` +
         `（${format_time(new Date(this.props.info.timestamp * 1000))} ${
           this.props.info.likenum
-        }关注 ${this.props.info.reply}回复）\n` +
-        this.props.replies
+        }关注 ${this.props.info.reply}回复${
+          this.props.replies_filter_name
+            ? ` 只看[${this.props.replies_filter_name}]`
+            : ''
+        }${this.props.replies_is_rev ? ' 逆序' : ''}）\n` +
+        this.props.replies_to_show
           .map((r) => (r.tag ? '【' + r.tag + '】' : '') + r.text)
           .join('\n'),
     );
@@ -239,7 +243,14 @@ class FlowItem extends PureComponent {
                 <span className="icon icon-reply" />
               </span>
             )}
-            <code className="box-id">
+            <code
+              className="box-id"
+              style={{
+                '--box-id-copy-content': props.replies_filter_name
+                  ? `"仅复制${props.replies_filter_name}"`
+                  : '"复制全文"',
+              }}
+            >
               <a
                 href={'##' + props.info.pid}
                 onClick={this.copy_link.bind(this)}
@@ -512,6 +523,9 @@ class FlowSidebar extends PureComponent {
             color_picker={this.color_picker}
             show_pid={show_pid}
             replies={this.state.replies}
+            replies_to_show={replies_to_show}
+            replies_filter_name={this.state.filter_name}
+            replies_is_rev={this.state.rev}
             set_variant={(variant) => {
               this.set_variant(null, variant);
             }}
@@ -860,6 +874,9 @@ class FlowItemRow extends PureComponent {
           color_picker={this.color_picker}
           show_pid={show_pid}
           replies={this.state.replies}
+          replies_to_show={this.state.replies}
+          replies_filter_name={null}
+          replies_is_rev={false}
           cached={this.state.cached}
         />
         <div className="flow-reply-row">
