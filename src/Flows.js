@@ -516,34 +516,31 @@ class FlowSidebar extends PureComponent {
       replies_cnt[r.name]++;
     });
 
-    // hide main thread when filtered
-    const main_thread_elem =
-      // this.state.filter_name && this.state.filter_name !== DZ_NAME
-      false ? null : (
-        <ClickHandler
-          callback={(e) => {
-            this.show_reply_bar('', e);
+    const main_thread_elem = (
+      <ClickHandler
+        callback={(e) => {
+          this.show_reply_bar('', e);
+        }}
+      >
+        <FlowItem
+          info={this.state.info}
+          attention={this.state.attention}
+          img_clickable={true}
+          color_picker={this.color_picker}
+          show_pid={show_pid}
+          replies={this.state.replies}
+          replies_to_show={replies_to_show}
+          replies_filter_name={this.state.filter_name}
+          replies_is_rev={this.state.rev}
+          set_variant={(variant) => {
+            this.set_variant(null, variant);
           }}
-        >
-          <FlowItem
-            info={this.state.info}
-            attention={this.state.attention}
-            img_clickable={true}
-            color_picker={this.color_picker}
-            show_pid={show_pid}
-            replies={this.state.replies}
-            replies_to_show={replies_to_show}
-            replies_filter_name={this.state.filter_name}
-            replies_is_rev={this.state.rev}
-            set_variant={(variant) => {
-              this.set_variant(null, variant);
-            }}
-            do_filter_name={
-              replies_cnt[DZ_NAME] > 1 ? this.set_filter_name.bind(this) : null
-            }
-          />
-        </ClickHandler>
-      );
+          do_filter_name={
+            replies_cnt[DZ_NAME] > 1 ? this.set_filter_name.bind(this) : null
+          }
+        />
+      </ClickHandler>
+    );
 
     return (
       <div className="flow-item-row sidebar-flow-item">
