@@ -208,8 +208,9 @@
 .box-id a:hover::before {
     content: var(--box-id-copy-content, "复制");
     position: relative;
-    width: 5em;
+    width: fit-content;
     height: 1.3em;
+    padding: 0 .25em;
     line-height: 1.3em;
     margin-bottom: -1.3em;
     border-radius: 3px;
