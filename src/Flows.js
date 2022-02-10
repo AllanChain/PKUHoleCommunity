@@ -247,7 +247,7 @@ class FlowItem extends PureComponent {
               className="box-id"
               style={{
                 '--box-id-copy-content': props.replies_filter_name
-                  ? `"仅复制${props.replies_filter_name}"`
+                  ? `"仅复制 ${props.replies_filter_name}"`
                   : '"复制全文"',
               }}
             >
@@ -264,31 +264,39 @@ class FlowItem extends PureComponent {
             )}
             <Time stamp={props.info.timestamp} />
           </div>
-          <div className="box-content">
-            <HighlightedText
-              parts={parts}
-              color_picker={props.color_picker}
-              show_pid={props.show_pid}
-            />
-            {props.info.type === 'image' && (
-              <p className="img">
-                {props.img_clickable ? (
-                  <a
-                    className="no-underline"
-                    href={IMAGE_BASE + props.info.url}
-                    target="_blank"
-                  >
+          {props.replies_filter_name &&
+          props.replies_filter_name !== DZ_NAME ? (
+            <div
+              className="box-content"
+              style={{ padding: '0', marginTop: '.25em' }}
+            ></div>
+          ) : (
+            <div className="box-content">
+              <HighlightedText
+                parts={parts}
+                color_picker={props.color_picker}
+                show_pid={props.show_pid}
+              />
+              {props.info.type === 'image' && (
+                <p className="img">
+                  {props.img_clickable ? (
+                    <a
+                      className="no-underline"
+                      href={IMAGE_BASE + props.info.url}
+                      target="_blank"
+                    >
+                      <img src={IMAGE_BASE + props.info.url} />
+                    </a>
+                  ) : (
                     <img src={IMAGE_BASE + props.info.url} />
-                  </a>
-                ) : (
-                  <img src={IMAGE_BASE + props.info.url} />
-                )}
-              </p>
-            )}
-            {props.info.type === 'audio' && (
-              <AudioWidget src={AUDIO_BASE + props.info.url} />
-            )}
-          </div>
+                  )}
+                </p>
+              )}
+              {props.info.type === 'audio' && (
+                <AudioWidget src={AUDIO_BASE + props.info.url} />
+              )}
+            </div>
+          )}
           {!!(props.attention && props.info.variant.latest_reply) && (
             <p className="box-footer">
               最新回复 <Time stamp={props.info.variant.latest_reply} />
@@ -510,7 +518,8 @@ class FlowSidebar extends PureComponent {
 
     // hide main thread when filtered
     const main_thread_elem =
-      this.state.filter_name && this.state.filter_name !== DZ_NAME ? null : (
+      // this.state.filter_name && this.state.filter_name !== DZ_NAME
+      false ? null : (
         <ClickHandler
           callback={(e) => {
             this.show_reply_bar('', e);
