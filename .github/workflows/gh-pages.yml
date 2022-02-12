@@ -18,6 +18,9 @@ jobs:
     - uses: actions/setup-node@v2
       with:
         node-version: '16'
+    - uses: pnpm/action-setup@v2.0.1
+      with:
+        version: latest
     - name: Install Packages
       run: pnpm install
     - name: Build App

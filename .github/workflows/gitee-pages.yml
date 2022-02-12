@@ -27,14 +27,17 @@ jobs:
         env:
           PASSWORD: ${{ secrets.GITEE_PASSWORD }}
 
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: latest
+
       - name: Install Packages
-        run: |
-          cd head
-          pnpm install
+        working-directory: head
+        run: pnpm install
+
       - name: Build Latest (Beta) App
-        run: |
-          cd head
-          pnpm run build
+        working-directory: head
+        run: pnpm run build
         env:
           # React will fail CI if there is any warning
           CI: false
