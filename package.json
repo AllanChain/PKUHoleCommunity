@@ -8,6 +8,7 @@
     "load-script": "^2.0.0",
     "p-limit": "^4.0.0",
     "pressure": "^2.2.0",
+    "process": "^0.11.10",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-lazyload": "^3.2.0",

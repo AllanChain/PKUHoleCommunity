@@ -11,6 +11,7 @@ specifiers:
   p-limit: ^4.0.0
   pressure: ^2.2.0
   prettier: ^2.3.2
+  process: ^0.11.10
   react: ^17.0.2
   react-dom: ^17.0.2
   react-lazyload: ^3.2.0
@@ -28,6 +29,7 @@ dependencies:
   load-script: 2.0.0
   p-limit: 4.0.0
   pressure: 2.2.0
+  process: 0.11.10
   react: 17.0.2
   react-dom: 17.0.2_react@17.0.2
   react-lazyload: 3.2.0_react-dom@17.0.2+react@17.0.2
@@ -7439,6 +7441,11 @@ packages:
 
   /process-nextick-args/2.0.1:
     resolution: {integrity: sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==}
+    dev: false
+
+  /process/0.11.10:
+    resolution: {integrity: sha1-czIwDoQBYb2j5podHZGn1LwW8YI=}
+    engines: {node: '>= 0.6.0'}
     dev: false
 
   /promise/8.1.0:
