@@ -16,6 +16,11 @@ specifiers:
   react-lazyload: ^3.2.0
   react-scripts: ^5.0.0
   react-timeago: ^6.2.1
+  workbox-core: ^6.4.2
+  workbox-expiration: ^6.4.2
+  workbox-precaching: ^6.4.2
+  workbox-routing: ^6.4.2
+  workbox-strategies: ^6.4.2
 
 dependencies:
   copy-to-clipboard: 3.3.1
@@ -28,6 +33,11 @@ dependencies:
   react-lazyload: 3.2.0_react-dom@17.0.2+react@17.0.2
   react-scripts: 5.0.0_react@17.0.2
   react-timeago: 6.2.1_react@17.0.2
+  workbox-core: 6.4.2
+  workbox-expiration: 6.4.2
+  workbox-precaching: 6.4.2
+  workbox-routing: 6.4.2
+  workbox-strategies: 6.4.2
 
 devDependencies:
   eslint: 8.8.0
