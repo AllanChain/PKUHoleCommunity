@@ -175,8 +175,12 @@ class FlowItem extends PureComponent {
         }\n` +
         `（${format_time(new Date(this.props.info.timestamp * 1000))} ${
           this.props.info.likenum
-        }关注 ${this.props.info.reply}回复）\n` +
-        this.props.replies
+        }关注 ${this.props.info.reply}回复${
+          this.props.replies_filter_name
+            ? ` 只看[${this.props.replies_filter_name}]`
+            : ''
+        }${this.props.replies_is_rev ? ' 逆序' : ''}）\n` +
+        this.props.replies_to_show
           .map((r) => (r.tag ? '【' + r.tag + '】' : '') + r.text)
           .join('\n'),
     );
@@ -239,7 +243,14 @@ class FlowItem extends PureComponent {
                 <span className="icon icon-reply" />
               </span>
             )}
-            <code className="box-id">
+            <code
+              className="box-id"
+              style={{
+                '--box-id-copy-content': props.replies_filter_name
+                  ? `"仅复制 ${props.replies_filter_name}"`
+                  : '"复制全文"',
+              }}
+            >
               <a
                 href={'##' + props.info.pid}
                 onClick={this.copy_link.bind(this)}
@@ -253,31 +264,39 @@ class FlowItem extends PureComponent {
             )}
             <Time stamp={props.info.timestamp} />
           </div>
-          <div className="box-content">
-            <HighlightedText
-              parts={parts}
-              color_picker={props.color_picker}
-              show_pid={props.show_pid}
-            />
-            {props.info.type === 'image' && (
-              <p className="img">
-                {props.img_clickable ? (
-                  <a
-                    className="no-underline"
-                    href={IMAGE_BASE + props.info.url}
-                    target="_blank"
-                  >
+          {props.replies_filter_name &&
+          props.replies_filter_name !== DZ_NAME ? (
+            <div
+              className="box-content"
+              style={{ padding: '0', marginTop: '.25em' }}
+            ></div>
+          ) : (
+            <div className="box-content">
+              <HighlightedText
+                parts={parts}
+                color_picker={props.color_picker}
+                show_pid={props.show_pid}
+              />
+              {props.info.type === 'image' && (
+                <p className="img">
+                  {props.img_clickable ? (
+                    <a
+                      className="no-underline"
+                      href={IMAGE_BASE + props.info.url}
+                      target="_blank"
+                    >
+                      <img src={IMAGE_BASE + props.info.url} />
+                    </a>
+                  ) : (
                     <img src={IMAGE_BASE + props.info.url} />
-                  </a>
-                ) : (
-                  <img src={IMAGE_BASE + props.info.url} />
-                )}
-              </p>
-            )}
-            {props.info.type === 'audio' && (
-              <AudioWidget src={AUDIO_BASE + props.info.url} />
-            )}
-          </div>
+                  )}
+                </p>
+              )}
+              {props.info.type === 'audio' && (
+                <AudioWidget src={AUDIO_BASE + props.info.url} />
+              )}
+            </div>
+          )}
           {!!(props.attention && props.info.variant.latest_reply) && (
             <p className="box-footer">
               最新回复 <Time stamp={props.info.variant.latest_reply} />
@@ -497,30 +516,31 @@ class FlowSidebar extends PureComponent {
       replies_cnt[r.name]++;
     });
 
-    // hide main thread when filtered
-    const main_thread_elem =
-      this.state.filter_name && this.state.filter_name !== DZ_NAME ? null : (
-        <ClickHandler
-          callback={(e) => {
-            this.show_reply_bar('', e);
+    const main_thread_elem = (
+      <ClickHandler
+        callback={(e) => {
+          this.show_reply_bar('', e);
+        }}
+      >
+        <FlowItem
+          info={this.state.info}
+          attention={this.state.attention}
+          img_clickable={true}
+          color_picker={this.color_picker}
+          show_pid={show_pid}
+          replies={this.state.replies}
+          replies_to_show={replies_to_show}
+          replies_filter_name={this.state.filter_name}
+          replies_is_rev={this.state.rev}
+          set_variant={(variant) => {
+            this.set_variant(null, variant);
           }}
-        >
-          <FlowItem
-            info={this.state.info}
-            attention={this.state.attention}
-            img_clickable={true}
-            color_picker={this.color_picker}
-            show_pid={show_pid}
-            replies={this.state.replies}
-            set_variant={(variant) => {
-              this.set_variant(null, variant);
-            }}
-            do_filter_name={
-              replies_cnt[DZ_NAME] > 1 ? this.set_filter_name.bind(this) : null
-            }
-          />
-        </ClickHandler>
-      );
+          do_filter_name={
+            replies_cnt[DZ_NAME] > 1 ? this.set_filter_name.bind(this) : null
+          }
+        />
+      </ClickHandler>
+    );
 
     return (
       <div className="flow-item-row sidebar-flow-item">
@@ -860,6 +880,9 @@ class FlowItemRow extends PureComponent {
           color_picker={this.color_picker}
           show_pid={show_pid}
           replies={this.state.replies}
+          replies_to_show={this.state.replies}
+          replies_filter_name={null}
+          replies_is_rev={false}
           cached={this.state.cached}
         />
         <div className="flow-reply-row">
