@@ -1,6 +1,6 @@
 {
   "name": "webhole",
-  "version": "0.5.6",
+  "version": "0.6.0-alpha.0",
   "private": true,
   "dependencies": {
     "copy-to-clipboard": "^3.3.1",
