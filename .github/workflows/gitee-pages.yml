@@ -30,11 +30,11 @@ jobs:
       - name: Install Packages
         run: |
           cd head
-          npm install
+          pnpm install
       - name: Build Latest (Beta) App
         run: |
           cd head
-          npm run build
+          pnpm run build
         env:
           # React will fail CI if there is any warning
           CI: false
@@ -65,7 +65,7 @@ jobs:
         if: ${{ ! contains(github.ref, '-') }}
         run: |
           cd head
-          npm run build
+          pnpm run build
           cd ..
           rm -rf dist/stable/
           cp -r head/build/ dist/stable/
@@ -82,8 +82,8 @@ jobs:
           git pull origin master --unshallow --tags
           # checkout latest stable version
           git checkout "v$(npx semver -r '>0.0.0' $(git tag) | tail -n 1)"
-          npm install
-          npm run build
+          pnpm install
+          pnpm run build
           cp -r build ../dist/stable
         env:
           CI: false

@@ -19,9 +19,9 @@ jobs:
       with:
         node-version: '16'
     - name: Install Packages
-      run: npm install
+      run: pnpm install
     - name: Build App
-      run: npm run build
+      run: pnpm run build
       env:
         # React will fail CI if there is any warning
         CI: false
