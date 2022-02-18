@@ -63,10 +63,12 @@ export const API = {
     const json = await handle_response(response);
     // Helper warnings are not cacheable
     if (json.data.length === 1 && json.data[0].text.startsWith('[Helper]')) {
-      iframe_captcha_manager.load_iframe();
-      return new Promise((resolve) => setTimeout(resolve, 1000)).then(() =>
-        API.load_replies(pid, token, color_picker, cache_version),
-      );
+      if (window.config.auto_captcha) {
+        iframe_captcha_manager.load_iframe();
+        return new Promise((resolve) => setTimeout(resolve, 1000)).then(() =>
+          API.load_replies(pid, token, color_picker, cache_version),
+        );
+      }
     } else {
       iframe_captcha_manager.remove_iframe();
       cache().put(pid, cache_version, json);
@@ -130,13 +132,17 @@ export const API = {
       API_BASE + '/api.php?action=getlist' + '&p=' + page + token_param(token),
     );
     const json = await handle_response(response);
-    if (json.data.every((info) => info.text.startsWith('为保障树洞信息安全'))) {
-      iframe_captcha_manager.load_iframe();
-      return new Promise((resolve) => setTimeout(resolve, 1000)).then(() =>
-        API.get_list(page, token),
-      );
+    if (window.config.auto_captcha) {
+      if (json.data.every((info) => info.text.startsWith('为保障树洞'))) {
+        iframe_captcha_manager.load_iframe();
+        return new Promise((resolve) => setTimeout(resolve, 1000)).then(() =>
+          API.get_list(page, token),
+        );
+      } else {
+        iframe_captcha_manager.remove_iframe();
+        return json;
+      }
     } else {
-      iframe_captcha_manager.remove_iframe();
       return json;
     }
   },

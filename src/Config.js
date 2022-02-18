@@ -21,6 +21,7 @@ const DEFAULT_CONFIG = {
   block_words: [],
   alias: {},
   attention_sort: false,
+  auto_captcha: false,
 };
 
 export function load_config() {
@@ -423,6 +424,12 @@ export class ConfigUI extends PureComponent {
             id="attention_sort"
             name="关注列表排序"
             description="启用后，可以将关注列表按最后回复时间排序。不建议在性能较差的设备上启用"
+          />
+          <ConfigSwitch
+            callback={this.save_changes_bound}
+            id="auto_captcha"
+            name="自动人机验证"
+            description="启用后，将自动完成人机验证。不稳定。"
           />
         </div>
         <div className="box">
