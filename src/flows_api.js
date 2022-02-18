@@ -33,6 +33,27 @@ const parse_replies = (replies, color_picker) =>
       return info;
     });
 
+const iframe_captcha_manager = {
+  iframe: null,
+  load_iframe() {
+    if (this.iframe) return;
+    const helperIFrame = document.createElement('iframe');
+    helperIFrame.src = 'https://pkuhelper.pku.edu.cn/hole/';
+    helperIFrame.style.width = '0';
+    helperIFrame.style.height = '0';
+    helperIFrame.style.border = 'none';
+    helperIFrame.style.position = 'absolute';
+    document.body.appendChild(helperIFrame);
+    this.iframe = helperIFrame;
+  },
+  remove_iframe() {
+    if (this.iframe) {
+      document.body.removeChild(this.iframe);
+      this.iframe = null;
+    }
+  },
+};
+
 export const API = {
   load_replies: async (pid, token, color_picker, cache_version) => {
     pid = parseInt(pid);
@@ -41,7 +62,13 @@ export const API = {
     );
     const json = await handle_response(response);
     // Helper warnings are not cacheable
-    if (json.data.length !== 1 || !json.data[0].text.startsWith('[Helper]')) {
+    if (json.data.length === 1 && json.data[0].text.startsWith('[Helper]')) {
+      iframe_captcha_manager.load_iframe();
+      return new Promise((resolve) => setTimeout(resolve, 1000)).then(() =>
+        API.load_replies(pid, token, color_picker, cache_version),
+      );
+    } else {
+      iframe_captcha_manager.remove_iframe();
       cache().put(pid, cache_version, json);
     }
     json.data = parse_replies(json.data, color_picker);
