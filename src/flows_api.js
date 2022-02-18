@@ -129,7 +129,16 @@ export const API = {
     const response = await fetch(
       API_BASE + '/api.php?action=getlist' + '&p=' + page + token_param(token),
     );
-    return handle_response(response);
+    const json = await handle_response(response);
+    if (json.data.every((info) => info.text.startsWith('为保障树洞信息安全'))) {
+      iframe_captcha_manager.load_iframe();
+      return new Promise((resolve) => setTimeout(resolve, 1000)).then(() =>
+        API.get_list(page, token),
+      );
+    } else {
+      iframe_captcha_manager.remove_iframe();
+      return json;
+    }
   },
 
   get_search: async (page, keyword, token) => {
