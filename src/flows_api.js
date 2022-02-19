@@ -33,15 +33,45 @@ const parse_replies = (replies, color_picker) =>
       return info;
     });
 
+const iframe_captcha_manager = {
+  iframe: null,
+  load_iframe() {
+    if (this.iframe) return;
+    const helperIFrame = document.createElement('iframe');
+    helperIFrame.src = 'https://pkuhelper.pku.edu.cn/hole/';
+    helperIFrame.style.width = '0';
+    helperIFrame.style.height = '0';
+    helperIFrame.style.border = 'none';
+    helperIFrame.style.position = 'absolute';
+    document.body.appendChild(helperIFrame);
+    this.iframe = helperIFrame;
+  },
+  remove_iframe() {
+    if (this.iframe) {
+      document.body.removeChild(this.iframe);
+      this.iframe = null;
+    }
+  },
+};
+
 export const API = {
-  load_replies: async (pid, token, color_picker, cache_version) => {
+  max_captcha_retry: 8,
+  load_replies: async (pid, token, color_picker, cache_version, retry = 0) => {
     pid = parseInt(pid);
     const response = await fetch(
       API_BASE + '/api.php?action=getcomment&pid=' + pid + token_param(token),
     );
     const json = await handle_response(response);
     // Helper warnings are not cacheable
-    if (json.data.length !== 1 || !json.data[0].text.startsWith('[Helper]')) {
+    if (json.data.length === 1 && json.data[0].text.startsWith('[Helper]')) {
+      if (window.config.auto_captcha && retry < API.max_captcha_retry) {
+        iframe_captcha_manager.load_iframe();
+        return new Promise((resolve) => setTimeout(resolve, 1000)).then(() =>
+          API.load_replies(pid, token, color_picker, cache_version, retry + 1),
+        );
+      }
+    } else {
+      iframe_captcha_manager.remove_iframe();
       cache().put(pid, cache_version, json);
     }
     json.data = parse_replies(json.data, color_picker);
@@ -98,11 +128,24 @@ export const API = {
     return handle_response(response, true);
   },
 
-  get_list: async (page, token) => {
+  get_list: async (page, token, retry = 0) => {
     const response = await fetch(
       API_BASE + '/api.php?action=getlist' + '&p=' + page + token_param(token),
     );
-    return handle_response(response);
+    const json = await handle_response(response);
+    if (window.config.auto_captcha && retry < API.max_captcha_retry) {
+      if (json.data.every((info) => info.text.startsWith('为保障树洞'))) {
+        iframe_captcha_manager.load_iframe();
+        return new Promise((resolve) => setTimeout(resolve, 1000)).then(() =>
+          API.get_list(page, token),
+        );
+      } else {
+        iframe_captcha_manager.remove_iframe();
+        return json;
+      }
+    } else {
+      return json;
+    }
   },
 
   get_search: async (page, keyword, token) => {
