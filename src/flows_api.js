@@ -55,7 +55,8 @@ const iframe_captcha_manager = {
 };
 
 export const API = {
-  load_replies: async (pid, token, color_picker, cache_version) => {
+  max_captcha_retry: 8,
+  load_replies: async (pid, token, color_picker, cache_version, retry = 0) => {
     pid = parseInt(pid);
     const response = await fetch(
       API_BASE + '/api.php?action=getcomment&pid=' + pid + token_param(token),
@@ -63,10 +64,10 @@ export const API = {
     const json = await handle_response(response);
     // Helper warnings are not cacheable
     if (json.data.length === 1 && json.data[0].text.startsWith('[Helper]')) {
-      if (window.config.auto_captcha) {
+      if (window.config.auto_captcha && retry < API.max_captcha_retry) {
         iframe_captcha_manager.load_iframe();
         return new Promise((resolve) => setTimeout(resolve, 1000)).then(() =>
-          API.load_replies(pid, token, color_picker, cache_version),
+          API.load_replies(pid, token, color_picker, cache_version, retry + 1),
         );
       }
     } else {
@@ -127,12 +128,12 @@ export const API = {
     return handle_response(response, true);
   },
 
-  get_list: async (page, token) => {
+  get_list: async (page, token, retry = 0) => {
     const response = await fetch(
       API_BASE + '/api.php?action=getlist' + '&p=' + page + token_param(token),
     );
     const json = await handle_response(response);
-    if (window.config.auto_captcha) {
+    if (window.config.auto_captcha && retry < API.max_captcha_retry) {
       if (json.data.every((info) => info.text.startsWith('为保障树洞'))) {
         iframe_captcha_manager.load_iframe();
         return new Promise((resolve) => setTimeout(resolve, 1000)).then(() =>
