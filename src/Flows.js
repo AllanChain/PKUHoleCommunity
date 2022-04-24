@@ -158,6 +158,9 @@ class Reply extends PureComponent {
 class FlowItem extends PureComponent {
   constructor(props) {
     super(props);
+    this.state = {
+      image_hidden: window.config.hide_flow_image,
+    };
   }
 
   copy_link(event) {
@@ -184,6 +187,10 @@ class FlowItem extends PureComponent {
           .map((r) => (r.tag ? '【' + r.tag + '】' : '') + r.text)
           .join('\n'),
     );
+  }
+
+  show_image() {
+    this.setState({ image_hidden: false });
   }
 
   render() {
@@ -287,6 +294,8 @@ class FlowItem extends PureComponent {
                     >
                       <img src={IMAGE_BASE + props.info.url} />
                     </a>
+                  ) : this.state.image_hidden ? (
+                    <a onClick={() => this.show_image()}>显示图片</a>
                   ) : (
                     <img src={IMAGE_BASE + props.info.url} />
                   )}

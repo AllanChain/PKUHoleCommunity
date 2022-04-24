@@ -22,6 +22,7 @@ const DEFAULT_CONFIG = {
   alias: {},
   attention_sort: false,
   auto_captcha: false,
+  hide_flow_image: false,
 };
 
 export function load_config() {
@@ -419,6 +420,12 @@ export class ConfigUI extends PureComponent {
             }}
           />
           <hr />
+          <ConfigSwitch
+            callback={this.save_changes_bound}
+            id="hide_flow_image"
+            name="默认隐藏图片"
+            description="启用后，将时间线里的图片将默认隐藏，点击后才显示。"
+          />
           <ConfigSwitch
             callback={this.save_changes_bound}
             id="attention_sort"
