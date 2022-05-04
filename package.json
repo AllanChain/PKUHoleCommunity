@@ -12,13 +12,13 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-lazyload": "^3.2.0",
-    "react-scripts": "^5.0.0",
+    "react-scripts": "^5.0.1",
     "react-timeago": "^6.2.1",
-    "workbox-core": "^6.4.2",
-    "workbox-expiration": "^6.4.2",
-    "workbox-precaching": "^6.4.2",
-    "workbox-routing": "^6.4.2",
-    "workbox-strategies": "^6.4.2"
+    "workbox-core": "^6.5.3",
+    "workbox-expiration": "^6.5.3",
+    "workbox-precaching": "^6.5.3",
+    "workbox-routing": "^6.5.3",
+    "workbox-strategies": "^6.5.3"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -41,10 +41,10 @@
     ]
   },
   "devDependencies": {
-    "eslint": "^8.8.0",
-    "eslint-config-prettier": "^8.3.0",
+    "eslint": "^8.14.0",
+    "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-react": "^7.28.0",
-    "prettier": "^2.3.2"
+    "eslint-plugin-react": "^7.29.4",
+    "prettier": "^2.6.2"
   }
 }
