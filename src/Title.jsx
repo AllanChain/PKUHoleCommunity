@@ -222,10 +222,10 @@ export function Title(props) {
               <small>
                 {' '}
                 (社区版
-                {!!process.env.REACT_APP_VERSION.includes('beta') && (
+                {!!import.meta.env.REACT_APP_VERSION.includes('beta') && (
                   <sup>β</sup>
                 )}
-                {!!process.env.REACT_APP_VERSION.includes('alpha') && (
+                {!!import.meta.env.REACT_APP_VERSION.includes('alpha') && (
                   <sup>α</sup>
                 )}
                 )

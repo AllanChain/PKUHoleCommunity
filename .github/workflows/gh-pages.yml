@@ -24,10 +24,7 @@ jobs:
     - name: Install Packages
       run: pnpm install
     - name: Build App
-      run: pnpm run build
-      env:
-        # React will fail CI if there is any warning
-        CI: false
+      run: pnpm run build --base=/PKUHoleCommunity/
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
       with:
