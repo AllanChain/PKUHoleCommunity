@@ -12,6 +12,7 @@ export default defineConfig({
     splitVendorChunkPlugin(),
     VitePWA({
       strategies: 'injectManifest',
+      filename: 'service-worker.js',
       manifest: {
         short_name: '树洞社区版',
         name: 'P大树洞社区版',
