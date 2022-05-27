@@ -157,7 +157,7 @@ class LifeInfoBox extends Component {
           <td>{title}</td>
           <td>{value_fn(s)}</td>
           <td>
-            <a href={url_fn(s)} target="_blank">
+            <a href={url_fn(s)} target="_blank" rel="noopener">
               <span className="icon icon-forward" />
               &nbsp;{action}
             </a>

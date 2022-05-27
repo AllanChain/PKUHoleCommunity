@@ -291,6 +291,7 @@ class FlowItem extends PureComponent {
                       className="no-underline"
                       href={IMAGE_BASE + props.info.url}
                       target="_blank"
+                      rel="noopener"
                     >
                       <img src={IMAGE_BASE + props.info.url} />
                     </a>
