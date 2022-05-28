@@ -17,7 +17,7 @@ clientsClaim();
 precacheAndRoute(self.__WB_MANIFEST, {});
 
 registerRoute(
-  /static\/(manifest.json|(fonts_7|bg)\/.*)/,
+  /(manifest.webmanifest|static\/(fonts_7|bg)\/.*)$/,
   new CacheFirst({
     cacheName: 'PKUHoleCE',
     plugins: [
