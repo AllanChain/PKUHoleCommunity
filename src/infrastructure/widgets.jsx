@@ -75,58 +75,12 @@ const FALLBACK_APPS={
     ],
     fix: {},
 };
-const SWITCHER_DATA_VER='switcher_2';
-const SWITCHER_DATA_URL=PKUHELPER_ROOT+'web_static/appswitcher_items.json';
-
 export class AppSwitcher extends Component {
     constructor(props) {
         super(props);
         this.state={
-            apps: this.get_apps_from_localstorage(),
+            apps: FALLBACK_APPS,
         }
-    }
-
-    get_apps_from_localstorage() {
-        let ret=FALLBACK_APPS;
-        if(localStorage['APPSWITCHER_ITEMS'])
-            try {
-                let content=JSON.parse(localStorage['APPSWITCHER_ITEMS'])[SWITCHER_DATA_VER];
-                if(!content || !content.bar)
-                    throw new Error('content is empty');
-
-                ret=content;
-            } catch(e) {
-                console.error('load appswitcher items from localstorage failed');
-                console.trace(e);
-            }
-
-        return ret;
-    }
-
-    componentDidMount() {
-        setTimeout(()=>{
-            fetch(SWITCHER_DATA_URL)
-                .then((res)=>{
-                    if(!res.ok) throw Error(`网络错误 ${res.status} ${res.statusText}`);
-                    return res.text();
-                })
-                .then((txt)=>{
-                    if(txt!==localStorage['APPSWITCHER_ITEMS']) {
-                        console.log('loaded new appswitcher items',txt);
-                        localStorage['APPSWITCHER_ITEMS']=txt;
-
-                        this.setState({
-                            apps: this.get_apps_from_localstorage(),
-                        });
-                    } else {
-                        console.log('appswitcher items unchanged');
-                    }
-                })
-                .catch((e)=>{
-                    console.error('loading appswitcher items failed');
-                    console.trace(e);
-                });
-        },500);
     }
 
     render() {
