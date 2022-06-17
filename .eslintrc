@@ -26,7 +26,7 @@
       "version": "detect"
     }
   },
-  "ignorePatterns": ["src/infrastructure/", "build/"],
+  "ignorePatterns": ["build/"],
   "rules": {
     "prettier/prettier": "warn",
     "react/jsx-indent": ["error", 2, { "indentLogicalExpressions": true }],

@@ -19,7 +19,7 @@
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
-    "lint": "eslint --fix --ext .js src"
+    "lint": "eslint --fix --ext .js,.jsx src"
   },
   "browserslist": {
     "production": [

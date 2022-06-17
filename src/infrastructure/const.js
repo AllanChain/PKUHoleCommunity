@@ -1,1 +1,1 @@
-export const PKUHELPER_ROOT='//pkuhelper.pku.edu.cn/';
+export const PKUHELPER_ROOT = '//pkuhelper.pku.edu.cn/';
