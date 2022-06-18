@@ -76,3 +76,11 @@ This reverts commit <hash>.
 ## 关于跟进官方
 
 以前是个问题，现在不是问题了 :smirk:
+
+## 忽略一些 formatting 的提交
+
+由于一些众所周知的原因，我们对原本的玳瑁进行了格式化。这些提交会影响 Git blame 操作和在 GitLens 插件下的直观性。所以可以进行如下设置：
+
+```shell
+git config blame.ignorerevsfile .git-blame-ignore-revs
+```
