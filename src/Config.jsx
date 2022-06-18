@@ -22,7 +22,7 @@ const DEFAULT_CONFIG = {
   alias: {},
   attention_sort: false,
   auto_captcha: false,
-  hide_flow_image: false,
+  flow_image: 'default',
 };
 
 export function load_config() {
@@ -153,54 +153,6 @@ class ConfigBackground extends PureComponent {
   }
 }
 
-class ConfigColorScheme extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      color_scheme: window.config.color_scheme,
-    };
-  }
-
-  save_changes() {
-    this.props.callback({
-      color_scheme: this.state.color_scheme,
-    });
-  }
-
-  on_select(e) {
-    const value = e.target.value;
-    this.setState(
-      {
-        color_scheme: value,
-      },
-      this.save_changes.bind(this),
-    );
-  }
-
-  render() {
-    return (
-      <div>
-        <p>
-          <b>夜间模式：</b>
-          <select
-            className="config-select"
-            value={this.state.color_scheme}
-            onChange={this.on_select.bind(this)}
-          >
-            <option value="default">跟随系统</option>
-            <option value="light">始终浅色模式</option>
-            <option value="dark">始终深色模式</option>
-          </select>
-          &nbsp;<small>#color_scheme</small>
-        </p>
-        <p className="config-description">
-          选择浅色或深色模式，深色模式下将会调暗图片亮度
-        </p>
-      </div>
-    );
-  }
-}
-
 class ConfigTextArea extends PureComponent {
   constructor(props) {
     super(props);
@@ -310,6 +262,55 @@ class ConfigSwitch extends PureComponent {
   }
 }
 
+class ConfigSelect extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selected: window.config[this.props.id],
+    };
+  }
+
+  on_change(e) {
+    const val = e.target.value;
+    this.setState(
+      {
+        selected: val,
+      },
+      () => {
+        this.props.callback({
+          [this.props.id]: val,
+        });
+      },
+    );
+  }
+
+  render() {
+    return (
+      <div>
+        <p>
+          <label>
+            <b>{this.props.name}：</b>
+            <select
+              className="config-select"
+              name={'config-' + this.props.id}
+              value={this.state.selected}
+              onChange={this.on_change.bind(this)}
+            >
+              {this.props.options.map((option) => (
+                <option value={option.value} key={option.value}>
+                  {option.name}
+                </option>
+              ))}
+            </select>
+            &nbsp;<small>#{this.props.id}</small>
+          </label>
+        </p>
+        <p className="config-description">{this.props.description}</p>
+      </div>
+    );
+  }
+}
+
 export class ConfigUI extends PureComponent {
   constructor(props) {
     super(props);
@@ -360,9 +361,16 @@ export class ConfigUI extends PureComponent {
             callback={this.save_changes_bound}
           />
           <hr />
-          <ConfigColorScheme
-            id="color-scheme"
+          <ConfigSelect
+            id="color_scheme"
             callback={this.save_changes_bound}
+            options={[
+              { value: 'default', name: '跟随系统' },
+              { value: 'light', name: '始终浅色模式' },
+              { value: 'dark', name: '始终深色模式' },
+            ]}
+            name="夜间模式"
+            description="选择浅色或深色模式，深色模式下将会调暗图片亮度"
           />
           <hr />
           <ConfigSwitch
@@ -420,11 +428,16 @@ export class ConfigUI extends PureComponent {
             }}
           />
           <hr />
-          <ConfigSwitch
+          <ConfigSelect
             callback={this.save_changes_bound}
-            id="hide_flow_image"
-            name="默认隐藏图片"
-            description="启用后，将时间线里的图片将默认隐藏，点击后才显示。"
+            id="flow_image"
+            name="时间线图片"
+            options={[
+              { value: 'default', name: '默认' },
+              { value: 'hidden', name: '默认隐藏' },
+              { value: 'thumbnail', name: '默认显示缩略图' },
+            ]}
+            description="默认将维持原貌，可选择默认隐藏和默认显示缩略图，点击后再显示完整图片"
           />
           <ConfigSwitch
             callback={this.save_changes_bound}

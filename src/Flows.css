@@ -154,6 +154,10 @@
     max-width: 100%;
     box-shadow: 0 1px 5px rgba(0,0,0,.4);
 }
+.flow-item-row p.img img.thumbnail {
+    max-width: 40px;
+    max-height: 40px;
+}
 .left-container .flow-item-row p.img img {
     max-height: 80vh;
 }

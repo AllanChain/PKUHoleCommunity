@@ -159,7 +159,7 @@ class FlowItem extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      image_hidden: window.config.hide_flow_image,
+      image_strategy: window.config.flow_image,
     };
   }
 
@@ -190,7 +190,7 @@ class FlowItem extends PureComponent {
   }
 
   show_image() {
-    this.setState({ image_hidden: false });
+    this.setState({ image_strategy: 'default' });
   }
 
   render() {
@@ -295,10 +295,20 @@ class FlowItem extends PureComponent {
                     >
                       <img src={IMAGE_BASE + props.info.url} />
                     </a>
-                  ) : this.state.image_hidden ? (
+                  ) : this.state.image_strategy === 'default' ? (
+                    <img src={IMAGE_BASE + props.info.url} />
+                  ) : this.state.image_strategy === 'hidden' ? (
                     <a onClick={() => this.show_image()}>显示图片</a>
                   ) : (
-                    <img src={IMAGE_BASE + props.info.url} />
+                    <>
+                      <img
+                        className="thumbnail"
+                        src={IMAGE_BASE + props.info.url}
+                      />
+                      <div>
+                        <a onClick={() => this.show_image()}>显示较大图片</a>
+                      </div>
+                    </>
                   )}
                 </p>
               )}
