@@ -43,7 +43,7 @@ jobs:
         run: |
           git clone --depth=1 https://gitee.com/PKUHoleCE/PKUHoleCE.git dist
 
-      - name: (Pre) Validate Previous Pages (Backward & Error Compacity)
+      - name: (Pre) Validate Previous Pages (Backward & Error Compatibility)
         if: ${{ contains(github.ref, '-') }}
         id: validate
         run: |
@@ -91,9 +91,3 @@ jobs:
         env:
           REF: ${{ github.ref }}
 
-      - name: Build Gitee Pages
-        uses: yanglbme/gitee-pages-action@master
-        with:
-          gitee-username: pkuholece-bot
-          gitee-password: ${{ secrets.GITEE_PASSWORD }}
-          gitee-repo: PKUHoleCE/PKUHoleCE
