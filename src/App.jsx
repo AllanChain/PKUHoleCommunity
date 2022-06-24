@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import { Flow } from './Flows';
 import { Title } from './Title';
 import { Sidebar } from './Sidebar';
@@ -11,8 +11,48 @@ import { cache } from './cache';
 
 const MAX_SIDEBAR_STACK_SIZE = 10;
 
-function DeprecatedAlert(props) {
-  return <div id="global-hint-container" />;
+function PinnedAlert(props) {
+  const last_viewed_version = localStorage['last-viewed-version'];
+  const [show, setShow] = useState(
+    last_viewed_version !== import.meta.env.REACT_APP_VERSION,
+  );
+  const mark_as_viewed = () => {
+    setShow(false);
+    localStorage.setItem(
+      'last-viewed-version',
+      import.meta.env.REACT_APP_VERSION,
+    );
+  };
+  return (
+    <div id="global-hint-container">
+      {show && (
+        <div className="flow-item">
+          <div className="flow-item-row box box-info">
+            <a
+              className="no-underline box-header-badge"
+              onClick={mark_as_viewed}
+            >
+              <span className="icon icon-close" />
+            </a>
+            <p>
+              新版本 (v{import.meta.env.REACT_APP_VERSION}) 已完成更新， 点击
+              <a
+                href={`https://github.com/AllanChain/PKUHoleCommunity/releases/tag/v${
+                  import.meta.env.REACT_APP_VERSION
+                }`}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={mark_as_viewed}
+              >
+                此处
+              </a>
+              查看更新内容。
+            </p>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
 
 class App extends Component {
@@ -146,7 +186,7 @@ class App extends Component {
                   </div>
                 </div>
               )}
-              <DeprecatedAlert token={token.value} />
+              <PinnedAlert token={token.value} />
               {this.inpku_flag || token.value ? (
                 <Flow
                   key={this.state.flow_render_key}
