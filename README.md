@@ -52,7 +52,7 @@ P 大树洞网页版社区分支（以下简称“社区版”）的定位是提
 
 - 顶栏中的应用链接（成绩、不咕）目前可以正常访问，但访问时会回到官方版
 - 和 App 客户端一样受到验证限制，但提供不稳定的自动验证选项
-- 将 CNZZ 统计替换为简单且隐私友好型的 [Microanalytics](https://microanalytics.io/pkuholece.gitee.io)，所有人均可查看
+- 将 CNZZ 统计替换为简单且隐私友好型的 [Microanalytics](https://microanalytics.io/pkuholece.gitee.io)，所有人均可查看（有时访问数会超过月度限制，可以切换到本月视图查看本月前几天的数据）
 
 ### 项目管理
 
